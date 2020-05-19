@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+    version="3.0">
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <listener>
+        <description>Spring監聽器</description>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <!-- ContextLoaderListener初始化Spring上下文時需要使用到的contextConfigLocation參數 -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <!-- 配置spring.xml和spring-mybatis.xml這兩個設定檔的位置，固定寫法 -->
+        <!-- 在web環境中一定要定位到classpath 否則默認到當前web應用下找  -->
+        <param-value>classpath:spring.xml,classpath:spring-mybatis.xml</param-value>
+    </context-param>  
+      <!-- 日誌設定檔 -->
+  <context-param>
+    <param-name>log4jConfigLocation</param-name>
+    <param-value>classpath:log4j.properties</param-value>
+  </context-param>
+      
+    <!-- set character encoding spring -->
+    <filter>
+        <description>字元集篩檢程式</description>
+        <filter-name>characterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+        <filter-mapping>
+        <filter-name>characterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+      <servlet>
+        <servlet-name>DispatcherServlet</servlet-name>
+        <servlet-class>
+            org.springframework.web.servlet.DispatcherServlet
+        </servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring-mvc.xml</param-value>
+        </init-param>
+        <!-- 使系統在啟動時裝在servlet而不是第一個servlet被訪問 -->
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+    <!--這個Servlet的名字是dispatcher，可以有多個DispatcherServlet，是通過名字來區分的。每一個DispatcherServlet有自己的WebApplicationContext上下文物件。同時保存的ServletContext中和Request物件中.-->  
+        <servlet-name>DispatcherServlet</servlet-name>
+         <!--Servlet攔截匹配規則可以自已定義，當映射為@RequestMapping("/user/add")時，為例,攔截哪種URL合適？-->  
+        <!--1、攔截*.do、*.htm， 例如：/user/add.do,這是最傳統的方式，最簡單也最實用。不會導致靜態檔（jpg,js,css）被攔截。-->  
+        <!--2、攔截/，例如：/user/add,可以實現現在很流行的REST風格。很多互聯網類型的應用很喜歡這種風格的URL。弊端：會導致靜態檔（jpg,js,css）被攔截後不能正常顯示。 -->  
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+      <!-- 配置session過期時間120分鐘 -->
+    <session-config>  
+        <session-timeout>120</session-timeout>  
+    </session-config>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404.jsp</location>
+    </error-page>
+
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+    
+
+</web-app>
+
+

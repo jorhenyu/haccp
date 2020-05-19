@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc
+     http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 自動掃描controller包下的所有類，使其認為spring mvc的控制器 -->
+     <context:component-scan base-package="com.jorhen.controller" />
+   
+   <!-- 聲明 Controller
+    <bean name="/main/index.do" class="com.jorhen.controller.MainController" />
+ -->
+    <!-- 註冊驗證器 -->  
+    <mvc:annotation-driven validator="msgValidator" message-codes-resolver="messageCodeResolver"></mvc:annotation-driven>  
+
+<bean id="messageCodeResolver" class="org.springframework.validation.DefaultMessageCodesResolver">  
+    <property name="prefix" value="validation."></property>  
+</bean>  
+<!-- -->
+  <bean id="msgValidator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">  
+    <property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>  
+    <property name="validationMessageSource" ref="validationMessageSource"/>  
+</bean>  
+
+<!-- 國際化的消息資源檔（本系統中主要用於顯示/錯誤消息定制） --> 
+<bean id="validationMessageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
+    <property name="basenames">  
+        <list>  
+            <value>classpath:messages</value>  
+            <value>classpath:hibernate/validator/ValidationMessages</value>  
+        </list>  
+    </property>  
+    <property name="useCodeAsDefaultMessage" value="false"/>  
+    <property name="defaultEncoding" value="UTF-8"/>  
+    <property name="cacheSeconds" value="60"/>  
+</bean>  
+<!-- 視圖解析器 需要Jstl包 對模型視圖名稱的解析，即在模型視圖名稱添加前尾碼 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/" p:suffix=".jsp" />
+</beans>

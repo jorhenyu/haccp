@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE configuration 
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- 配置管理器 -->
+<configuration>
+	<plugins>
+		<!-- com.github.pagehelper為PageHelper類所在包名 -->
+		<plugin interceptor="com.github.pagehelper.PageHelper">
+			<!-- 4.0.0以後版本可以不設置該參數 -->
+			<property name="dialect" value="mysql" />
+			<!-- 和startPage中的pageNum效果一樣 -->
+			<property name="offsetAsPageNum" value="true" />
+			<!-- 該參數默認為false -->
+			<!-- 設置為true時，使用RowBounds分頁會進行count查詢 -->
+			<property name="rowBoundsWithCount" value="true" />
+			<!-- 設置為true時，如果pageSize=0或者RowBounds.limit = 0就會查詢出全部的結果 -->
+			<!-- （相當於沒有執行分頁查詢，但是返回結果仍然是Page類型） -->
+			<property name="pageSizeZero" value="true" />
+			<!-- 啟用合理化時，如果pageNum<1會查詢第一頁，如果pageNum>pages會查詢最後一頁 -->
+			<!-- 禁用合理化時，如果pageNum<1或pageNum>pages會返回空資料 -->
+			<property name="reasonable" value="true" />
+			<!-- 3.5.0版本可用 - 為了支持startPage(Object params)方法 -->
+			<!-- 增加了一個`params`參數來配置參數映射，用於從Map或ServletRequest中取值 -->
+			<!-- 可以配置pageNum,pageSize,count,pageSizeZero,reasonable,orderBy,不配置映射的用預設值 -->
+			<!-- 不理解該含義的前提下，不要隨便複製該配置 -->
+			<property name="params" value="pageNum=start;pageSize=limit;" />
+			<!-- 支援通過Mapper介面參數來傳遞分頁參數 -->
+			<property name="supportMethodsArguments" value="true" />
+			<!-- always總是返回PageInfo類型,check檢查返回類型是否為PageInfo,none返回Page -->
+			<property name="returnPageInfo" value="check" />
+		</plugin>
+	</plugins>
+</configuration>
+
