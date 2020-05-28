@@ -132,7 +132,7 @@ public class UserController {
 			@RequestParam(value = "userId", required = false) String userId) {
 		User user = userService.getUserById(userId);
 		modelMap.addAttribute("user", user);
-		return "user/update";
+		return "user/mgtInfo/update";
 	}
 
 	@RequestMapping("/doUpdate")
@@ -146,20 +146,20 @@ public class UserController {
 
 		int aa = userService.updateByPrimaryKeySelective(user);
 		log.info("==aa=="+aa);
-		return "redirect:/user/index.do";		
+		return "redirect:/user/mgtInfo/index.do";		
 
 	}
 
 	@RequestMapping("/add")
 	public String add() {
-		return "user/add";
+		return "user/mgtInfo/add";
 	}
 
 	@RequestMapping("/doAdd")
 	public String doAdd(HttpServletRequest request, ModelMap modelMap,
 			@Validated @ModelAttribute("userDetail") User user, BindingResult bindingResult) {
 
-		boolean isUserNameExist = userService.findUserByUsername(user.getUserName(), null);
+		boolean isUserNameExist = userService.findUserByUsername(user.getuName(), null);
 		if (bindingResult.hasErrors()) {
 			List<ObjectError> errors = bindingResult.getAllErrors();
 		} else if (isUserNameExist) {

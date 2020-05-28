@@ -1,145 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jorhen.dao.UserMapper">
-	<resultMap id="BaseResultMap" type="com.jorhen.domain.User">
-		<id column="user_id" jdbcType="CHAR" property="userId" />
-		<result column="user_name" jdbcType="VARCHAR" property="userName" />
-		<result column="user_birthday" jdbcType="CHAR" property="userBirthday" />
-		<result column="user_pwd" jdbcType="VARCHAR" property="userPwd" />
-		<result column="user_email" jdbcType="VARCHAR" property="userEmail" />
-		<result column="user_position" jdbcType="CHAR" property="userPosition" />
-	</resultMap>
-	<sql id="Base_Column_List">
-		user_id, user_name, user_birthday, user_pwd , user_email, user_position
-	</sql>
-	<select id="selectByPrimaryKey" parameterType="java.lang.String"
-		resultMap="BaseResultMap">
-		select
-		<include refid="Base_Column_List" />
-		from t_user
-		where user_id = #{userId,jdbcType=CHAR}
-	</select>
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-		delete from t_user
-		where user_id = #{userId,jdbcType=CHAR}
-	</delete>
-	<insert id="insert" parameterType="com.jorhen.domain.User">
-		insert into t_user (user_id,
-		user_name, user_birthday,
-		user_pwd , user_email,user_position)
-		values
-		(#{userId,jdbcType=CHAR}, #{userName,jdbcType=VARCHAR},
-		#{userBirthday,jdbcType=CHAR},
-		#{userPwd,jdbcType=VARCHAR} ,
-		#{userEmail,jdbcType=VARCHAR},
-		#{userPosition,jdbcType=CHAR})
-	</insert>
-	<insert id="insertSelective" parameterType="com.jorhen.domain.User">
-		insert into t_user
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="userId != null">
-				user_id,
-			</if>
-			<if test="userName != null">
-				user_name,
-			</if>
-			<if test="userBirthday != null">
-				user_birthday,
-			</if>
-			<if test="userPwd != null">
-				user_pwd,
-			</if>
-
-			<if test="userEamil != null">
-				user_email,
-			</if>
-
-			<if test="userPosition != null">
-				user_position,
-			</if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="userId != null">
-				#{userId,jdbcType=CHAR},
-			</if>
-			<if test="userName != null">
-				#{userName,jdbcType=VARCHAR},
-			</if>
-			<if test="userBirthday != null">
-				#{userBirthday,jdbcType=CHAR},
-			</if>
-			<if test="userPwd != null">
-				#{userPwd,jdbcType=VARCHAR},
-			</if>
-			<if test="userEmail != null">
-				#{userEmail,jdbcType=VARCHAR},
-			</if>
-			<if test="userPosition != null">
-				#{userPosition,jdbcType=CHAR},
-			</if>
-		</trim>
-	</insert>
-	<update id="updateByPrimaryKeySelective" parameterType="com.jorhen.domain.User">
-		update t_user
-		<set>
-			<if test="userName != null">
-				user_name = #{userName,jdbcType=VARCHAR},
-			</if>
-			<if test="userBirthday != null">
-				user_birthday = #{userBirthday,jdbcType=CHAR},
-			</if>
-			<if test="userPwd != null">
-				user_pwd = #{userPwd,jdbcType=VARCHAR},
-			</if>
-			<if test="userEmail != null">
-				user_email = #{userEmail,jdbcType=VARCHAR},
-			</if>
-			<if test="userPosition != null">
-				user_position = #{userPosition,jdbcType=CHAR},
-			</if>
-		</set>
-		where user_id = #{userId,jdbcType=CHAR}
-	</update>
-	<update id="updateByPrimaryKey" parameterType="com.jorhen.domain.User">
-		update t_user
-		set
-		user_name = #{userName,jdbcType=VARCHAR},
-		user_birthday =
-		#{userBirthday,jdbcType=CHAR},
-		user_pwd = #{userPwd,jdbcType=VARCHAR},
-		user_email = #{userEmail,jdbcType=VARCHAR},
-		user_position = #{userPosition,jdbcType=CHAR}
-		where user_id =
-		#{userId,jdbcType=CHAR}
-	</update>
-	<!-- ==============以下內容是根據自身業務擴展的內容======================= -->
+  <resultMap id="BaseResultMap" type="com.jorhen.domain.User">
+    <id column="u_id" jdbcType="CHAR" property="uId" />
+    <result column="u_name" jdbcType="VARCHAR" property="uName" />
+    <result column="u_pw" jdbcType="VARCHAR" property="uPw" />
+    <result column="u_email" jdbcType="VARCHAR" property="uEmail" />
+    <result column="u_posi" jdbcType="CHAR" property="uPosi" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    u_id, u_name, u_pw, u_email, u_posi
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    where u_id = #{uId,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_user
+    where u_id = #{uId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.jorhen.domain.User">
+    insert into t_user (u_id, u_name, u_pw, 
+      u_email, u_posi)
+    values (#{uId,jdbcType=CHAR}, #{uName,jdbcType=VARCHAR}, #{uPw,jdbcType=VARCHAR}, 
+      #{uEmail,jdbcType=VARCHAR}, #{uPosi,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jorhen.domain.User">
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uId != null">
+        u_id,
+      </if>
+      <if test="uName != null">
+        u_name,
+      </if>
+      <if test="uPw != null">
+        u_pw,
+      </if>
+      <if test="uEmail != null">
+        u_email,
+      </if>
+      <if test="uPosi != null">
+        u_posi,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uId != null">
+        #{uId,jdbcType=CHAR},
+      </if>
+      <if test="uName != null">
+        #{uName,jdbcType=VARCHAR},
+      </if>
+      <if test="uPw != null">
+        #{uPw,jdbcType=VARCHAR},
+      </if>
+      <if test="uEmail != null">
+        #{uEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="uPosi != null">
+        #{uPosi,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jorhen.domain.User">
+    update t_user
+    <set>
+      <if test="uName != null">
+        u_name = #{uName,jdbcType=VARCHAR},
+      </if>
+      <if test="uPw != null">
+        u_pw = #{uPw,jdbcType=VARCHAR},
+      </if>
+      <if test="uEmail != null">
+        u_email = #{uEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="uPosi != null">
+        u_posi = #{uPosi,jdbcType=CHAR},
+      </if>
+    </set>
+    where u_id = #{uId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jorhen.domain.User">
+    update t_user
+    set u_name = #{uName,jdbcType=VARCHAR},
+      u_pw = #{uPw,jdbcType=VARCHAR},
+      u_email = #{uEmail,jdbcType=VARCHAR},
+      u_posi = #{uPosi,jdbcType=CHAR}
+    where u_id = #{uId,jdbcType=CHAR}
+  </update>
+  
+  	<!-- ==============以下內容是根據自身業務擴展的內容======================= -->
 	<!-- select標籤的id屬性與UserMapper介面中定義的getAllUser方法要一模一樣 -->
 	<select id="getAllUser" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from t_user
 	</select>
-
+	
 	<select id="loginUser" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from t_user
-		where user_name = #{0} and user_pwd = #{1}
+		where u_name = #{0} and u_pw = #{1}
 	</select>
 
 	<!-- 根據名稱查詢使用者資訊和登入 -->
 	<select id="findUserByUsername" resultType="boolean">
-		select count(user_id) from t_user
+		select count(u_id) from t_user
 
 		<where>
-			<if test="userName !=null and userName !='' ">
-				user_name = #{userName}
+			<if test="uName !=null and uName !='' ">
+				u_name = #{uName}
 			</if>
-			<if test="userPwd !=null and userPwd !='' ">
-				and user_pwd = #{userPwd}
+			<if test="uPw !=null and uPw !='' ">
+				and u_pw = #{uPw}
 			</if>
 		</where>
 	</select>
-
-
 </mapper>

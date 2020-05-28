@@ -7,91 +7,59 @@ import org.hibernate.validator.constraints.Length;
 
 public class User {
 	// 用戶ID
-	
-    private String userId;
+    private String uId;
     // 用戶名
     @Length(min = 1, max = 20, message = "用戶名長度必須位於1到20之間")
-    private String userName;
-   // 用戶密碼
-    @Size(min=1,max=10,message="密碼的長度應該在1和10之間")
-    private String userPwd;
+    private String uName;
     
+    // 用戶密碼
+    @Size(min=1,max=10,message="密碼的長度應該在1和10之間")
+    private String uPw;
+
     // 用戶郵箱    
     @Email(message = "輸入正確的郵箱")
-    private String userEmail;
-    
-    // 用戶生日    
-    //@DateTimeFormat(pattern = "yyyy-MM-dd")
-    private String userBirthday;
-    
- // 用戶職位
-    private String userPosition;
+    private String uEmail;
 
-    
+    // 用戶職位
+    private String uPosi;
 
-    public String getUserPosition() {
-		return userPosition;
-	}
-
-
-
-	public void setUserPosition(String userPosition) {
-		this.userPosition = userPosition;
-	}
-
-
-
-	public String getUserId() {
-        return userId;
-    }
-    
-
-
-    public void setUserId(String userId) {
-        this.userId = userId == null ? null : userId.trim();
+    public String getuId() {
+        return uId;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-    
-	public void setUserName(String userName) {
-        this.userName = userName == null ? null : userName.trim();
+    public void setuId(String uId) {
+        this.uId = uId == null ? null : uId.trim();
     }
 
-    public String getUserPwd() {
-		return userPwd;
-	}
-
-
-
-	public void setUserPwd(String userPwd) {
-		this.userPwd = userPwd;
-	}
-
-
-
-
-
-    public String getUserEmail() {
-		return userEmail;
-	}
-
-
-
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
-
-
-
-	public String getUserBirthday() {
-        return userBirthday;
+    public String getuName() {
+        return uName;
     }
 
-    public void setUserBirthday(String userBirthday) {
-        this.userBirthday = userBirthday;
+    public void setuName(String uName) {
+        this.uName = uName == null ? null : uName.trim();
     }
 
+    public String getuPw() {
+        return uPw;
+    }
 
+    public void setuPw(String uPw) {
+        this.uPw = uPw == null ? null : uPw.trim();
+    }
+
+    public String getuEmail() {
+        return uEmail;
+    }
+
+    public void setuEmail(String uEmail) {
+        this.uEmail = uEmail == null ? null : uEmail.trim();
+    }
+
+    public String getuPosi() {
+        return uPosi;
+    }
+
+    public void setuPosi(String uPosi) {
+        this.uPosi = uPosi == null ? null : uPosi.trim();
+    }
 }

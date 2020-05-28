@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserServiceI {
 
 	// @Override
 	public void addUser(User user) {
-		user.setUserId(WebUtils.makeId());//設置使用者的Id屬性
+		//user.setUserId(WebUtils.makeId());//設置使用者的Id屬性
 		userMapper.insert(user);
 	}
 

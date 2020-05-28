@@ -43,7 +43,7 @@ public class MainController {
 	public String index(HttpServletRequest request, ModelMap modelMap,
 			@Validated @ModelAttribute("userDetail") User user, BindingResult bindingResult) {
 
-		boolean isUserNameExist = userService.findUserByUsername(user.getUserName(), user.getUserPwd());
+		boolean isUserNameExist = userService.findUserByUsername(user.getuName(), user.getuPw());
 
 		if (bindingResult.hasErrors()) {
 			List<ObjectError> errors = bindingResult.getAllErrors();

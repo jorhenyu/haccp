@@ -22,8 +22,8 @@ public class MyBatisTestBySpringTestFramework {
     @Test
     public void testAddUser(){
         User user = new User();
-        user.setUserId(UUID.randomUUID().toString().replaceAll("-", ""));
-        user.setUserName("測試A");
+       user.setuId(UUID.randomUUID().toString().replaceAll("-", ""));
+        user.setuName("測試A");
         //user.setUserBirthday(new Date());
        // user.setUserSalary(10000D);
         userService.addUser(user);
@@ -33,6 +33,6 @@ public class MyBatisTestBySpringTestFramework {
     public void testGetUserById(){
         String userId = "141cd06e35b04c038f753dcd5ade24ae";
         User user = userService.getUserById(userId);
-        System.out.println(user.getUserName());
+        System.out.println(user.getuName());
     }
 }

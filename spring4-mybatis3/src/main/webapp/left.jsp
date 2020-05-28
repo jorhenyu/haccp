@@ -33,9 +33,9 @@
 		<ul id="browser" class="filetree">
 			<li><span class="folder">會員管理</span>
 				<ul>
-					<!--  <li><span class="file"><a
+					<li><span class="file"><a
 							href="${pageContext.request.contextPath}/user/mgtInfo/index.do"
-							target="showframe">會員管理</a></span></li>-->
+							target="showframe">會員管理</a></span></li>
 					<li><span class="file"><a
 							href="${pageContext.request.contextPath}/user/myInfo/index.do"
 							target="showframe">個人中心</a></span></li>
