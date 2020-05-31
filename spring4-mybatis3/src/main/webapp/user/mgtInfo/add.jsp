@@ -23,7 +23,7 @@
 </head>
 
 <body style="text-align: center;">
-	<form action="${pageContext.request.contextPath}/user/doAdd.do"
+	<form action="${pageContext.request.contextPath}/user/doUserAdd.do"
 		method="post">
 		<table width="60%" border="1">
 			<tr>

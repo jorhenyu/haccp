@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.jorhen.domain.Cat;
 import com.jorhen.domain.User;
+import com.jorhen.service.CatServiceI;
 import com.jorhen.service.UserServiceI;
 
 @Controller
@@ -29,6 +31,12 @@ public class UserController {
 	// 處理業務邏輯的userService
 	@Autowired
 	private UserServiceI userService;
+	List<User> lstUsers = null;
+	
+	// 處理業務邏輯的catService
+	@Autowired
+	private CatServiceI catService;
+	List<Cat> lstCats = null;
 
 	public UserServiceI getUser() {
 		return userService;
@@ -37,150 +45,155 @@ public class UserController {
 	public void setUser(UserServiceI user) {
 		userService = user;
 	}
+	
+	public CatServiceI getCat() {
+		return catService;
+	}
 
+	public void setCat(CatServiceI cat) {
+		catService = cat;
+	}
+	
+	
+    //管理者首面
 	@RequestMapping(value = "/mgtInfo/index")
-	public String index(HttpServletRequest request, ModelMap modelMap,
-			@RequestParam(value = "username", required = false) String username,
-			@RequestParam(value = "userPwd", required = false) String userPwd) {
-
-		System.out.println("name=" + username);
-		System.out.println("password=" + userPwd);
-
-		List<User> lstUsers = null;
-
-		lstUsers = userService.getAllUser();
-
-		// for (User item : lstUsers) {
-		// System.out.println(item.getUserName());
-		// System.out.println(item.getUserBirthday());
-		// }
-		modelMap.addAttribute("lstUsers", lstUsers);
-
-		// log.debug("page"+page);
-		/*
-		 * List<User> u = null; if(null !=name && !name.equals("")){ User user = new
-		 * User(); user.setName(name); u = userService.selectAll(user); } else { u =
-		 * userService.selectAll(null); }
-		 * 
-		 * PageInfo<User> pageInfo = new PageInfo<User>(u); log.debug(u);
-		 * log.debug(pageInfo); modelMap.addAttribute("user", u);
-		 * modelMap.addAttribute("name", name); modelMap.addAttribute("pageInfo",
-		 * pageInfo.getNavigatepageNums());
-		 */
-		// return "user/index";
+	public String mgtInfo() {
 		return "user/mgtInfo/data";
 	}
-	@RequestMapping(value = "/myInfo/index")
-	public String indexMyinfo(HttpServletRequest request, ModelMap modelMap,
-			@RequestParam(value = "username", required = false) String username,
-			@RequestParam(value = "userPwd", required = false) String userPwd) {
-
-		System.out.println("name=" + username);
-		System.out.println("password=" + userPwd);
-
-		List<User> lstUsers = null;
-
+	//會員管理介面
+	@RequestMapping(value = "/mber/index")
+	public String mberIndex(HttpServletRequest request, ModelMap modelMap) {
+		
 		lstUsers = userService.getAllUser();
-
-		// for (User item : lstUsers) {
-		// System.out.println(item.getUserName());
-		// System.out.println(item.getUserBirthday());
-		// }
 		modelMap.addAttribute("lstUsers", lstUsers);
 
-		// log.debug("page"+page);
-		/*
-		 * List<User> u = null; if(null !=name && !name.equals("")){ User user = new
-		 * User(); user.setName(name); u = userService.selectAll(user); } else { u =
-		 * userService.selectAll(null); }
-		 * 
-		 * PageInfo<User> pageInfo = new PageInfo<User>(u); log.debug(u);
-		 * log.debug(pageInfo); modelMap.addAttribute("user", u);
-		 * modelMap.addAttribute("name", name); modelMap.addAttribute("pageInfo",
-		 * pageInfo.getNavigatepageNums());
-		 */
-		// return "user/index";
-		return "user/myInfo/data";
-	}
-	/*
-	 * 
-	 * 
-	 * @RequestMapping(value="/index", method={RequestMethod.GET}) public String
-	 * index(HttpServletRequest request, ModelMap
-	 * modelMap, @RequestParam(value="name", required=false) String
-	 * name, @RequestParam(value="page", defaultValue="1") String paramPage){
-	 * 
-	 * if(null == paramPage){ paramPage = "1"; }
-	 * 
-	 * int page = Integer.parseInt(paramPage); int pageSize = 3;
-	 * log.debug("name="+name); log.debug("page"+page); PageHelper.startPage(page,
-	 * pageSize); PageHelper.orderBy("id desc"); List<User> u = null; if(null !=name
-	 * && !name.equals("")){ User user = new User(); user.setName(name); u =
-	 * userService.selectAll(user); } else { u = userService.selectAll(null); }
-	 * 
-	 * PageInfo<User> pageInfo = new PageInfo<User>(u); log.debug(u);
-	 * log.debug(pageInfo); modelMap.addAttribute("user", u);
-	 * modelMap.addAttribute("name", name); modelMap.addAttribute("pageInfo",
-	 * pageInfo.getNavigatepageNums()); return "user/index"; }
-	 * 
-	 * 
-	 * userService.updateByPrimaryKey(user); return "redirect:index.do"; }
-	 */
-
-	@RequestMapping("/update")
-	public String update(HttpServletRequest request, ModelMap modelMap,
-			@RequestParam(value = "userId", required = false) String userId) {
-		User user = userService.getUserById(userId);
+		return "user/mgtInfo/mber/data";
+	}	
+   //會員更新介面
+	@RequestMapping("/mber/update")
+	public String mberUpdate(HttpServletRequest request, ModelMap modelMap,
+			@RequestParam(value = "uId", required = false) String uId) {
+		User user = userService.getUserById(uId);
 		modelMap.addAttribute("user", user);
-		return "user/mgtInfo/update";
+		return "user/mgtInfo/mber/update";
 	}
-
-	@RequestMapping("/doUpdate")
-	public String doUpdate(HttpServletRequest request, ModelMap modelMap,
+	//會員更新執行
+	@RequestMapping("/mber/doUpdate")
+	public String doMberUpdate(HttpServletRequest request, ModelMap modelMap,
 			@Validated @ModelAttribute("userDetail") User user, BindingResult bindingResult) {
 
 		if (bindingResult.hasErrors()) {
 			List<ObjectError> errors = bindingResult.getAllErrors();
-			return "user/update";
+			return "user/mber/update";
 		}
 
 		int aa = userService.updateByPrimaryKeySelective(user);
 		log.info("==aa=="+aa);
-		return "redirect:/user/mgtInfo/index.do";		
+		return "redirect:/user/mber/index.do";		
 
 	}
-
-	@RequestMapping("/add")
-	public String add() {
-		return "user/mgtInfo/add";
+	//會員新增導引
+	@RequestMapping("/mber/add")
+	public String mberAdd() {
+		return "user/mgtInfo/mber/add";
 	}
-
-	@RequestMapping("/doAdd")
-	public String doAdd(HttpServletRequest request, ModelMap modelMap,
+	//會員新增執行
+	@RequestMapping("/mber/doAdd")
+	public String doUserAdd(HttpServletRequest request, ModelMap modelMap,
 			@Validated @ModelAttribute("userDetail") User user, BindingResult bindingResult) {
-
+		log.info("==aa=="+user.getuName());
 		boolean isUserNameExist = userService.findUserByUsername(user.getuName(), null);
 		if (bindingResult.hasErrors()) {
 			List<ObjectError> errors = bindingResult.getAllErrors();
 		} else if (isUserNameExist) {
 			// 向BindingResult添加使用者已存在的校驗錯誤
-			bindingResult.rejectValue("userName", "該用戶名已存在", "該用戶名已存在");
+			bindingResult.rejectValue("uName", "該用戶名已存在", "該用戶名已存在");
 		} else {
 			userService.addUser(user);
-			return "redirect:/user/index.do";
+			return "redirect:/user/mber/index.do";
 		}
 
 		modelMap.addAttribute("user", user);
 
-		return "user/add";
+		return "user/mgtInfo/mber/add";
 	}
+	//會員刪除
+	@RequestMapping("/mber/del")
+	public String mberDel(HttpServletRequest request, ModelMap modelMap,
+			@RequestParam(value = "uId", required = false) String uId) {
+		System.out.println("id=" + uId);
+		userService.deleteByPrimaryKey(uId);
+		return "redirect:/user/mber/index.do";
+	}
+	
+	//類別管理介面
+	@RequestMapping(value = "/cat/index")
+	public String catIndex(HttpServletRequest request, ModelMap modelMap) {
+		
+		lstCats = catService.getAllCat();
+		modelMap.addAttribute("lstCats", lstCats);
 
-	@RequestMapping("/delete")
-	public String delete(HttpServletRequest request, ModelMap modelMap,
-			@RequestParam(value = "userId", required = false) String userId) {
-		System.out.println("id=" + userId);
-		userService.deleteByPrimaryKey(userId);
-		return "redirect:/user/index.do";
+		return "user/mgtInfo/cat/data";
 	}
+	
+	   //類別更新介面
+		@RequestMapping("/cat/update")
+		public String catUpdate(HttpServletRequest request, ModelMap modelMap,
+				@RequestParam(value = "cId", required = false) String cId) {
+			Cat cat = catService.getCatById(cId);
+			modelMap.addAttribute("cat", cat);
+			return "user/mgtInfo/cat/update";
+		}
+		//類別更新執行
+		@RequestMapping("/cat/doUpdate")
+		public String doCatUpdate(HttpServletRequest request, ModelMap modelMap,
+				@Validated @ModelAttribute("userDetail") Cat cat, BindingResult bindingResult) {
+
+			if (bindingResult.hasErrors()) {
+				List<ObjectError> errors = bindingResult.getAllErrors();
+				return "user/cat/update";
+			}
+
+			int aa = catService.updateByPrimaryKeySelective(cat);
+			log.info("==aa=="+aa);
+			return "redirect:/user/cat/index.do";		
+
+		}
+		//類別新增導引
+		@RequestMapping("/cat/add")
+		public String catAdd() {
+			return "user/mgtInfo/cat/add";
+		}
+		//類別新增執行
+		@RequestMapping("/cat/doAdd")
+		public String doCatAdd(HttpServletRequest request, ModelMap modelMap,
+				@Validated @ModelAttribute("catDetail") Cat cat, BindingResult bindingResult) {
+			log.info("==aa=="+cat.getcId());
+			boolean isCatIdExist = catService.findCatByCatId(cat.getcId());
+			if (bindingResult.hasErrors()) {
+				List<ObjectError> errors = bindingResult.getAllErrors();
+			} else if (isCatIdExist) {
+				// 向BindingResult添加類別已存在的校驗錯誤
+				bindingResult.rejectValue("cId", "該類別已存在", "該類別已存在");
+			} else {
+				catService.addCat(cat);
+				return "redirect:/user/cat/index.do";
+			}
+
+			modelMap.addAttribute("cat", cat);
+
+			return "user/mgtInfo/cat/add";
+		}
+		//類別刪除
+		@RequestMapping("/cat/del")
+		public String catDel(HttpServletRequest request, ModelMap modelMap,
+				@RequestParam(value = "cId", required = false) String cId) {
+			System.out.println("id=" + cId);
+			catService.deleteByPrimaryKey(cId);
+			return "redirect:/user/cat/index.do";
+		}
+		
+
+
 
 }

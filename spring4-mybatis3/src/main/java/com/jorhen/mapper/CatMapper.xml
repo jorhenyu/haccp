@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jorhen.dao.CatMapper">
+  <resultMap id="BaseResultMap" type="com.jorhen.domain.Cat">
+    <id column="c_id" jdbcType="CHAR" property="cId" />
+    <result column="c_name" jdbcType="CHAR" property="cName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    c_id, c_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_cat
+    where c_id = #{cId,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_cat
+    where c_id = #{cId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.jorhen.domain.Cat">
+    insert into t_cat (c_id, c_name)
+    values (#{cId,jdbcType=CHAR}, #{cName,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jorhen.domain.Cat">
+    insert into t_cat
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cId != null">
+        c_id,
+      </if>
+      <if test="cName != null">
+        c_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cId != null">
+        #{cId,jdbcType=CHAR},
+      </if>
+      <if test="cName != null">
+        #{cName,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jorhen.domain.Cat">
+    update t_cat
+    <set>
+      <if test="cName != null">
+        c_name = #{cName,jdbcType=CHAR},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jorhen.domain.Cat">
+    update t_cat
+    set c_name = #{cName,jdbcType=CHAR}
+    where c_id = #{cId,jdbcType=CHAR}
+  </update>
+  
+   	<!-- ==============以下內容是根據自身業務擴展的內容======================= -->
+	<!-- select標籤的id屬性與UserMapper介面中定義的getAllUser方法要一模一樣 -->
+	<select id="getAllCat" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_cat
+	</select>
+	
+		<!-- 根據名稱查詢使用者資訊和登入 -->
+	<select id="findCatByCatId" resultType="boolean">
+		select count(c_id) from t_cat
+
+		<where>
+			<if test="cId !=null and cId !='' ">
+				c_id = #{cId}
+			</if>
+		</where>
+	</select>
+</mapper>
