@@ -11,39 +11,33 @@
 	<table>
 		<tr>
 			<th colspan="6" scope="row"><input type="button"
-				onclick="javascript:location.href='${pageContext.request.contextPath}/user/mber/add.do'"
+				onclick="javascript:location.href='${pageContext.request.contextPath}/user/cat/add.do'"
 				value="新增"></input></th>
 		</tr>
 		<tr>
-			<th>用戶名</th>
-			<th>用戶密碼</th>
-			<th>用戶郵箱</th>
-			<th>身分</th>
+			<th>業別id</th>
+			<th>業別名稱</th>
 			<th>修改</th>
 			<th>刪除</th>
 		</tr>
 		<%--遍歷lstUsers集合中的User物件 --%>
-		<c:forEach var="user" items="${lstUsers}">
+		<c:forEach var="cat" items="${lstCats}">
 			<tr>
-				<td>${user.uName}</td>
-				<td>${user.uPw}</td>
-				<td>${user.uEmail}</td>
-				<td>
-				<c:choose><c:when test="${user.uPosi == 'mg'}">管理者</c:when>
-				<c:otherwise>會員</c:otherwise></c:choose>
-                 </td>
+				<td>${cat.cId}</td>
+				<td>${cat.cName}</td>
+
 				<td>
 					<form
-						action="${pageContext.request.contextPath }/user/mber/update.do"
+						action="${pageContext.request.contextPath }/user/cat/update.do"
 						method="post">
-						<input type="hidden" name="uId" value="${user.uId}"> <input
+						<input type="hidden" name="cId" value="${cat.cId}"> <input
 							type="submit" value="修改">
 					</form>
 				</td>
 				<td>
-					<form action="${pageContext.request.contextPath }/user/mber/del.do"
+					<form action="${pageContext.request.contextPath }/user/cat/del.do"
 						method="post">
-						<input type="hidden" name="uId" value="${user.uId}"> <input
+						<input type="hidden" name="cId" value="${cat.cId}"> <input
 							type="submit" value="刪除">
 					</form>
 				</td>

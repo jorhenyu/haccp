@@ -40,51 +40,47 @@
 							href="${pageContext.request.contextPath}/user/myInfo/index.do"
 							target="showframe">個人中心</a></span></li>
 				</ul></li>
-			<li><span class="folder">HACCP模組</span>
+			<li><span class="folder">五個預備步驟表單</span>
+				<ul>
+					<li><span class="file"><a
+							href="${pageContext.request.contextPath}/user/mgtInfo/index.do"
+							target="showframe">食安小組</a></span></li>
+					<li><span class="file"><a
+							href="${pageContext.request.contextPath}/user/myInfo/index.do"
+							target="showframe">產品特性及儲運方式</a></span></li>
+					<li><span class="file"><a
+							href="${pageContext.request.contextPath}/user/myInfo/index.do"
+							target="showframe">產品用途及消費對象</a></span></li>
+					<li><span class="file"><a
+							href="${pageContext.request.contextPath}/user/myInfo/index.do"
+							target="showframe">產品加工流程圖</a></span></li>
+				</ul></li>
+			<li><span class="folder">七大原則表單</span>
 				<ul>
 					<li><span class="file"><a
 							href="${pageContext.request.contextPath}/process/index.do"
-							target="showframe">加工製程步驟</a></span>
-					</li>
+							target="showframe">加工製程步驟</a></span></li>
 					<li><span class="file"><a
 							href="${pageContext.request.contextPath}/user/index.do"
-							target="showframe">危害工作分析表</a></span>
-					</li>
+							target="showframe">危害工作分析表</a></span></li>
 					<li><span class="file"><a
 							href="${pageContext.request.contextPath}/user/index.do"
-							target="showframe">管制監控紀錄(CCP)程序</a></span>
-					</li>					
-										<li><span class="file"><a
-							href="${pageContext.request.contextPath}/user/index.do"
-							target="showframe">HACCP計畫表</a></span>
-					</li>
-				</ul>
-			</li>
-			<!-- 
-			<li><span class="folder">folder</span>
-				<ul>
-					<li><span class="folder">Subfolder 2.1</span>
-						<ul id="folder21">
-							<li><span class="file">File 2.1.1</span></li>
-							<li><span class="file">File 2.1.2</span></li>
-						</ul></li>
-					<li><span class="file">File 2.2</span></li>
+							target="showframe">HACCP計畫表</a></span></li>
 				</ul></li>
-			<li class="closed"><span class="folder">Folder 3 (closed
-					at start)</span>
+			<li><span class="folder">管制監控紀錄</span>
 				<ul>
-					<li><span class="file">File 3.1</span></li>
+					<li><span class="file"><a
+							href="${pageContext.request.contextPath}/process/index.do"
+							target="showframe">管制監控紀錄</a></span></li>
 				</ul></li>
-			<li><span class="file">File 4</span></li>
-			 -->
 		</ul>
 
-	</div>	
+	</div>
 
 	<c:if test="${user!=null}">
             歡迎您：${user.userName}
             <input type="button" value="退出登入" onclick="doLogout()">
-	</c:if>	
+	</c:if>
 
 </body>
 </html>

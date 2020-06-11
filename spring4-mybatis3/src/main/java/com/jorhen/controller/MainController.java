@@ -49,7 +49,7 @@ public class MainController {
 			List<ObjectError> errors = bindingResult.getAllErrors();
 		} else if (!isUserNameExist) {
 			// 向BindingResult添加使用者未存在的校驗錯誤
-			bindingResult.rejectValue("userName", "該用戶未存在", "該用戶未存在");
+			bindingResult.rejectValue("uName", "該用戶未存在", "該用戶未存在");
 
 		} else {
 
@@ -60,17 +60,6 @@ public class MainController {
 
 		modelMap.addAttribute("user", user);
 
-		// log.debug("page"+page);
-		/*
-		 * List<User> u = null; if(null !=name && !name.equals("")){ User user = new
-		 * User(); user.setName(name); u = userService.selectAll(user); } else { u =
-		 * userService.selectAll(null); }
-		 * 
-		 * PageInfo<User> pageInfo = new PageInfo<User>(u); log.debug(u);
-		 * log.debug(pageInfo); modelMap.addAttribute("user", u);
-		 * modelMap.addAttribute("name", name); modelMap.addAttribute("pageInfo",
-		 * pageInfo.getNavigatepageNums());
-		 */
 		return "index";
 	}
 

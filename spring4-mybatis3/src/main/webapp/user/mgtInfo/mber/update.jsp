@@ -6,6 +6,7 @@
 <meta charset="utf-8">
 <title>用戶註冊</title>
 <link rel="stylesheet" type="text/css" href="../../css/css-table.css">
+<script src="../../js/jquery.min.js"></script>
 </head>
 
 <body style="text-align: center;">
@@ -29,13 +30,20 @@
 					<form:errors path="userDetail.uEmail" cssStyle="color:red"></form:errors></td>
 			</tr>
 			<tr>
-				<th>職位</th>
-				<td><input type="text" name="uPosi" value="${user.uPosi}"></td>
+				<th>身分</th>
+				<td><select id="uPosi" name="uPosi">
+						<option value="mg">管理者</option>
+						<option value="mber" selected>會員</option>
+				</select></td>
 			<tr>
 				<th><input type="reset" value="清空"></th>
 				<th><input type="submit" value="更新"></th>
 			</tr>
 		</table>
 	</form>
-
+	<script>
+		var selValue = '${user.uPosi}';
+		$('#uPosi option[value=' + selValue + ']')
+				.attr('selected', true);
+	</script>
 </body>
