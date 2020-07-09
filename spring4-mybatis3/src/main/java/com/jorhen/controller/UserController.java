@@ -102,7 +102,7 @@ public class UserController {
 	public String doUserAdd(HttpServletRequest request, ModelMap modelMap,
 			@Validated @ModelAttribute("userDetail") User user, BindingResult bindingResult) {
 		log.info("==aa=="+user.getuName());
-		boolean isUserNameExist = userService.findUserByUsername(user.getuName(), null);
+		boolean isUserNameExist = userService.isUserExist(user.getuName(), null);
 		if (bindingResult.hasErrors()) {
 			List<ObjectError> errors = bindingResult.getAllErrors();
 		} else if (isUserNameExist) {

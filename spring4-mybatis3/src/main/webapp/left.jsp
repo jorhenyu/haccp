@@ -43,7 +43,10 @@
 			<li><span class="folder">五個預備步驟表單</span>
 				<ul>
 					<li><span class="file"><a
-							href="${pageContext.request.contextPath}/user/mgtInfo/index.do"
+							href="${pageContext.request.contextPath}/plan/index.do"
+							target="showframe">計劃書</a></span></li>
+					<li><span class="file"><a
+							href="${pageContext.request.contextPath}/team/index.do"
 							target="showframe">食安小組</a></span></li>
 					<li><span class="file"><a
 							href="${pageContext.request.contextPath}/user/myInfo/index.do"
@@ -78,7 +81,7 @@
 	</div>
 
 	<c:if test="${user!=null}">
-            歡迎您：${user.userName}
+            歡迎您：${user.uName}
             <input type="button" value="退出登入" onclick="doLogout()">
 	</c:if>
 

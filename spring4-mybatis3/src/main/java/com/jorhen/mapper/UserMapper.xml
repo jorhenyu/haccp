@@ -98,16 +98,25 @@
 		<include refid="Base_Column_List" />
 		from t_user
 	</select>
-	
-	<select id="loginUser" resultMap="BaseResultMap">
-		select
-		<include refid="Base_Column_List" />
-		from t_user
-		where u_name = #{0} and u_pw = #{1}
-	</select>
 
 	<!-- 根據名稱查詢使用者資訊和登入 -->
-	<select id="findUserByUsername" resultType="boolean">
+	<select id="findUserByNamePw" resultMap="BaseResultMap">
+		select 
+        <include refid="Base_Column_List" />
+        from t_user
+
+		<where>
+			<if test="uName !=null and uName !='' ">
+				u_name = #{uName}
+			</if>
+			<if test="uPw !=null and uPw !='' ">
+				and u_pw = #{uPw}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 根據帳密查詢使用者存在與否 -->
+	<select id="isUserExist" resultType="boolean">
 		select count(u_id) from t_user
 
 		<where>

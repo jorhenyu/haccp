@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jorhen.dao.PlanMapper">
+  <resultMap id="BaseResultMap" type="com.jorhen.domain.Plan">
+    <id column="p_id" jdbcType="CHAR" property="pId" />
+    <result column="p_name" jdbcType="VARCHAR" property="pName" />
+    <result column="c_id" jdbcType="VARCHAR" property="cId" />
+    <result column="maker" jdbcType="VARCHAR" property="maker" />
+    <result column="p_status" jdbcType="VARCHAR" property="pStatus" />
+    <result column="cw_pw" jdbcType="VARCHAR" property="cwPw" />
+    <result column="rder" jdbcType="VARCHAR" property="rder" />
+    <result column="r_date" jdbcType="VARCHAR" property="rDate" />
+    <result column="mder" jdbcType="VARCHAR" property="mder" />
+    <result column="m_date" jdbcType="VARCHAR" property="mDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    p_id, p_name, c_id, maker, p_status, cw_pw, rder, r_date, mder, m_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_plan
+    where p_id = #{pId,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_plan
+    where p_id = #{pId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.jorhen.domain.Plan">
+    insert into t_plan (p_id, p_name, c_id, maker, 
+      p_status, cw_pw, rder, 
+      r_date, mder, m_date)
+    values (#{pId,jdbcType=CHAR}, #{pName,jdbcType=VARCHAR}, #{cId,jdbcType=VARCHAR}, #{maker,jdbcType=VARCHAR}, 
+      #{pStatus,jdbcType=VARCHAR}, #{cwPw,jdbcType=VARCHAR}, #{rder,jdbcType=VARCHAR}, 
+      #{rDate,jdbcType=VARCHAR}, #{mder,jdbcType=VARCHAR}, #{mDate,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jorhen.domain.Plan">
+    insert into t_plan
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pId != null">
+        p_id,
+      </if>
+      <if test="pName != null">
+        p_name,
+      </if>
+      <if test="cId != null">
+        cId,
+      </if>
+      <if test="maker != null">
+        maker,
+      </if>
+      <if test="pStatus != null">
+        p_status,
+      </if>
+      <if test="cwPw != null">
+        cw_pw,
+      </if>
+      <if test="rder != null">
+        rder,
+      </if>
+      <if test="rDate != null">
+        r_date,
+      </if>
+      <if test="mder != null">
+        mder,
+      </if>
+      <if test="mDate != null">
+        m_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pId != null">
+        #{pId,jdbcType=CHAR},
+      </if>
+      <if test="pName != null">
+        #{pName,jdbcType=VARCHAR},
+      </if>
+      <if test="cId != null">
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="maker != null">
+        #{maker,jdbcType=VARCHAR},
+      </if>
+      <if test="pStatus != null">
+        #{pStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="cwPw != null">
+        #{cwPw,jdbcType=VARCHAR},
+      </if>
+      <if test="rder != null">
+        #{rder,jdbcType=VARCHAR},
+      </if>
+      <if test="rDate != null">
+        #{rDate,jdbcType=VARCHAR},
+      </if>
+      <if test="mder != null">
+        #{mder,jdbcType=VARCHAR},
+      </if>
+      <if test="mDate != null">
+        #{mDate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jorhen.domain.Plan">
+    update t_plan
+    <set>
+      <if test="pName != null">
+        p_name = #{pName,jdbcType=VARCHAR},
+      </if>
+      <if test="cId != null">
+        maker = #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="maker != null">
+        maker = #{maker,jdbcType=VARCHAR},
+      </if>
+      <if test="pStatus != null">
+        p_status = #{pStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="cwPw != null">
+        cw_pw = #{cwPw,jdbcType=VARCHAR},
+      </if>
+      <if test="rder != null">
+        rder = #{rder,jdbcType=VARCHAR},
+      </if>
+      <if test="rDate != null">
+        r_date = #{rDate,jdbcType=VARCHAR},
+      </if>
+      <if test="mder != null">
+        mder = #{mder,jdbcType=VARCHAR},
+      </if>
+      <if test="mDate != null">
+        m_date = #{mDate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where p_id = #{pId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jorhen.domain.Plan">
+    update t_plan
+    set p_name = #{pName,jdbcType=VARCHAR},
+      c_id = #{cId,jdbcType=VARCHAR},
+      maker = #{maker,jdbcType=VARCHAR},
+      p_status = #{pStatus,jdbcType=VARCHAR},
+      cw_pw = #{cwPw,jdbcType=VARCHAR},
+      rder = #{rder,jdbcType=VARCHAR},
+      r_date = #{rDate,jdbcType=VARCHAR},
+      mder = #{mder,jdbcType=VARCHAR},
+      m_date = #{mDate,jdbcType=VARCHAR}
+    where p_id = #{pId,jdbcType=CHAR}
+  </update>
+  
+       	<!-- ==============以下內容是根據自身業務擴展的內容======================= -->
+	<!-- select標籤的id屬性與PlanMapper介面中定義的getAllPlan方法要一模一樣 -->
+	<select id="getMyPlan" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_plan
+		<where>
+			<if test="rder !=null and rder !='' ">
+				rder = #{rder}
+			</if>			
+		</where>
+	</select>
+	
+		<!-- 根據id查詢plan info -->
+	<select id="findPlanById" resultType="boolean">
+		select count(p_id) from t_plan
+
+		<where>
+			<if test="pId !=null and pId !='' ">
+				p_id = #{pId}
+			</if>
+		</where>
+	</select>
+</mapper>

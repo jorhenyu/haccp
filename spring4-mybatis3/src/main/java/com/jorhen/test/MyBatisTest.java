@@ -1,5 +1,6 @@
 package com.jorhen.test;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.jorhen.domain.User;
 import com.jorhen.service.UserServiceI;
+import com.jorhen.util.DateUtils;
 
 public class MyBatisTest {
 
@@ -69,10 +71,13 @@ public class MyBatisTest {
     }
     
     public static void main(String[] args) {
-    	 logger.error("测试");
-         logger.debug("This is debug message.");  
+    	 //logger.error("测试");
+         //logger.debug("This is debug message.");  
          // 记录info级别的信息  
-         logger.info("This is info message22.");  
+         //logger.info("This is info message22.");  
+         Date date = new Date();
+         ;
+         logger.info(DateUtils.formatDateToString(date, DateUtils.DATE_FORMAT_YMD)); 
     	 }
     	 
     

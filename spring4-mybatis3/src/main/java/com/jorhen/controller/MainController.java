@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.jorhen.domain.User;
 import com.jorhen.service.UserServiceI;
 
+@SessionAttributes(value={"user"})
 @Controller
 @RequestMapping("/")
-// @SessionAttributes("lstUsers")
 public class MainController {
 
 	// 設置log
@@ -43,22 +43,31 @@ public class MainController {
 	public String index(HttpServletRequest request, ModelMap modelMap,
 			@Validated @ModelAttribute("userDetail") User user, BindingResult bindingResult) {
 
-		boolean isUserNameExist = userService.findUserByUsername(user.getuName(), user.getuPw());
+		boolean isUserExist = userService.isUserExist(user.getuName(), user.getuPw());
+		log.info("==isUserNameExist==" + isUserExist);
+
+		log.info("==uName==" + user.getuName());
+		log.info("==uPw==" + user.getuPw());
+		log.info("==user.getuName()=guest=" + user.getuName().trim() == "guest" );
+		log.info("== user.getuName().equals=guest=" + user.getuName().equals("guest"));
+		
+		if(user.getuName() == "guest" || user.getuName().equals("guest")) {
+			modelMap.addAttribute("user", user);
+			return "main";
+		}
+			
 
 		if (bindingResult.hasErrors()) {
 			List<ObjectError> errors = bindingResult.getAllErrors();
-		} else if (!isUserNameExist) {
+		} else if (!isUserExist) {
 			// 向BindingResult添加使用者未存在的校驗錯誤
-			bindingResult.rejectValue("uName", "該用戶未存在", "該用戶未存在");
+			bindingResult.rejectValue("uName", "帳號密碼錯誤", "帳號密碼錯誤");
 
 		} else {
-
-			List<User> lstUsers = userService.getAllUser();
-			modelMap.addAttribute("lstUsers", lstUsers);
+		    user = userService.findUserByNamePw(user.getuName(), user.getuPw());
+		    modelMap.addAttribute("user", user);
 			return "main";
-		}
-
-		modelMap.addAttribute("user", user);
+		}		
 
 		return "index";
 	}

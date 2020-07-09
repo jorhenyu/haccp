@@ -25,6 +25,8 @@ public interface UserMapper {
     List<User> getAllUser();    
     
    
-    boolean findUserByUsername(@Param("uName") String uName, @Param("uPw") String uPw);
+    boolean isUserExist(@Param("uName") String uName, @Param("uPw") String uPw);
+    
+    User findUserByNamePw(@Param("uName") String uName, @Param("uPw") String uPw);
 
 }

@@ -35,5 +35,7 @@ public interface UserServiceI {
      * @param user
      * @return boolean
      */
-    boolean findUserByUsername(String userName, String userPwd);
+    boolean isUserExist(String userName, String userPwd);
+    
+    User findUserByNamePw(String userName, String userPwd);
 }
