@@ -10,12 +10,13 @@ import com.jorhen.domain.User;
 
 public class BaseController {
 
-	private Logger logger = Logger.getLogger(BaseController.class);
+	private Logger log = Logger.getLogger(BaseController.class);
 	protected User user;
 
 	@ModelAttribute // 進入控制器方法之前執行方法
 	public void common(HttpSession session) {
 		this.user = (User) session.getAttribute("user"); // 取得session
+		log.info("=base=uName==" + user.getuName());
 
 	}
 

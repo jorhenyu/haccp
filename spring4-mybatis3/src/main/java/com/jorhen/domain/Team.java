@@ -1,21 +1,63 @@
 package com.jorhen.domain;
 
 public class Team {
+	
+	private String teamId;
+	
     private String planId;
 
     private String mber;
 
     private String pos;
 
-    private String skill;
+    private String skill;    
+    
+    private String duty;
+    
+    private String bg;
 
-    private String rder;
+	private String rder;
 
     private String rDate;
 
     private String mder;
 
-    private String mDate;
+    private String mDate;    
+    
+    
+    private Plan plan;
+    
+	public String getDuty() {
+		return duty;
+	}
+
+	public void setDuty(String duty) {
+		this.duty = duty;
+	}
+
+	public String getBg() {
+		return bg;
+	}
+
+	public void setBg(String bg) {
+		this.bg = bg;
+	}
+    
+    public Plan getPlan() {
+		return plan;
+	}
+
+	public void setPlan(Plan plan) {
+		this.plan = plan;
+	}
+
+	public String getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(String teamId) {
+        this.teamId = teamId == null ? null : teamId.trim();
+    }
 
     public String getPlanId() {
         return planId;

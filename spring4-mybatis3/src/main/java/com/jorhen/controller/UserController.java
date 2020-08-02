@@ -26,7 +26,7 @@ import com.jorhen.service.UserServiceI;
 public class UserController {
 
 	// 設置log
-	private static Logger log = Logger.getLogger(UserController.class.getName());
+	private static Logger log = Logger.getLogger(UserController.class);
 
 	// 處理業務邏輯的userService
 	@Autowired

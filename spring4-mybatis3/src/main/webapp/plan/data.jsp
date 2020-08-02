@@ -14,14 +14,14 @@
 				onclick="javascript:location.href='${pageContext.request.contextPath}/plan/add.do'"
 				value="新增"></input></th>
 		</tr>
-		<tr>			
-			<th>計劃書名稱 </th>
+		<tr>
+			<th>計劃書名稱</th>
 			<th>業別</th>
 			<th>製作者</th>
 			<th>計劃書狀態</th>
 			<th>協同作業密碼</th>
-			<th>擁有者</th>	
-			<th>紀錄日期</th>			
+			<th>擁有者</th>
+			<th>紀錄日期</th>
 			<th>修改</th>
 			<th>刪除</th>
 		</tr>
@@ -29,15 +29,41 @@
 		<c:forEach var="plan" items="${lsts}">
 			<tr>
 				<td>${plan.pName}</td>
-				<td>${plan.cId}</td>
+				<td><select name="cId">
+						<c:forEach items="${options}" var="o">
+							<c:choose>
+								<c:when test="${plan.cId == o.optionKey}">
+									<option value="${o.optionKey}" selected="selected">
+										${o.optionValue}</option>
+								</c:when>
+								<c:otherwise>
+									<option value="${o.optionKey}">${o.optionValue}</option>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+				</select></td>
 				<td>${plan.maker}</td>
-				<td>${plan.pStatus}</td>
+				
+				<td><select name="pStatus">
+						<c:forEach items="${planStatus}" var="o">
+							<c:choose>
+								<c:when test="${plan.pStatus == o.optionKey}">
+									<option value="${o.optionKey}" selected="selected">
+										${o.optionValue}</option>
+								</c:when>
+								<c:otherwise>
+									<option value="${o.optionKey}">${o.optionValue}</option>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+				</select>
+				
+				</td>
 				<td>${plan.cwPw}</td>
 				<td>${plan.rder}</td>
 				<td>${plan.rDate}</td>
 				<td>
-					<form
-						action="${pageContext.request.contextPath }/plan/update.do"
+					<form action="${pageContext.request.contextPath }/plan/update.do"
 						method="post">
 						<input type="hidden" name="pId" value="${plan.pId}"> <input
 							type="submit" value="修改">
@@ -54,7 +80,6 @@
 			</tr>
 		</c:forEach>
 	</table>
-
 </body>
 </html>
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- 这是根标签  -->
+<configuration>
+	<!-- 设置别名  -->
+	<typeAliases>
+		<typeAlias alias="Customer" type="com.jorhen.domain.Customer"/>
+		<typeAlias alias="Ticket" type="com.jorhen.domain.Ticket" />
+		<typeAlias alias="Team" type="com.jorhen.domain.Team" />
+	</typeAliases>
+	
+	<!-- 配置数据源相关的信息  -->
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+			<property name="driver" value="com.mysql.jdbc.Driver"/>
+			 <property name="url" value="jdbc:mysql://localhost:3306/spring4_mybatis3?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"/> 
+			<property name="username" value="root"/> 
+			<property name="password" value="c120902035"/>  
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<!-- 列出映射文件 -->
+	<mappers>
+		<mapper resource="com/jorhen/mapper/CustomerMapper.xml" />
+		<mapper resource="com/jorhen/mapper/TicketMapper.xml" /> 
+		<mapper resource="com/jorhen/mapper/TeamMapper.xml" /> 
+	</mappers>
+</configuration>

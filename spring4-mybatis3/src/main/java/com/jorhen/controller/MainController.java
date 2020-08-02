@@ -13,7 +13,6 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.jorhen.domain.User;
@@ -71,5 +70,5 @@ public class MainController {
 
 		return "index";
 	}
-
+	
 }

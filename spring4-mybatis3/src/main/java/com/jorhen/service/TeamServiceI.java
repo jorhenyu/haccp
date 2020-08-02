@@ -18,23 +18,17 @@ public interface TeamServiceI {
      * @param planId
      * @return
      */
-    Team getTeamById(String planId);
+    Team getTeamById(String teamId);
     /**獲取所有類別資訊        
      * @return List<Team>         
      */                           
-    List<Team> getAllTeam();   
+    List<Team> getAllTeam(String rder);   
     
-    int deleteByPrimaryKey(String planId);
+    int deleteByPrimaryKey(String teamId);
     
     int updateByPrimaryKeySelective(Team team);
     
-    /**
-     * 
-     * @param planId
-     * 
-     * @return boolean
-     */
-    boolean findTeamById(String planId);
+    Team selectTeamById(String id);
 
 
 }

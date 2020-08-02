@@ -1,147 +1,206 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jorhen.dao.TeamMapper">
-  <resultMap id="BaseResultMap" type="com.jorhen.domain.Team">
-    <id column="plan_id" jdbcType="CHAR" property="planId" />
-    <result column="mber" jdbcType="VARCHAR" property="mber" />
-    <result column="pos" jdbcType="VARCHAR" property="pos" />
-    <result column="skill" jdbcType="VARCHAR" property="skill" />
-    <result column="rder" jdbcType="VARCHAR" property="rder" />
-    <result column="r_date" jdbcType="VARCHAR" property="rDate" />
-    <result column="mder" jdbcType="VARCHAR" property="mder" />
-    <result column="m_date" jdbcType="VARCHAR" property="mDate" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    plan_id, mber, pos, skill, rder, r_date, mder, m_date
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_team
-    where plan_id = #{planId,jdbcType=CHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from t_team
-    where plan_id = #{planId,jdbcType=CHAR}
-  </delete>
-  <insert id="insert" parameterType="com.jorhen.domain.Team">
-    insert into t_team (plan_id, mber, pos, 
-      skill, rder, r_date, 
-      mder, m_date)
-    values (#{planId,jdbcType=CHAR}, #{mber,jdbcType=VARCHAR}, #{pos,jdbcType=VARCHAR}, 
-      #{skill,jdbcType=VARCHAR}, #{rder,jdbcType=VARCHAR}, #{rDate,jdbcType=VARCHAR}, 
-      #{mder,jdbcType=VARCHAR}, #{mDate,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.jorhen.domain.Team">
-    insert into t_team
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="planId != null">
-        plan_id,
-      </if>
-      <if test="mber != null">
-        mber,
-      </if>
-      <if test="pos != null">
-        pos,
-      </if>
-      <if test="skill != null">
-        skill,
-      </if>
-      <if test="rder != null">
-        rder,
-      </if>
-      <if test="rDate != null">
-        r_date,
-      </if>
-      <if test="mder != null">
-        mder,
-      </if>
-      <if test="mDate != null">
-        m_date,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="planId != null">
-        #{planId,jdbcType=CHAR},
-      </if>
-      <if test="mber != null">
-        #{mber,jdbcType=VARCHAR},
-      </if>
-      <if test="pos != null">
-        #{pos,jdbcType=VARCHAR},
-      </if>
-      <if test="skill != null">
-        #{skill,jdbcType=VARCHAR},
-      </if>
-      <if test="rder != null">
-        #{rder,jdbcType=VARCHAR},
-      </if>
-      <if test="rDate != null">
-        #{rDate,jdbcType=VARCHAR},
-      </if>
-      <if test="mder != null">
-        #{mder,jdbcType=VARCHAR},
-      </if>
-      <if test="mDate != null">
-        #{mDate,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.jorhen.domain.Team">
-    update t_team
-    <set>
-      <if test="mber != null">
-        mber = #{mber,jdbcType=VARCHAR},
-      </if>
-      <if test="pos != null">
-        pos = #{pos,jdbcType=VARCHAR},
-      </if>
-      <if test="skill != null">
-        skill = #{skill,jdbcType=VARCHAR},
-      </if>
-      <if test="rder != null">
-        rder = #{rder,jdbcType=VARCHAR},
-      </if>
-      <if test="rDate != null">
-        r_date = #{rDate,jdbcType=VARCHAR},
-      </if>
-      <if test="mder != null">
-        mder = #{mder,jdbcType=VARCHAR},
-      </if>
-      <if test="mDate != null">
-        m_date = #{mDate,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where plan_id = #{planId,jdbcType=CHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.jorhen.domain.Team">
-    update t_team
-    set mber = #{mber,jdbcType=VARCHAR},
-      pos = #{pos,jdbcType=VARCHAR},
-      skill = #{skill,jdbcType=VARCHAR},
-      rder = #{rder,jdbcType=VARCHAR},
-      r_date = #{rDate,jdbcType=VARCHAR},
-      mder = #{mder,jdbcType=VARCHAR},
-      m_date = #{mDate,jdbcType=VARCHAR}
-    where plan_id = #{planId,jdbcType=CHAR}
-  </update>
-  
-     	<!-- ==============以下內容是根據自身業務擴展的內容======================= -->
-	<!-- select標籤的id屬性與TeamMapper介面中定義的getAllTeam方法要一模一樣 -->
-	<select id="getAllTeam" resultMap="BaseResultMap">
+	<!-- resultMap:映射实体类和字段之间的一一对应的关系 -->
+	<resultMap id="BaseResultMap" type="com.jorhen.domain.Team">
+		<id column="team_id" jdbcType="CHAR" property="teamId" />
+		<result column="plan_id" jdbcType="CHAR" property="planId" />
+		<result column="mber" jdbcType="VARCHAR" property="mber" />
+		<result column="pos" jdbcType="VARCHAR" property="pos" />
+		<result column="skill" jdbcType="VARCHAR" property="skill" />		
+		<result column="duty" jdbcType="VARCHAR" property="duty" />						
+		<result column="bg" jdbcType="VARCHAR" property="bg" />
+		<result column="rder" jdbcType="VARCHAR" property="rder" />
+		<result column="r_date" jdbcType="VARCHAR" property="rDate" />
+		<result column="mder" jdbcType="VARCHAR" property="mder" />
+		<result column="m_date" jdbcType="VARCHAR" property="mDate" />
+		<!-- 一对一关联映射：association -->
+		<association property="plan" column="p_id" javaType="com.jorhen.domain.Plan">
+			<id column="p_id" jdbcType="CHAR" property="pId" />
+			<result column="p_name" jdbcType="VARCHAR" property="pName" />
+			<result column="c_id" jdbcType="VARCHAR" property="cId" />
+			<result column="maker" jdbcType="VARCHAR" property="maker" />
+			<result column="p_status" jdbcType="VARCHAR" property="pStatus" />
+			<result column="cw_pw" jdbcType="VARCHAR" property="cwPw" />
+			<result column="rder" jdbcType="VARCHAR" property="rder" />
+			<result column="r_date" jdbcType="VARCHAR" property="rDate" />
+			<result column="mder" jdbcType="VARCHAR" property="mder" />
+			<result column="m_date" jdbcType="VARCHAR" property="mDate" />
+		</association>
+	</resultMap>
+	<sql id="Base_Column_List">
+		team_id, plan_id, mber, pos, skill, duty, bg, rder, r_date, mder,
+		m_date
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
 		select
-		<include refid="Base_Column_List" />
-		from t_team
+		*
+		from t_team t, t_plan p
+		where t.plan_id = p.p_id and t.team_id = #{teamId,jdbcType=CHAR}
 	</select>
-	
-		<!-- 根據名稱查詢team info -->
-	<select id="findTeamById" resultType="boolean">
-		select count(plan_id) from t_team
-
-		<where>
-			<if test="planId !=null and planId !='' ">
-				plan_id = #{planId}
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from t_team
+		where team_id = #{planId,jdbcType=CHAR}
+	</delete>
+	<insert id="insert" parameterType="com.jorhen.domain.Team">
+		insert into t_team (team_id,
+		plan_id, mber, pos,
+		skill, duty, bg, rder, r_date,
+		mder, m_date)
+		values
+		(#{teamId,jdbcType=CHAR}, #{planId,jdbcType=CHAR},
+		#{mber,jdbcType=VARCHAR}, #{pos,jdbcType=VARCHAR},
+		#{skill,jdbcType=VARCHAR}, #{duty,jdbcType=VARCHAR},
+		#{bg,jdbcType=VARCHAR},
+		#{rder,jdbcType=VARCHAR},
+		#{rDate,jdbcType=VARCHAR},
+		#{mder,jdbcType=VARCHAR},
+		#{mDate,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.jorhen.domain.Team">
+		insert into t_team
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="teamId != null">
+				team_id,
 			</if>
-		</where>
+			<if test="planId != null">
+				plan_id,
+			</if>
+			<if test="mber != null">
+				mber,
+			</if>
+			<if test="pos != null">
+				pos,
+			</if>
+			<if test="skill != null">
+				skill,
+			</if>
+			<if test="duty != null">
+				duty,
+			</if>
+			<if test="bg != null">
+				bg,
+			</if>
+			<if test="rder != null">
+				rder,
+			</if>
+			<if test="rDate != null">
+				r_date,
+			</if>
+			<if test="mder != null">
+				mder,
+			</if>
+			<if test="mDate != null">
+				m_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="teamId != null">
+				#{teamId,jdbcType=CHAR},
+			</if>
+			<if test="planId != null">
+				#{planId,jdbcType=CHAR},
+			</if>
+			<if test="mber != null">
+				#{mber,jdbcType=VARCHAR},
+			</if>
+			<if test="pos != null">
+				#{pos,jdbcType=VARCHAR},
+			</if>
+			<if test="skill != null">
+				#{skill,jdbcType=VARCHAR},
+			</if>
+			<if test="duty != null">
+				#{duty,jdbcType=VARCHAR},
+			</if>
+			<if test="bg != null">
+				#{bg,jdbcType=VARCHAR},
+			</if>
+			<if test="rder != null">
+				#{rder,jdbcType=VARCHAR},
+			</if>
+			<if test="rDate != null">
+				#{rDate,jdbcType=VARCHAR},
+			</if>
+			<if test="mder != null">
+				#{mder,jdbcType=VARCHAR},
+			</if>
+			<if test="mDate != null">
+				#{mDate,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.jorhen.domain.Team">
+		update t_team
+		<set>
+			<if test="planId != null">
+				plan_id = #{planId,jdbcType=CHAR},
+			</if>
+			<if test="mber != null">
+				mber = #{mber,jdbcType=VARCHAR},
+			</if>
+			<if test="pos != null">
+				pos = #{pos,jdbcType=VARCHAR},
+			</if>
+			<if test="skill != null">
+				skill = #{skill,jdbcType=VARCHAR},
+			</if>
+			<if test="duty != null">
+				duty = #{duty,jdbcType=VARCHAR},
+			</if>
+			<if test="bg != null">
+				bg = #{bg,jdbcType=VARCHAR},
+			</if>
+			<if test="rder != null">
+				rder = #{rder,jdbcType=VARCHAR},
+			</if>
+			<if test="rDate != null">
+				r_date = #{rDate,jdbcType=VARCHAR},
+			</if>
+			<if test="mder != null">
+				mder = #{mder,jdbcType=VARCHAR},
+			</if>
+			<if test="mDate != null">
+				m_date = #{mDate,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where team_id = #{teamId,jdbcType=CHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.jorhen.domain.Team">
+		update t_team
+		set
+		plan_id = #{planId,jdbcType=CHAR},
+		mber = #{mber,jdbcType=VARCHAR},
+		pos	= #{pos,jdbcType=VARCHAR},
+		skill = #{skill,jdbcType=VARCHAR},
+		duty = #{duty,jdbcType=VARCHAR},
+		bg = #{bg,jdbcType=VARCHAR},
+		rder = #{rder,jdbcType=VARCHAR},
+		r_date = #{rDate,jdbcType=VARCHAR},
+		mder =	#{mder,jdbcType=VARCHAR},
+		m_date = #{mDate,jdbcType=VARCHAR}
+		where
+		team_id = #{teamId,jdbcType=CHAR}
+	</update>
+
+	<!-- ==============以下內容是根據自身業務擴展的內容======================= -->
+	<!-- select標籤的id屬性與TeamMapper介面中定義的getAllTeam方法要一模一樣 -->
+	<select id="getAllTeam" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		*
+		from t_team t, t_plan p
+		where t.plan_id = p.p_id and t.rder = #{rder}
 	</select>
+
+
+	<select id="selectTeamById" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select *
+		from t_team t, t_plan p 
+		where t.plan_id = p.p_id and t.team_id=#{id}
+	</select>
+
+
+
 </mapper>

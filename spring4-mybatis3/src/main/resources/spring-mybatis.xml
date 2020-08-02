@@ -20,8 +20,8 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
         <property name="initialSize" value="0" />
         <!-- 連接池最大使用連接數量 -->
         <property name="maxActive" value="20" />
-        <!-- 連接池最大空閒 -->
-        <property name="maxIdle" value="20" />
+        <!-- 連接池最大空閒-->
+        <property name="maxIdle" value="20" /> 
         <!-- 連接池最小空閒 -->
         <property name="minIdle" value="0" />
         <!-- 獲取連接最大等待時間 -->

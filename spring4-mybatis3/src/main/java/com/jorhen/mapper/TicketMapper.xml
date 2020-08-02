@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jorhen.mapper.TicketMapper">
+	<!-- 定义数据库字段与实体对象的映射关系  -->
+	<resultMap type="com.jorhen.domain.Ticket" id="ticketBean">
+		<id column="ticketId" property="ticketId" />
+		<result column="ticketAddress" property="ticketAddress" />
+		<result column="ticketPrice" property="ticketPrice" />
+		<result column="ticketCId" property="ticketCId" />
+		<!-- 一对一的关系 -->
+		<!-- property: 指的是属性的值, javaType：指的是元素的类型 -->
+		<association property="customer" javaType="com.jorhen.domain.Customer">
+			<id column="customerId" property="customerId" />
+			<result column="customerName" property="customerName" />
+			<result column="customerTel" property="customerTel" />
+		</association>
+	</resultMap>
+	<!-- 根据id查询ticket, 关联将Customer查询出来 -->
+	<select id="selectTicketById" parameterType="int" resultMap="ticketBean">
+		select c.*,t.* from t_customer c,t_ticket t where
+		c.customerId=t.ticketCId and t.ticketId =#{ticketId}
+	</select>
+</mapper>

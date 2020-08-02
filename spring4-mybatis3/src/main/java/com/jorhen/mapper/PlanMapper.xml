@@ -44,7 +44,7 @@
         p_name,
       </if>
       <if test="cId != null">
-        cId,
+        c_id,
       </if>
       <if test="maker != null">
         maker,
@@ -108,7 +108,7 @@
         p_name = #{pName,jdbcType=VARCHAR},
       </if>
       <if test="cId != null">
-        maker = #{cId,jdbcType=VARCHAR},
+        c_id = #{cId,jdbcType=VARCHAR},
       </if>
       <if test="maker != null">
         maker = #{maker,jdbcType=VARCHAR},

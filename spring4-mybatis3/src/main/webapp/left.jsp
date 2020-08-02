@@ -2,6 +2,9 @@
 
 <%--為了避免在jsp頁面中出現java代碼，這裡引入jstl標籤庫，利用jstl標籤庫提供的標籤來做一些邏輯判斷處理 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%   
+    String drawPath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/draw/index.html";
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,7 +34,7 @@
 
 	<div id="main">
 		<ul id="browser" class="filetree">
-			<li><span class="folder">會員管理</span>
+			<li><span class="folder">會員管理區</span>
 				<ul>
 					<li><span class="file"><a
 							href="${pageContext.request.contextPath}/user/mgtInfo/index.do"
@@ -40,14 +43,17 @@
 							href="${pageContext.request.contextPath}/user/myInfo/index.do"
 							target="showframe">個人中心</a></span></li>
 				</ul></li>
-			<li><span class="folder">五個預備步驟表單</span>
+			<li><span class="folder">HACCP計劃書專案區</span>
 				<ul>
 					<li><span class="file"><a
 							href="${pageContext.request.contextPath}/plan/index.do"
-							target="showframe">計劃書</a></span></li>
+							target="showframe">HACCP計劃書專案管理</a></span></li>
+				</ul></li>
+			<li><span class="folder">五個預備步驟區</span>
+				<ul>
 					<li><span class="file"><a
 							href="${pageContext.request.contextPath}/team/index.do"
-							target="showframe">食安小組</a></span></li>
+							target="showframe">食安管制小組</a></span></li>
 					<li><span class="file"><a
 							href="${pageContext.request.contextPath}/user/myInfo/index.do"
 							target="showframe">產品特性及儲運方式</a></span></li>
@@ -55,10 +61,10 @@
 							href="${pageContext.request.contextPath}/user/myInfo/index.do"
 							target="showframe">產品用途及消費對象</a></span></li>
 					<li><span class="file"><a
-							href="${pageContext.request.contextPath}/user/myInfo/index.do"
+							href="<%=drawPath %>"
 							target="showframe">產品加工流程圖</a></span></li>
 				</ul></li>
-			<li><span class="folder">七大原則表單</span>
+			<li><span class="folder">七大原則區</span>
 				<ul>
 					<li><span class="file"><a
 							href="${pageContext.request.contextPath}/process/index.do"
@@ -70,7 +76,7 @@
 							href="${pageContext.request.contextPath}/user/index.do"
 							target="showframe">HACCP計畫表</a></span></li>
 				</ul></li>
-			<li><span class="folder">管制監控紀錄</span>
+			<li><span class="folder">CCP 管制監控區</span>
 				<ul>
 					<li><span class="file"><a
 							href="${pageContext.request.contextPath}/process/index.do"

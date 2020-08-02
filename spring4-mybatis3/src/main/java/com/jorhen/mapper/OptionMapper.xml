@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jorhen.dao.GenericMybatisDao">
+    <select id="list" statementType="PREPARED"  resultType="java.util.LinkedHashMap" parameterType="map">
+       ${sqltext}
+    </select>
+    <update id="update" statementType="PREPARED" parameterType="map">
+        ${sqltext}
+    </update>
+    <insert id="insert" statementType="PREPARED" parameterType="map">
+        ${sqltext}
+    </insert>
+    <delete id="delete" statementType="PREPARED" parameterType="map">
+         ${sqltext}
+    </delete>
+</mapper>

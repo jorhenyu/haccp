@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -19,8 +20,20 @@
 					<input type="hidden" name="pId" value="${plan.pId}"></td>
 			</tr>
 			<tr>
-				<th>業別id</th>
-				<td><input type="text" name="cId" value="${plan.cId}"></td>
+				<th>業別</th>
+				<td><select name="cId">
+						<c:forEach items="${options}" var="o">
+							<c:choose>
+								<c:when test="${plan.cId == o.optionKey}">
+									<option value="${o.optionKey}" selected="selected">
+										${o.optionValue}</option>
+								</c:when>
+								<c:otherwise>
+									<option value="${o.optionKey}">${o.optionValue}</option>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+				</select></td>
 			</tr>
 			<tr>
 				<th>製作者</th>
@@ -29,8 +42,19 @@
 			</tr>
 			<tr>
 				<th>計劃書狀態</th>
-				<td><input type="text" name="pStatus" value="${plan.pStatus}">
-				</td>
+				<td><select name="pStatus">
+						<c:forEach items="${planStatus}" var="o">
+							<c:choose>
+								<c:when test="${plan.pStatus == o.optionKey}">
+									<option value="${o.optionKey}" selected="selected">
+										${o.optionValue}</option>
+								</c:when>
+								<c:otherwise>
+									<option value="${o.optionKey}">${o.optionValue}</option>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+				</select></td>
 			</tr>
 			<tr>
 				<th>協同作業密碼</th>
