@@ -55,25 +55,31 @@
 							href="${pageContext.request.contextPath}/team/index.do"
 							target="showframe">食安管制小組</a></span></li>
 					<li><span class="file"><a
-							href="${pageContext.request.contextPath}/user/myInfo/index.do"
+							href="${pageContext.request.contextPath}/ps/index.do"
 							target="showframe">產品特性及儲運方式</a></span></li>
 					<li><span class="file"><a
-							href="${pageContext.request.contextPath}/user/myInfo/index.do"
-							target="showframe">產品用途及消費對象</a></span></li>
-					<li><span class="file"><a
-							href="<%=drawPath %>"
-							target="showframe">產品加工流程圖</a></span></li>
+							href="${pageContext.request.contextPath}/pc/index.do"
+							target="showframe">產品用途及消費對象</a></span></li>		
+					<li><span class="folder">產品加工流程圖</span>
+						<ul id="folder21">
+							<li><span class="file"><a href="<%=drawPath %>"
+							target="showframe">製作產品加工流程圖</a></span></li>
+							<li><span class="file"><a
+							href="${pageContext.request.contextPath}/proc/index.do"
+							target="showframe">檔案上傳</a></span></li>
+						</ul></li>	
+				
 				</ul></li>
 			<li><span class="folder">七大原則區</span>
 				<ul>
 					<li><span class="file"><a
-							href="${pageContext.request.contextPath}/process/index.do"
-							target="showframe">加工製程步驟</a></span></li>
-					<li><span class="file"><a
-							href="${pageContext.request.contextPath}/user/index.do"
+							href="${pageContext.request.contextPath}/ha/index.do"
 							target="showframe">危害工作分析表</a></span></li>
 					<li><span class="file"><a
-							href="${pageContext.request.contextPath}/user/index.do"
+							href="${pageContext.request.contextPath}/ccp/index.do"
+							target="showframe">重要管制點判定表</a></span></li>
+					<li><span class="file"><a
+							href="${pageContext.request.contextPath}/haccp/index.do"
 							target="showframe">HACCP計畫表</a></span></li>
 				</ul></li>
 			<li><span class="folder">CCP 管制監控區</span>

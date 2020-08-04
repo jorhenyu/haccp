@@ -1,5 +1,8 @@
 eclipse.preferences.version=1
 encoding//src/main/java/com/jorhen/service/CatServiceI.java=UTF-8
+encoding//src/main/java/com/jorhen/service/HaServiceI.java=UTF-8
+encoding//src/main/java/com/jorhen/service/PcServiceI.java=UTF-8
 encoding//src/main/java/com/jorhen/service/PlanServiceI.java=UTF-8
+encoding//src/main/java/com/jorhen/service/PsServiceI.java=UTF-8
 encoding//src/main/java/com/jorhen/service/TeamServiceI.java=UTF-8
 encoding//src/main/java/com/jorhen/service/UserServiceI.java=UTF-8

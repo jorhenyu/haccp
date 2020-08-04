@@ -26,7 +26,7 @@ import com.jorhen.service.OptionService;
 public class OptionsController {
 	
 	// 設置log
-	private static Logger log = Logger.getLogger(UserController.class);
+	private static Logger log = Logger.getLogger(OptionsController.class);
 	
     @Autowired
     OptionService optionService;

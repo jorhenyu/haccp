@@ -33,33 +33,48 @@ $(document).ready(function() {
 </head>
 
 <body>
-	<form:form  id="form1" name="form1" action="${pageContext.request.contextPath}/pc/doAdd.do"
+	<form:form  id="form1" name="form1" action="${pageContext.request.contextPath}/ha/doAdd.do"
 		method="post">
 		<table>
 		    <tr>
 			<th>專案ID</th>
-				<td><input type="text" id="planId"  name="planId" value="${ps.planId}"
+				<td><input type="text" id="planId"  name="planId" value="${ha.planId}"
 					readonly><input id="openWin" name="openWin" type="button" value="選取"></td>
 			</tr>
 			<tr>
-				<th>產品預定用法及用途</th>
-				<td><textarea name="pUse">${pc.pUse}</textarea></td>
+				<th>加工步驟名稱</th>
+				<td><textarea name="procStep">${ha.procStep}</textarea></td>
 			</tr>			
 			<tr>
-				<th>銷售地點</th>
+				<th>潛在危害</th>
 				<td>
-					<textarea name="sSpot">${pc.sSpot}</textarea>
+					<select id="pHa" name="pHa">
+						<option value="phy">物理性</option>
+						<option value="chem">化學性</option>
+						<option value="bio">生物性</option>
+				    </select>
 				</td>
 			</tr>
 			<tr>
-				<th>消費對象</th>
-				<td><textarea name="cObj">${pc.cObj}</textarea></td>
+				<th>潛在危害描述</th>
+				<td><textarea name="haDesc">${ha.haDesc}</textarea></td>
 			</tr>
 			<tr>
-				<th>注意事項</th>
+				<th>影響產品安全嗎</th>
 				<td>
-					<textarea name="notes">${pc.notes}</textarea>
+					<select id="issafe" name="issafe">
+						<option value="Y">Y</option>
+						<option value="N">N</option>						
+				    </select>					
 				</td>
+			</tr>
+			<tr>
+				<th>判定左欄之理由</th>
+				<td><textarea name="reason">${ha.reason}</textarea></td>
+			</tr>
+			<tr>
+				<th>預防措施</th>
+				<td><textarea name="pMeas">${ha.pMeas}</textarea></td>
 			</tr>
 			<tr>
 				<th></th>

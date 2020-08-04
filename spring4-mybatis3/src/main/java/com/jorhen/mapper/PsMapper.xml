@@ -4,7 +4,8 @@
   <resultMap id="BaseResultMap" type="com.jorhen.domain.Ps">
     <id column="ps_id" jdbcType="CHAR" property="psId" />
     <result column="plan_id" jdbcType="CHAR" property="planId" />
-    <result column="p_name" jdbcType="VARCHAR" property="pName" />
+     <result column="c_id" jdbcType="VARCHAR" property="cId" />
+    <result column="p_name" jdbcType="VARCHAR" property="pName" />   
     <result column="matrl_m" jdbcType="VARCHAR" property="matrlM" />
     <result column="matrl_o" jdbcType="VARCHAR" property="matrlO" />
     <result column="fd_add" jdbcType="VARCHAR" property="fdAdd" />
@@ -20,9 +21,22 @@
     <result column="r_date" jdbcType="VARCHAR" property="rDate" />
     <result column="mder" jdbcType="VARCHAR" property="mder" />
     <result column="m_date" jdbcType="VARCHAR" property="mDate" />
+    		<!-- 一对一关联映射：association -->
+		<association property="plan" column="p_id" javaType="com.jorhen.domain.Plan">
+			<id column="p_id" jdbcType="CHAR" property="pId" />
+			<result column="ppname" jdbcType="VARCHAR" property="pName" />
+			<result column="c_id" jdbcType="VARCHAR" property="cId" />
+			<result column="maker" jdbcType="VARCHAR" property="maker" />
+			<result column="p_status" jdbcType="VARCHAR" property="pStatus" />
+			<result column="cw_pw" jdbcType="VARCHAR" property="cwPw" />
+			<result column="rder" jdbcType="VARCHAR" property="rder" />
+			<result column="r_date" jdbcType="VARCHAR" property="rDate" />
+			<result column="mder" jdbcType="VARCHAR" property="mder" />
+			<result column="m_date" jdbcType="VARCHAR" property="mDate" />
+		</association>
   </resultMap>
   <sql id="Base_Column_List">
-    ps_id, plan_id, p_name, matrl_m, matrl_o, fd_add, prcs_aids, matrl, pdt_ft, pdt_md, 
+    ps_id, plan_id,c_id, p_name, matrl_m, matrl_o, fd_add, prcs_aids, matrl, pdt_ft, pdt_md, 
     pm_desc, st_md, s_life, notes, rder, r_date, mder, m_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -36,13 +50,13 @@
     where ps_id = #{psId,jdbcType=CHAR}
   </delete>
   <insert id="insert" parameterType="com.jorhen.domain.Ps">
-    insert into t_ps (ps_id, plan_id, p_name, 
+    insert into t_ps (ps_id, plan_id,c_id, p_name, 
       matrl_m, matrl_o, fd_add, 
       prcs_aids, matrl, pdt_ft, 
       pdt_md, pm_desc, st_md, 
       s_life, notes, rder, 
       r_date, mder, m_date)
-    values (#{psId,jdbcType=CHAR}, #{planId,jdbcType=CHAR}, #{pName,jdbcType=VARCHAR}, 
+    values (#{psId,jdbcType=CHAR}, #{planId,jdbcType=CHAR}, #{cId,jdbcType=VARCHAR}, #{pName,jdbcType=VARCHAR}, 
       #{matrlM,jdbcType=VARCHAR}, #{matrlO,jdbcType=VARCHAR}, #{fdAdd,jdbcType=VARCHAR}, 
       #{prcsAids,jdbcType=VARCHAR}, #{matrl,jdbcType=VARCHAR}, #{pdtFt,jdbcType=VARCHAR}, 
       #{pdtMd,jdbcType=VARCHAR}, #{pmDesc,jdbcType=VARCHAR}, #{stMd,jdbcType=VARCHAR}, 
@@ -57,6 +71,9 @@
       </if>
       <if test="planId != null">
         plan_id,
+      </if>
+      <if test="cId != null">
+        c_id,
       </if>
       <if test="pName != null">
         p_name,
@@ -114,6 +131,9 @@
       <if test="planId != null">
         #{planId,jdbcType=CHAR},
       </if>
+      <if test="cId != null">
+        #{cId,jdbcType=VARCHAR},
+      </if>
       <if test="pName != null">
         #{pName,jdbcType=VARCHAR},
       </if>
@@ -170,6 +190,9 @@
       <if test="planId != null">
         plan_id = #{planId,jdbcType=CHAR},
       </if>
+      <if test="cId != null">
+        c_id = #{cId,jdbcType=VARCHAR},
+      </if>
       <if test="pName != null">
         p_name = #{pName,jdbcType=VARCHAR},
       </if>
@@ -224,6 +247,7 @@
   <update id="updateByPrimaryKey" parameterType="com.jorhen.domain.Ps">
     update t_ps
     set plan_id = #{planId,jdbcType=CHAR},
+      c_id = #{cId,jdbcType=VARCHAR},
       p_name = #{pName,jdbcType=VARCHAR},
       matrl_m = #{matrlM,jdbcType=VARCHAR},
       matrl_o = #{matrlO,jdbcType=VARCHAR},
@@ -242,4 +266,20 @@
       m_date = #{mDate,jdbcType=VARCHAR}
     where ps_id = #{psId,jdbcType=CHAR}
   </update>
+  
+         	<!-- ==============以下內容是根據自身業務擴展的內容======================= -->
+	<!-- select標籤的id屬性與PlanMapper介面中定義的getAllPlan方法要一模一樣 -->
+	<select id="getMyPs" parameterType="java.lang.String"  resultMap="BaseResultMap">
+		select
+		t.*, p.*,p.p_name as ppname
+		from t_ps t, t_plan p
+		where t.plan_id = p.p_id and t.rder = #{rder}
+	</select>
+	
+	<select id="selectPsById" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select t.*, p.*, p.p_name as ppname
+		from t_ps t, t_plan p 
+		where t.plan_id = p.p_id and t.ps_id=#{psId}
+	</select>
 </mapper>

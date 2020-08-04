@@ -29,34 +29,27 @@
 		<c:forEach var="plan" items="${lsts}">
 			<tr>
 				<td>${plan.pName}</td>
-				<td><select name="cId">
+				<td>
 						<c:forEach items="${options}" var="o">
 							<c:choose>
-								<c:when test="${plan.cId == o.optionKey}">
-									<option value="${o.optionKey}" selected="selected">
-										${o.optionValue}</option>
+								<c:when test="${plan.cId == o.optionKey}">									
+										${o.optionValue}
 								</c:when>
-								<c:otherwise>
-									<option value="${o.optionKey}">${o.optionValue}</option>
-								</c:otherwise>
+
 							</c:choose>
 						</c:forEach>
-				</select></td>
+				</td>
 				<td>${plan.maker}</td>
 				
-				<td><select name="pStatus">
+				<td>
 						<c:forEach items="${planStatus}" var="o">
 							<c:choose>
-								<c:when test="${plan.pStatus == o.optionKey}">
-									<option value="${o.optionKey}" selected="selected">
-										${o.optionValue}</option>
-								</c:when>
-								<c:otherwise>
-									<option value="${o.optionKey}">${o.optionValue}</option>
-								</c:otherwise>
+								<c:when test="${plan.pStatus == o.optionKey}">									
+										${o.optionValue}
+								</c:when>								
 							</c:choose>
 						</c:forEach>
-				</select>
+				
 				
 				</td>
 				<td>${plan.cwPw}</td>

@@ -4,8 +4,11 @@ public class Ps {
     private String psId;
 
     private String planId;
+    
+    private String cId;
 
-    private String pName;
+
+	private String pName;
 
     private String matrlM;
 
@@ -36,6 +39,25 @@ public class Ps {
     private String mder;
 
     private String mDate;
+    
+    private Plan plan;
+    
+    public Plan getPlan() {
+		return plan;
+	}
+
+	public void setPlan(Plan plan) {
+		this.plan = plan;
+	}
+
+	public String getcId() {
+		return cId;
+	}
+
+	public void setcId(String cId) {
+		this.cId = cId;
+	}
+
 
     public String getPsId() {
         return psId;
