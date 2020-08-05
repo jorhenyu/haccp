@@ -76,7 +76,7 @@ $(document).ready(function() {
 </head>
 
 <body>
-	<form:form  id="form1" name="form1" action="${pageContext.request.contextPath}/ccp/doAdd.do"
+	<form:form  id="form1" name="form1" action="${pageContext.request.contextPath}/ccp/doUpdate.do"
 		method="post">
 		<table>
 		    <tr>
@@ -86,6 +86,7 @@ $(document).ready(function() {
 					<input id="openWin" name="openWin" type="button" value="選取"></td>
 					<td><input type="hidden" id="haId" name="haId" value="${ccp.haId}"></td>
 					<td><input type="hidden" id="planId" name="planId" value="${ccp.planId}">
+					<input type="hidden" id="ccpId" name="ccpId" value="${ccp.ccpId}">
 					<input type="hidden" id="qTb" name="qTb" value="3"></td>					
 			</tr>
 			<tr>
@@ -124,9 +125,21 @@ $(document).ready(function() {
 
 			<tr>
 				<th></th>
-				<td colspan="3"><input id="add" name="add" type="button" value="新增" /></td>
+				<td colspan="3"><input id="add" name="add" type="button" value="更新" /></td>
 			</tr>
 		</table>
 	</form:form>
+	
+		<script>
+		var selValue = '${ccp.q1}';
+		$('#q1 option[value=' + selValue + ']')
+				.attr('selected', true);
+		selValue = '${ccp.q2}';
+		$('#q2 option[value=' + selValue + ']')
+		.attr('selected', true);
+		selValue = '${ccp.q3}';
+		$('#q3 option[value=' + selValue + ']')
+		.attr('selected', true);
+	</script>
 
 </body>

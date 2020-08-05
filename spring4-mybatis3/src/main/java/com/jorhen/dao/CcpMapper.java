@@ -22,4 +22,6 @@ public interface CcpMapper {
     List<Ccp> getMyCcp(@Param("rder") String rder);
     
     Ccp selectCcpById(@Param("ccpId") String ccpId);
+    
+    List<Ccp> selectSHaByPname(@Param("pName") String pName, @Param("rder") String rder);
 }

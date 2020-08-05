@@ -14,7 +14,7 @@
 $(document).ready(function() {
 	
     $("#openWin").bind('click', function() {    	
-    	window.open("${pageContext.request.contextPath}/plan/query.do", null, "width=600px,height=400px");
+    	window.open("${pageContext.request.contextPath}/ccp/query.do", null, "width=600px,height=400px");
     });    
 
     $("#add").bind('click', function() {
@@ -33,65 +33,57 @@ $(document).ready(function() {
 </head>
 
 <body>
-	<form:form  id="form1" name="form1" action="${pageContext.request.contextPath}/ha/doUpdate.do"
+	<form:form  id="form1" name="form1" action="${pageContext.request.contextPath}/monit/doUpdate.do"
 		method="post">
 		<table>
 		    <tr>
-			<th>專案名稱</th>
-				<td>${ha.plan.pName}
-					<input type="hidden" name="haId" value="${ha.haId}">
-					<input type="hidden" name="planId" value="${ha.planId}">
-					</td>
-			</tr>
-			</tr>
-			<tr>
-				<th>加工步驟名稱</th>
-				<td><textarea name="procStep">${ha.procStep}</textarea></td>
+			<th>重要管制點(CCP)</th>
+				<td><input type="text" id="procStep"  name="procStep" value="${monit.ha.procStep}"
+					readonly><input id="openWin" name="openWin" type="button" value="選取">
+					<input type="hidden" id="haId"  name="haId" value="${monit.haId}">
+					<input type="hidden" id="planId"  name="planId" value="${monit.planId}">
+					<input type="hidden" id="monitId"  name="monitId" value="${monit.monitId}"></td>
 			</tr>			
 			<tr>
-				<th>潛在危害</th>
+				<th>顯著危害類別</th>
 				<td>
-					<select id="pHa" name="pHa">
-						<option value="phy">物理性</option>
-						<option value="chem">化學性</option>
-						<option value="bio">生物性</option>
-				    </select>
+                  <textarea id="pHa" name="pHa">${monit.ha.pHa}</textarea>
 				</td>
 			</tr>
 			<tr>
-				<th>潛在危害描述</th>
-				<td><textarea name="haDesc">${ha.haDesc}</textarea></td>
+				<th>顯著危害描述</th>
+				<td><textarea id="haDesc" name="haDesc">${monit.ha.haDesc}</textarea></td>
 			</tr>
 			<tr>
-				<th>影響產品安全嗎</th>
-				<td>
-					<select id="issafe" name="issafe">
-						<option value="Y">Y</option>
-						<option value="N">N</option>						
-				    </select>					
-				</td>
+				<th>批次編號</th>
+				<td><textarea name="bNum">${monit.bNum}</textarea></td>
+			</tr>
+
+			<tr>
+				<th>管制類型</th>
+				<td><textarea name="typeReg">${monit.typeReg}</textarea></td>
 			</tr>
 			<tr>
-				<th>判定左欄之理由</th>
-				<td><textarea name="reason">${ha.reason}</textarea></td>
+				<th>管制上限</th>
+				<td><textarea name="ucl">${monit.ucl}</textarea></td>
 			</tr>
-			<tr>
-				<th>預防措施</th>
-				<td><textarea name="pMeas">${ha.pMeas}</textarea></td>
+						<tr>
+				<th>管制下限</th>
+				<td><textarea name="lcl">${monit.lcl}</textarea></td>
 			</tr>
-			<tr>
+						<tr>
+				<th>監測值</th>
+				<td><textarea name="mVal">${monit.mVal}</textarea></td>
+			</tr>
+		    <tr>
+				<th>單位</th>
+				<td><textarea name="unit">${monit.unit}</textarea></td>
+			</tr>
+			<tr>			
 				<th></th>
 				<th><input id="add" name="add" type="button" value="更新" /></th>
 			</tr>
 		</table>
 	</form:form>
-	<script>
-		var selValue = '${ha.pHa}';
-		$('#pHa option[value=' + selValue + ']')
-				.attr('selected', true);
-		
-		selValue = '${ha.issafe}';
-		$('#issafe option[value=' + selValue + ']')
-		.attr('selected', true);
-	</script>
+
 </body>

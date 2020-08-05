@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,8 +54,13 @@ public class CcpController extends BaseController {
 	public String update(HttpServletRequest request, ModelMap model,
 			@RequestParam(value = "ccpId", required = false) String ccpId) {
 		Ccp ccp = ccpService.selectCcpById(ccpId);
-		model.addAttribute("ccp", ccp);				
-		return "ccp/update";
+		model.addAttribute("ccp", ccp);
+		
+		if(ccp.getqTb().equals("3")) {
+			return "ccp/update3t";
+		}else {
+			return "ccp/update4t";
+		}	
 	}
 
 	// 更新執行
@@ -97,6 +103,15 @@ public class CcpController extends BaseController {
 		System.out.println("id=" + ccpId);
 		ccpService.deleteByPrimaryKey(ccpId);
 		return "redirect:/ccp/index.do";
+	}
+	
+	// 管理介面
+	@RequestMapping(value = "/query")
+	public String query(HttpServletRequest request, ModelMap model, Ccp ccp) {
+		String pName = request.getParameter("pName");		
+		lsts = ccpService.selectSHaByPname(pName ,user.getuName());
+		model.addAttribute("lsts", lsts);
+		return "ccp/query";
 	}
 	
 

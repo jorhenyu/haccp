@@ -28,8 +28,28 @@ public class Monit {
     private String mder;
 
     private String mDate;
+    
+    private Plan plan;
+    
+    private Ha ha;
 
-    public String getMonitId() {
+    public Plan getPlan() {
+		return plan;
+	}
+
+	public void setPlan(Plan plan) {
+		this.plan = plan;
+	}
+
+	public Ha getHa() {
+		return ha;
+	}
+
+	public void setHa(Ha ha) {
+		this.ha = ha;
+	}
+
+	public String getMonitId() {
         return monitId;
     }
 

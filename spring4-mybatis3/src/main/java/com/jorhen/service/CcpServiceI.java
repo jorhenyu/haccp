@@ -2,6 +2,8 @@ package com.jorhen.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.jorhen.domain.Ccp;
 
 
@@ -22,6 +24,8 @@ public interface CcpServiceI {
     List<Ccp> getMyCcp(String maker); 
     
     Ccp selectCcpById(String ccpId);
+    
+    List<Ccp> selectSHaByPname(String pName, String rder);
 
 
 }

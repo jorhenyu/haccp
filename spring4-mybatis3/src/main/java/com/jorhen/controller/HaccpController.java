@@ -51,7 +51,7 @@ public class HaccpController extends BaseController {
 	// 更新介面
 	@RequestMapping("/update")
 	public String update(HttpServletRequest request, ModelMap model,
-			@RequestParam(value = "ccpId", required = false) String haccpId) {
+			@RequestParam(value = "haccpId", required = false) String haccpId) {
 		Haccp haccp = haccpService.selectHaccpById(haccpId);
 		model.addAttribute("haccp", haccp);				
 		return "haccp/update";

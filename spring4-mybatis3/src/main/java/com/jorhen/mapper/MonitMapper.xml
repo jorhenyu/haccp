@@ -16,6 +16,33 @@
     <result column="r_date" jdbcType="VARCHAR" property="rDate" />
     <result column="mder" jdbcType="VARCHAR" property="mder" />
     <result column="m_date" jdbcType="VARCHAR" property="mDate" />
+        <!-- 一对一关联映射：association -->
+	<association property="ha" column="ha_id" javaType="com.jorhen.domain.Ha">		  
+    <id column="ha_id" jdbcType="CHAR" property="haId" />
+    <result column="plan_id" jdbcType="CHAR" property="planId" />
+    <result column="proc_step" jdbcType="VARCHAR" property="procStep" />
+    <result column="p_ha" jdbcType="VARCHAR" property="pHa" />
+    <result column="ha_desc" jdbcType="VARCHAR" property="haDesc" />
+    <result column="issafe" jdbcType="CHAR" property="issafe" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
+    <result column="p_meas" jdbcType="VARCHAR" property="pMeas" />
+    <result column="rder" jdbcType="VARCHAR" property="rder" />
+    <result column="r_date" jdbcType="VARCHAR" property="rDate" />
+    <result column="mder" jdbcType="VARCHAR" property="mder" />
+    <result column="m_date" jdbcType="VARCHAR" property="mDate" />
+    </association>
+    <association property="plan" column="p_id" javaType="com.jorhen.domain.Plan">
+			<id column="p_id" jdbcType="CHAR" property="pId" />
+			<result column="p_name" jdbcType="VARCHAR" property="pName" />
+			<result column="c_id" jdbcType="VARCHAR" property="cId" />
+			<result column="maker" jdbcType="VARCHAR" property="maker" />
+			<result column="p_status" jdbcType="VARCHAR" property="pStatus" />
+			<result column="cw_pw" jdbcType="VARCHAR" property="cwPw" />
+			<result column="rder" jdbcType="VARCHAR" property="rder" />
+			<result column="r_date" jdbcType="VARCHAR" property="rDate" />
+			<result column="mder" jdbcType="VARCHAR" property="mder" />
+			<result column="m_date" jdbcType="VARCHAR" property="mDate" />
+		</association>
   </resultMap>
   <sql id="Base_Column_List">
     monit_id, ha_id, plan_id, b_num, Type_reg, ucl, lcl, m_val, unit, m_stat, rder, r_date, 
@@ -201,16 +228,16 @@
 	<select id="getMyMonit" parameterType="java.lang.String"  resultMap="BaseResultMap">
 		select
 		 *
-		from t_ccp c join t_ha h on c.ha_id = h.ha_id 
-		join t_plan p  on c.plan_id = p.p_id  
-		and c.rder = #{rder}
+		from t_monit m join t_ha h on m.ha_id = h.ha_id 
+		join t_plan p  on m.plan_id = p.p_id  
+		and m.rder = #{rder}
 	</select>
 	
 	<select id="selectMonitById" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
 		select *
-		from t_ccp c join t_ha h on c.ha_id = h.ha_id 
-		join t_plan p  on c.plan_id = p.p_id  
-		and c.ccp_id=#{ccpId}
+		from t_monit m join t_ha h on m.ha_id = h.ha_id 
+		join t_plan p  on m.plan_id = p.p_id  
+		and m.monit_id=#{monitId}
 	</select>
 </mapper>

@@ -29,8 +29,18 @@ public class Ccp {
     
     private Plan plan;
     
+    private String qTb;
+    
 
-    public Plan getPlan() {
+    public String getqTb() {
+		return qTb;
+	}
+
+	public void setqTb(String qTb) {
+		this.qTb = qTb;
+	}
+
+	public Plan getPlan() {
 		return plan;
 	}
 

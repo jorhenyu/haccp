@@ -10,7 +10,6 @@
 <script src="../js/jquery.min.js"></script>
 
 <script>
-
 $(document).ready(function() {
 	
     $("#openWin").bind('click', function() {    	
@@ -39,9 +38,14 @@ $(document).ready(function() {
         ChangeQ();
     }); 
     
+    $('#q4').change(function(){
+        ChangeQ();
+    }); 
+    
     var q1Id 
     var q2Id 
     var q3Id 
+    var q4Id 
     
     function ChangeQ()
     {
@@ -49,21 +53,31 @@ $(document).ready(function() {
      q1Id = $.trim($('#q1 option:selected').val());
      q2Id = $.trim($('#q2 option:selected').val());
      q3Id = $.trim($('#q3 option:selected').val());
+     q4Id = $.trim($('#q4 option:selected').val());
 
-       // alert("q1Id=="+q1Id);
-       // alert("q2Id=="+ q2Id);
-       // alert("q3Id=="+q3Id);
+       // alert("q1Id=="+q1Id.length);
+        //alert("q2Id=="+ q2Id.length);
+       // alert("q3Id=="+q3Id.length);
+        //alert("q4Id=="+q4Id.length);
         
         if(q1Id == 'Y')
         {
         	if(q2Id == 'Y'){
-        		if(q3Id == 'Y'){            		
-            		$('#ccp').val("Y");
+        		if(q3Id.length == 0 && q4Id.length == 0){
+        			$('#ccp').val("Y");
+        		}else{        			
+        			$('#ccp').val("N");
+        		}        		   		
+        	}else{
+            	if(q3Id == 'Y'){
+                	if(q4Id == 'Y'){
+                		$('#ccp').val("N");   		
+                	}else{
+                		$('#ccp').val("Y");
+                	}    		
             	}else{
             		$('#ccp').val("N");
-            	}         		
-        	}else{
-        		$('#ccp').val("N");
+            	} 
         	} 	
         		
         }else{        	
@@ -76,7 +90,7 @@ $(document).ready(function() {
 </head>
 
 <body>
-	<form:form  id="form1" name="form1" action="${pageContext.request.contextPath}/ccp/doAdd.do"
+	<form:form  id="form1" name="form1" action="${pageContext.request.contextPath}/ccp/doUpdate.do"
 		method="post">
 		<table>
 		    <tr>
@@ -86,12 +100,14 @@ $(document).ready(function() {
 					<input id="openWin" name="openWin" type="button" value="選取"></td>
 					<td><input type="hidden" id="haId" name="haId" value="${ccp.haId}"></td>
 					<td><input type="hidden" id="planId" name="planId" value="${ccp.planId}">
-					<input type="hidden" id="qTb" name="qTb" value="3"></td>					
+					<input type="hidden" id="ccpId" name="ccpId" value="${ccp.ccpId}"></td>
+					<td><input type="hidden" id="qTb" name="qTb" value="4"></td>					
 			</tr>
 			<tr>
 			<th>Q1</th>
 			<th>Q2</th>
-			<th>Q3</th>			
+			<th>Q3</th>		
+			<th>Q4</th>		
 			<th>CCP</th>
 		</tr>
 			<tr>			
@@ -117,6 +133,13 @@ $(document).ready(function() {
 						<option value="N">N</option>						
 				    </select>
 				</td>
+				<td>
+					<select id="q4" name="q4">
+					<option value="">------</option>
+						<option value="Y">Y</option>
+						<option value="N">N</option>						
+				    </select>
+				</td>
 					<td>
 					<input type="text" id="ccp"  name="ccp" value="${ccp.ccp}"
 					readonly>
@@ -124,9 +147,24 @@ $(document).ready(function() {
 
 			<tr>
 				<th></th>
-				<td colspan="3"><input id="add" name="add" type="button" value="新增" /></td>
+				<td colspan="3"><input id="add" name="add" type="button" value="更新" /></td>
 			</tr>
 		</table>
 	</form:form>
+	
+		<script>
+		var selValue = '${ccp.q1}';
+		$('#q1 option[value=' + selValue + ']')
+				.attr('selected', true);
+		selValue = '${ccp.q2}';
+		$('#q2 option[value=' + selValue + ']')
+		.attr('selected', true);
+		selValue = '${ccp.q3}';
+		$('#q3 option[value=' + selValue + ']')
+		.attr('selected', true);
+		selValue = '${ccp.q4}';
+		$('#q4 option[value=' + selValue + ']')
+		.attr('selected', true);
+	</script>
 
 </body>

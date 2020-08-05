@@ -5,6 +5,7 @@
     <id column="ccp_id" jdbcType="CHAR" property="ccpId" />
     <result column="ha_id" jdbcType="CHAR" property="haId" />
     <result column="plan_id" jdbcType="CHAR" property="planId" />
+    <result column="q_tb" jdbcType="VARCHAR" property="qTb" />
     <result column="q1" jdbcType="VARCHAR" property="q1" />
     <result column="q2" jdbcType="VARCHAR" property="q2" />
     <result column="q3" jdbcType="VARCHAR" property="q3" />
@@ -43,7 +44,7 @@
 		</association>
   </resultMap>
   <sql id="Base_Column_List">
-    ccp_id, ha_id, plan_id, q1, q2, q3, q4, ccp, rder, r_date, mder, m_date
+    ccp_id, ha_id, plan_id,q_tb, q1, q2, q3, q4, ccp, rder, r_date, mder, m_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -56,11 +57,11 @@
     where ccp_id = #{ccpId,jdbcType=CHAR}
   </delete>
   <insert id="insert" parameterType="com.jorhen.domain.Ccp">
-    insert into t_ccp (ccp_id, ha_id, plan_id, q1, 
+    insert into t_ccp (ccp_id, ha_id, plan_id,q_tb, q1, 
       q2, q3, q4, ccp, 
       rder, r_date, mder, 
       m_date)
-    values (#{ccpId,jdbcType=CHAR}, #{haId,jdbcType=CHAR}, #{planId,jdbcType=CHAR}, #{q1,jdbcType=VARCHAR}, 
+    values (#{ccpId,jdbcType=CHAR}, #{haId,jdbcType=CHAR}, #{planId,jdbcType=CHAR}, #{qTb,jdbcType=VARCHAR}, #{q1,jdbcType=VARCHAR}, 
       #{q2,jdbcType=VARCHAR}, #{q3,jdbcType=VARCHAR}, #{q4,jdbcType=VARCHAR}, #{ccp,jdbcType=VARCHAR}, 
       #{rder,jdbcType=VARCHAR}, #{rDate,jdbcType=VARCHAR}, #{mder,jdbcType=VARCHAR}, 
       #{mDate,jdbcType=VARCHAR})
@@ -76,6 +77,9 @@
       </if>
       <if test="planId != null">
         plan_id,
+      </if>
+      <if test="qTb != null">
+        q_tb,
       </if>
       <if test="q1 != null">
         q1,
@@ -115,6 +119,9 @@
       <if test="planId != null">
         #{planId,jdbcType=CHAR},
       </if>
+      <if test="qTb != null">
+        #{qTb,jdbcType=VARCHAR},
+      </if>
       <if test="q1 != null">
         #{q1,jdbcType=VARCHAR},
       </if>
@@ -153,6 +160,9 @@
       <if test="planId != null">
         plan_id = #{planId,jdbcType=CHAR},
       </if>
+      <if test="qTb != null">
+        q_tb = #{qTb,jdbcType=VARCHAR},
+      </if>
       <if test="q1 != null">
         q1 = #{q1,jdbcType=VARCHAR},
       </if>
@@ -187,6 +197,7 @@
     update t_ccp
     set ha_id = #{haId,jdbcType=CHAR},
       plan_id = #{planId,jdbcType=CHAR},
+      q_tb = #{qTb,jdbcType=VARCHAR},
       q1 = #{q1,jdbcType=VARCHAR},
       q2 = #{q2,jdbcType=VARCHAR},
       q3 = #{q3,jdbcType=VARCHAR},
@@ -215,5 +226,20 @@
 		from t_ccp c join t_ha h on c.ha_id = h.ha_id 
 		join t_plan p  on c.plan_id = p.p_id  
 		and c.ccp_id=#{ccpId}
+	</select>
+	
+	<select id="selectSHaByPname" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select *
+		from t_ccp c join t_ha h on c.ha_id = h.ha_id 
+		join t_plan p  on c.plan_id = p.p_id  
+		and c.ccp = 'Y'					
+		<if test="pName !=null and pName !='' ">
+			and p.p_name=#{pName}
+		</if>
+		<if test="rder !=null and rder !='' ">
+			and c.rder = #{rder}
+		</if>
+		
 	</select>
 </mapper>

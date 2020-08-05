@@ -1,19 +1,14 @@
 package com.jorhen.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
-import org.dom4j.Document;
-import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jorhen.dao.UserMapper;
 import com.jorhen.domain.User;
-import com.jorhen.exception.UserExistException;
 import com.jorhen.service.UserServiceI;
 import com.jorhen.util.WebUtils;
-import com.jorhen.util.XmlUtils;
 
 /**
  * @author jorhen 使用@Service注解將UserServiceImpl類標注為一個service

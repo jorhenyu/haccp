@@ -38,8 +38,8 @@
 						action="${pageContext.request.contextPath }/ccp/update.do"
 						method="post">
 						<input type="hidden" name="ccpId" value="${ccp.ccpId}"> <input
-							type="submit" value="修改">
-					</form>
+							type="submit" value="修改"><br>
+					</form>									
 				</td>
 				<td>
 					<form action="${pageContext.request.contextPath }/ccp/del.do"

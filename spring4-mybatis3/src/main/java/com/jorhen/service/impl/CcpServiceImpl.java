@@ -58,5 +58,10 @@ public class CcpServiceImpl implements CcpServiceI {
 	public Ccp selectCcpById(String ccpId) {
 		return ccpMapper.selectCcpById(ccpId);
 	};
+	
+	// @Override
+	public List<Ccp> selectSHaByPname(String pName, String rder) {
+		return ccpMapper.selectSHaByPname(pName, rder);
+	}
 
 }

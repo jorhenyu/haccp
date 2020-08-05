@@ -14,7 +14,7 @@
 $(document).ready(function() {
 	
     $("#openWin").bind('click', function() {    	
-    	window.open("${pageContext.request.contextPath}/ha/query.do", null, "width=600px,height=400px");
+    	window.open("${pageContext.request.contextPath}/ccp/query.do", null, "width=600px,height=400px");
     });    
 
     $("#add").bind('click', function() {
@@ -33,40 +33,58 @@ $(document).ready(function() {
 </head>
 
 <body>
-	<form:form  id="form1" name="form1" action="${pageContext.request.contextPath}/ha/doAdd.do"
+	<form:form  id="form1" name="form1" action="${pageContext.request.contextPath}/haccp/doAdd.do"
 		method="post">
 		<table>
 		    <tr>
-			<th>專案ID</th>
-				<td><input type="text" id="planId"  name="planId" value="${ha.planId}"
-					readonly><input id="openWin" name="openWin" type="button" value="選取"></td>
-			</tr>
-			<tr>
-				<th>加工步驟名稱</th>
-				<td><textarea name="procStep">${ha.procStep}</textarea></td>
+			<th>重要管制點(CCP)</th>
+				<td><input type="text" id="procStep"  name="procStep" value="${haccp.ha.procStep}"
+					readonly><input id="openWin" name="openWin" type="button" value="選取">
+					<input type="hidden" id="haId"  name="haId" value="${haccp.haId}">
+					<input type="hidden" id="planId"  name="planId" value="${haccp.planId}"></td>
 			</tr>			
 			<tr>
-				<th>潛在危害</th>
+				<th>顯著危害類別</th>
 				<td>
-					<select id="pHa" name="pHa">
-						<option value="phy">物理性</option>
-						<option value="chem">化學性</option>
-						<option value="bio">生物性</option>
-				    </select>
+                  <textarea id="pHa" name="pHa">${haccp.ha.pHa}</textarea>
 				</td>
 			</tr>
 			<tr>
-				<th>潛在危害描述</th>
-				<td><textarea name="haDesc">${ha.haDesc}</textarea></td>
+				<th>顯著危害描述</th>
+				<td><textarea id="haDesc" name="haDesc">${haccp.ha.haDesc}</textarea></td>
+			</tr>
+			<tr>
+				<th>管制界限</th>
+				<td><textarea name="cLimit">${haccp.cLimit}</textarea></td>
 			</tr>
 
 			<tr>
-				<th>判定左欄之理由</th>
-				<td><textarea name="reason">${ha.reason}</textarea></td>
+				<th>監測項目</th>
+				<td><textarea name="mItm">${haccp.mItm}</textarea></td>
 			</tr>
 			<tr>
-				<th>預防措施</th>
-				<td><textarea name="pMeas">${ha.pMeas}</textarea></td>
+				<th>監測方法</th>
+				<td><textarea name="mMd">${haccp.mMd}</textarea></td>
+			</tr>
+						<tr>
+				<th>監測頻率</th>
+				<td><textarea name="mFre">${haccp.mFre}</textarea></td>
+			</tr>
+						<tr>
+				<th>監測執行人</th>
+				<td><textarea name="mPrin">${haccp.mPrin}</textarea></td>
+			</tr>
+		    <tr>
+				<th>矯正措施</th>
+				<td><textarea name="cMeas">${haccp.cMeas}</textarea></td>
+			</tr>
+									<tr>
+				<th>紀錄</th>
+				<td><textarea name="record">${haccp.record}</textarea></td>
+			</tr>
+									<tr>
+				<th>確認</th>
+				<td><textarea name="confirm">${haccp.confirm}</textarea></td>
 			</tr>
 			<tr>
 				<th></th>

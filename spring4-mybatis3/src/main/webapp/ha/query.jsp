@@ -12,19 +12,14 @@
 	function sendData() {
 		var checkedText = document.querySelector('input[type="radio"]:checked').value;
 		window.opener.document.getElementById("haId").value = checkedText;
-	    
-	   // window.opener.document.getElementById("txtName").value=name;
-	   //var qq = $("input:radio[name=haId][checked]").index();
 	   
 	   var radioButtons = $("input:radio[name='haId']");
 	   var selectedIndex = radioButtons.index(radioButtons.filter(':checked'));
-	   //alert("selectedIndex="+selectedIndex);
-	  // alert($('input[name="lsts['+selectedIndex+'].procStep"]').val());
 	   
 	   window.opener.document.getElementById("procStep").value=$('input[name="lsts['+selectedIndex+'].procStep"]').val();
 	   window.opener.document.getElementById("planId").value=$('input[name="lsts['+selectedIndex+'].planId"]').val();
 
-		//window.close();
+		window.close();
 	}
 	
 	   $('#input:radio[name=haId]').click(function(){
@@ -38,19 +33,24 @@
 	<table>
 		<tr>
 			<th>選取</th>
-			<th>流程名稱</th>
+			<th>專案名稱</th>
+			<th>加工步驟</th>
+			<th>危害類別</th>
+			<th>危害描述</th>
 			<th>選取</th>
 		</tr>
 		<%--遍歷lstUsers集合中的User物件 --%>
 		<c:forEach var="ha" items="${lsts}" varStatus="status">
 			<tr>
 				<td><input type="radio" id="haId" name="haId" value="${ha.haId}"></td>
-				<td><input type="text" id="pHa" name="lsts[${status.index}].pHa" value="${ha.pHa}"></td>
+				<td>${ha.plan.pName}</td>
 				<td><input type="text" id="procStep" name="lsts[${status.index}].procStep" value="${ha.procStep}"></td>
-				<td><input type="text" id="planId" name="lsts[${status.index}].planId" value="${ha.planId}"></td>
-				<td><input type="button" value="選取" onclick="sendData()">
-
-				</td>
+				<td><c:choose><c:when test="${ccp.ha.pHa == 'phy'}">物理性</c:when>
+				<c:when test="${ccp.ha.pHa == 'chem'}">化學性</c:when>
+				<c:otherwise>生物性</c:otherwise></c:choose></td>
+				<td><input type="text" id="pHa" name="lsts[${status.index}].haDesc" value="${ha.haDesc}">
+				<input type="hidden" id="planId" name="lsts[${status.index}].planId" value="${ha.planId}"></td>				
+				<td><input type="button" value="選取" onclick="sendData()"></td>
 			</tr>
 		</c:forEach>
 	</table>

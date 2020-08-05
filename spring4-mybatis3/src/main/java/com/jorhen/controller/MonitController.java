@@ -70,15 +70,8 @@ public class MonitController extends BaseController {
 
 	// 新增導引
 	@RequestMapping("/add")
-	public String add(HttpServletRequest request,Model model) {	
-		String jt = request.getParameter("jt");
-		System.out.println("=jt=="+jt);
-		if(jt.equals("3")) {
-			return "monit/add3t";
-		}else {
-			return "monit/add4t";
-		}
-		
+	public String add(HttpServletRequest request,Model model) {		
+			return "monit/add";		
 	}
 
 	// 新增執行，可以無限新增
@@ -93,7 +86,7 @@ public class MonitController extends BaseController {
 	// 刪除
 	@RequestMapping("/del")
 	public String del(HttpServletRequest request, ModelMap modelMap,
-			@RequestParam(value = "ccpId", required = false) String monitId) {
+			@RequestParam(value = "monitId", required = false) String monitId) {
 		System.out.println("id=" + monitId);
 		monitService.deleteByPrimaryKey(monitId);
 		return "redirect:/monit/index.do";
