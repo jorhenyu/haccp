@@ -85,7 +85,7 @@
 			<li><span class="folder">CCP 管制監控區</span>
 				<ul>
 					<li><span class="file"><a
-							href="${pageContext.request.contextPath}/process/index.do"
+							href="${pageContext.request.contextPath}/monit/index.do"
 							target="showframe">管制監控紀錄</a></span></li>
 				</ul></li>
 		</ul>

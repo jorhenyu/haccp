@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jorhen.dao.MonitMapper">
+  <resultMap id="BaseResultMap" type="com.jorhen.domain.Monit">
+    <id column="monit_id" jdbcType="CHAR" property="monitId" />
+    <result column="ha_id" jdbcType="CHAR" property="haId" />
+    <result column="plan_id" jdbcType="CHAR" property="planId" />
+    <result column="b_num" jdbcType="VARCHAR" property="bNum" />
+    <result column="Type_reg" jdbcType="VARCHAR" property="typeReg" />
+    <result column="ucl" jdbcType="VARCHAR" property="ucl" />
+    <result column="lcl" jdbcType="VARCHAR" property="lcl" />
+    <result column="m_val" jdbcType="VARCHAR" property="mVal" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="m_stat" jdbcType="VARCHAR" property="mStat" />
+    <result column="rder" jdbcType="VARCHAR" property="rder" />
+    <result column="r_date" jdbcType="VARCHAR" property="rDate" />
+    <result column="mder" jdbcType="VARCHAR" property="mder" />
+    <result column="m_date" jdbcType="VARCHAR" property="mDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    monit_id, ha_id, plan_id, b_num, Type_reg, ucl, lcl, m_val, unit, m_stat, rder, r_date, 
+    mder, m_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_monit
+    where monit_id = #{monitId,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_monit
+    where monit_id = #{monitId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.jorhen.domain.Monit">
+    insert into t_monit (monit_id, ha_id, plan_id, 
+      b_num, Type_reg, ucl, 
+      lcl, m_val, unit, m_stat, 
+      rder, r_date, mder, 
+      m_date)
+    values (#{monitId,jdbcType=CHAR}, #{haId,jdbcType=CHAR}, #{planId,jdbcType=CHAR}, 
+      #{bNum,jdbcType=VARCHAR}, #{typeReg,jdbcType=VARCHAR}, #{ucl,jdbcType=VARCHAR}, 
+      #{lcl,jdbcType=VARCHAR}, #{mVal,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{mStat,jdbcType=VARCHAR}, 
+      #{rder,jdbcType=VARCHAR}, #{rDate,jdbcType=VARCHAR}, #{mder,jdbcType=VARCHAR}, 
+      #{mDate,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jorhen.domain.Monit">
+    insert into t_monit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="monitId != null">
+        monit_id,
+      </if>
+      <if test="haId != null">
+        ha_id,
+      </if>
+      <if test="planId != null">
+        plan_id,
+      </if>
+      <if test="bNum != null">
+        b_num,
+      </if>
+      <if test="typeReg != null">
+        Type_reg,
+      </if>
+      <if test="ucl != null">
+        ucl,
+      </if>
+      <if test="lcl != null">
+        lcl,
+      </if>
+      <if test="mVal != null">
+        m_val,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="mStat != null">
+        m_stat,
+      </if>
+      <if test="rder != null">
+        rder,
+      </if>
+      <if test="rDate != null">
+        r_date,
+      </if>
+      <if test="mder != null">
+        mder,
+      </if>
+      <if test="mDate != null">
+        m_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="monitId != null">
+        #{monitId,jdbcType=CHAR},
+      </if>
+      <if test="haId != null">
+        #{haId,jdbcType=CHAR},
+      </if>
+      <if test="planId != null">
+        #{planId,jdbcType=CHAR},
+      </if>
+      <if test="bNum != null">
+        #{bNum,jdbcType=VARCHAR},
+      </if>
+      <if test="typeReg != null">
+        #{typeReg,jdbcType=VARCHAR},
+      </if>
+      <if test="ucl != null">
+        #{ucl,jdbcType=VARCHAR},
+      </if>
+      <if test="lcl != null">
+        #{lcl,jdbcType=VARCHAR},
+      </if>
+      <if test="mVal != null">
+        #{mVal,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="mStat != null">
+        #{mStat,jdbcType=VARCHAR},
+      </if>
+      <if test="rder != null">
+        #{rder,jdbcType=VARCHAR},
+      </if>
+      <if test="rDate != null">
+        #{rDate,jdbcType=VARCHAR},
+      </if>
+      <if test="mder != null">
+        #{mder,jdbcType=VARCHAR},
+      </if>
+      <if test="mDate != null">
+        #{mDate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jorhen.domain.Monit">
+    update t_monit
+    <set>
+      <if test="haId != null">
+        ha_id = #{haId,jdbcType=CHAR},
+      </if>
+      <if test="planId != null">
+        plan_id = #{planId,jdbcType=CHAR},
+      </if>
+      <if test="bNum != null">
+        b_num = #{bNum,jdbcType=VARCHAR},
+      </if>
+      <if test="typeReg != null">
+        Type_reg = #{typeReg,jdbcType=VARCHAR},
+      </if>
+      <if test="ucl != null">
+        ucl = #{ucl,jdbcType=VARCHAR},
+      </if>
+      <if test="lcl != null">
+        lcl = #{lcl,jdbcType=VARCHAR},
+      </if>
+      <if test="mVal != null">
+        m_val = #{mVal,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="mStat != null">
+        m_stat = #{mStat,jdbcType=VARCHAR},
+      </if>
+      <if test="rder != null">
+        rder = #{rder,jdbcType=VARCHAR},
+      </if>
+      <if test="rDate != null">
+        r_date = #{rDate,jdbcType=VARCHAR},
+      </if>
+      <if test="mder != null">
+        mder = #{mder,jdbcType=VARCHAR},
+      </if>
+      <if test="mDate != null">
+        m_date = #{mDate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where monit_id = #{monitId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jorhen.domain.Monit">
+    update t_monit
+    set ha_id = #{haId,jdbcType=CHAR},
+      plan_id = #{planId,jdbcType=CHAR},
+      b_num = #{bNum,jdbcType=VARCHAR},
+      Type_reg = #{typeReg,jdbcType=VARCHAR},
+      ucl = #{ucl,jdbcType=VARCHAR},
+      lcl = #{lcl,jdbcType=VARCHAR},
+      m_val = #{mVal,jdbcType=VARCHAR},
+      unit = #{unit,jdbcType=VARCHAR},
+      m_stat = #{mStat,jdbcType=VARCHAR},
+      rder = #{rder,jdbcType=VARCHAR},
+      r_date = #{rDate,jdbcType=VARCHAR},
+      mder = #{mder,jdbcType=VARCHAR},
+      m_date = #{mDate,jdbcType=VARCHAR}
+    where monit_id = #{monitId,jdbcType=CHAR}
+  </update>
+                 	<!-- ==============以下內容是根據自身業務擴展的內容======================= -->
+	<!-- select標籤的id屬性與PlanMapper介面中定義的getAllPlan方法要一模一樣 -->
+	<select id="getMyMonit" parameterType="java.lang.String"  resultMap="BaseResultMap">
+		select
+		 *
+		from t_ccp c join t_ha h on c.ha_id = h.ha_id 
+		join t_plan p  on c.plan_id = p.p_id  
+		and c.rder = #{rder}
+	</select>
+	
+	<select id="selectMonitById" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select *
+		from t_ccp c join t_ha h on c.ha_id = h.ha_id 
+		join t_plan p  on c.plan_id = p.p_id  
+		and c.ccp_id=#{ccpId}
+	</select>
+</mapper>

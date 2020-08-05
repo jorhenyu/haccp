@@ -92,6 +92,15 @@ public class HaController extends BaseController {
 		return "redirect:/ha/index.do";
 	}
 	
+	// 管理介面
+	@RequestMapping(value = "/query")
+	public String query(ModelMap model) {
+
+		lsts = haService.getMyHa(user.getuName());
+		model.addAttribute("lsts", lsts);
+		return "ha/query";
+	}
+	
 
 
 }
