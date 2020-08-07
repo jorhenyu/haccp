@@ -21,4 +21,8 @@ public interface HaMapper {
     List<Ha> getMyHa(@Param("rder") String rder);
     
     Ha selectHaById(@Param("haId") String haId);
+    
+    List<Ha> selectHaByPlanId(@Param("planId") String planId);
+    
+    List<Ha> getHaByPlanIdDistinct(@Param("rder") String rder);
 }

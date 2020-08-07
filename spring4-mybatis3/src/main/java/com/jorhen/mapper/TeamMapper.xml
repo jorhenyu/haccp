@@ -200,6 +200,20 @@
 		from t_team t, t_plan p 
 		where t.plan_id = p.p_id and t.team_id=#{id}
 	</select>
+	<!-- 匯出專案相同 planid 多筆data的 report -->
+	<select id="selectTeamByPlanId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		*
+		from t_team t, t_plan p
+		where t.plan_id = p.p_id and t.plan_Id = #{planId}
+	</select>
+	<!-- 列出各列單筆report要送出planid -->
+	<select id="getTeamByPlanIdDistinct" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		distinct t.plan_Id, p.p_name
+		from t_team t, t_plan p
+		where t.plan_id = p.p_id and t.rder = #{rder}
+	</select>
 
 
 

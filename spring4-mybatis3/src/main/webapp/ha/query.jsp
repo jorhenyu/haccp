@@ -22,11 +22,7 @@
 		window.close();
 	}
 	
-	   $('#input:radio[name=haId]').click(function(){
-		   var index = $('#input:radio[name=haId]').index(this);
-		   alert(index);
-		 	   
-		 });
+
 </script>
 </head>
 <body>

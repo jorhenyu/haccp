@@ -22,6 +22,10 @@ public interface HaServiceI {
     List<Ha> getMyHa(String maker); 
     
     Ha selectHaById(String haId);
+    
+    List<Ha> selectHaByPlanId(String planId);
+    
+    List<Ha> getHaByPlanIdDistinct(String rder);
 
 
 }

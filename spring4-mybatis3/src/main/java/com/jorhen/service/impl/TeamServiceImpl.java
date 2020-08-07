@@ -59,6 +59,16 @@ public class TeamServiceImpl implements TeamServiceI {
 	public Team selectTeamById(String id) {
 		return teamMapper.selectTeamById(id);		 
 	}
+	
+	// @Override
+	public List<Team> selectTeamByPlanId(String planId) {
+		return teamMapper.selectTeamByPlanId(planId);
+	}
+	
+	// @Override
+	public List<Team> getTeamByPlanIdDistinct(String rder) {
+		return teamMapper.getTeamByPlanIdDistinct(rder);
+	}
 
 
 }

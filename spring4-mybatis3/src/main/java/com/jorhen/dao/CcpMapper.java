@@ -24,4 +24,8 @@ public interface CcpMapper {
     Ccp selectCcpById(@Param("ccpId") String ccpId);
     
     List<Ccp> selectSHaByPname(@Param("pName") String pName, @Param("rder") String rder);
+    
+    List<Ccp> selectCcpByPlanId(@Param("planId") String planId);
+    
+    List<Ccp> getCcpByPlanIdDistinct(@Param("rder") String rder);
 }

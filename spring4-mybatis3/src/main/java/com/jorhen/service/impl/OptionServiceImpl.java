@@ -37,10 +37,6 @@ public class OptionServiceImpl implements OptionService {
 		
 		Map<String, Object> map = null;
 		map = new HashMap<String, Object>();
-		map.put("optionKey", "fpublic");
-		map.put("optionValue", "公用");
-		mapList.add(map);
-		map = new HashMap<String, Object>();
 		map.put("optionKey", "fopen");
 		map.put("optionValue", "公開");
 		mapList.add(map);

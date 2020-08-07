@@ -12,7 +12,9 @@
 		<tr>
 			<th colspan="14" scope="row"><input type="button"
 				onclick="javascript:location.href='${pageContext.request.contextPath}/haccp/add.do'"
-				value="新增"></input></th>
+				value="新增"></input><input type="button"
+				onclick="javascript:location.href='${pageContext.request.contextPath}/haccp/report.do'"
+				value="匯出"></input></th>
 		</tr>
   <tr>  
       <th width="50" rowspan="2"><p align="center">修改</p></th>

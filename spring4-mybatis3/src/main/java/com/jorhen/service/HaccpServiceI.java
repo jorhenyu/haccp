@@ -25,6 +25,10 @@ public interface HaccpServiceI {
     
     Haccp selectHaccpById(@Param("haccpId") String haccpId);
     
+    List<Haccp> selectHaccpByPlanId(String planId);
+    
+    List<Haccp> getHaccpByPlanIdDistinct(String rder);
+    
 
 
 }

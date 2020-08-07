@@ -48,7 +48,7 @@ public class HaccpServiceImpl implements HaccpServiceI {
 	
 	public Haccp selectByPrimaryKey(String haccpId) {
 		return haccpMapper.selectByPrimaryKey(haccpId);		
-	};
+	}
 	
 	// @Override
 	public List<Haccp> getMyHaccp(String maker) {
@@ -57,6 +57,16 @@ public class HaccpServiceImpl implements HaccpServiceI {
 	
 	public Haccp selectHaccpById(String haccpId) {
 		return haccpMapper.selectHaccpById(haccpId);
-	};
+	}
+	
+	// @Override
+	public List<Haccp> selectHaccpByPlanId(String planId) {
+		return haccpMapper.selectHaccpByPlanId(planId);
+	}
+	
+	// @Override
+	public List<Haccp> getHaccpByPlanIdDistinct(String rder) {
+		return haccpMapper.getHaccpByPlanIdDistinct(rder);
+	}
 
 }

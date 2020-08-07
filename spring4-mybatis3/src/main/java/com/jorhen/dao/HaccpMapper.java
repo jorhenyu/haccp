@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.jorhen.domain.Ccp;
 import com.jorhen.domain.Haccp;
 
 public interface HaccpMapper {
@@ -22,4 +23,8 @@ public interface HaccpMapper {
     List<Haccp> getMyHaccp(@Param("rder") String rder);
     
     Haccp selectHaccpById(@Param("haccpId") String haccpId);
+    
+    List<Haccp> selectHaccpByPlanId(@Param("planId") String planId);
+    
+    List<Haccp> getHaccpByPlanIdDistinct(@Param("rder") String rder);
 }

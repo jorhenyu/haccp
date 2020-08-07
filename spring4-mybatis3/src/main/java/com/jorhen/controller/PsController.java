@@ -1,10 +1,18 @@
 package com.jorhen.controller;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +20,12 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.jorhen.domain.Cat;
 import com.jorhen.domain.Ps;
+import com.jorhen.service.CatServiceI;
 import com.jorhen.service.OptionService;
 import com.jorhen.service.PsServiceI;
+import com.jorhen.util.XwpfTUtil;
 
 @Controller
 @RequestMapping("/ps")
@@ -28,6 +39,8 @@ public class PsController extends BaseController {
 	private PsServiceI psService;
     @Autowired
     OptionService optionService;
+    @Autowired
+    CatServiceI catService;
 	
 	List<Ps> lsts = null;
 	String rder = null;		
@@ -96,6 +109,99 @@ public class PsController extends BaseController {
 		System.out.println("id=" + psId);
 		psService.deleteByPrimaryKey(psId);
 		return "redirect:/ps/index.do";
+	}
+	
+	@RequestMapping("/queryPro")
+	public String queryPro(HttpServletRequest request, ModelMap model,
+			@RequestParam(value = "psId", required = false) String psId) {
+
+		lsts = psService.getMyPs(user.getuName());
+		model.addAttribute("lsts", lsts);
+		model.addAttribute("options",this.optionService.catsTypeOption(null));
+		return "ps/datapro";
+
+	}
+
+	@RequestMapping("/exportWord")
+	public void exportWord(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap, Ps ps) {
+
+		log.info("==pcId==" + ps.getPsId());		
+		
+		Ps ps1 = psService.selectPsById(ps.getPsId());
+		// 上传路径
+		String path = request.getServletContext().getRealPath("/template/");
+		// 上传文件名
+		// String filename = file.getOriginalFilename();
+		log.info("==ps1.getrDate()==" + ps1.getrDate());
+		
+		Cat cat = catService.getCatById(ps1.getcId());	
+
+		Map<String, Object> params = new HashMap<String, Object>();	
+		params.put("${rDate}", ps1.getrDate());
+		params.put("${cId}", cat.getcName());
+		params.put("${pName}", ps1.getpName());
+		params.put("${matrlM}", ps1.getMatrlM());
+		params.put("${matrlO}", ps1.getMatrlO());
+		params.put("${fdAdd}", ps1.getFdAdd());
+		
+		params.put("${prcsAids}", ps1.getPrcsAids());
+		params.put("${matrl}", ps1.getMatrl());
+		params.put("${pdtFt}", ps1.getPdtFt());
+		params.put("${pdtMd}", ps1.getPdtMd());
+		params.put("${pmDesc}", ps1.getPmDesc());
+		
+		params.put("${stMd}", ps1.getStMd());
+		params.put("${sLife}", ps1.getsLife());
+		params.put("${notes}", ps1.getNotes());
+		
+		
+
+		XwpfTUtil xwpfTUtil = new XwpfTUtil();	
+
+		String fileName = "CharacterStorage_tranMethods.docx";
+
+		// 响应到客户端
+		try {
+
+			String filePath = path + "ps.docx";
+
+			InputStream is = new FileInputStream(filePath);
+
+			XWPFDocument doc = new XWPFDocument(is);
+
+			xwpfTUtil.replaceInPara(doc, params);
+			// 替換表格裡面的變數
+			xwpfTUtil.replaceInTable(doc, params);
+
+			this.setResponseHeader(response, fileName);
+			OutputStream os = response.getOutputStream();
+
+			doc.write(os);
+			os.flush();
+			os.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	// 发送响应流方法
+	public void setResponseHeader(HttpServletResponse response, String fileName) {
+		try {
+			try {
+				fileName = new String(fileName.getBytes(), "ISO8859-1");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			response.setContentType("application/octet-stream;charset=ISO8859-1");
+			response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+			response.addHeader("Pargam", "no-cache");
+			response.addHeader("Cache-Control", "no-cache");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 	
 

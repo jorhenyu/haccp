@@ -1,11 +1,14 @@
 package com.jorhen.controller;
 
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jorhen.domain.Ccp;
 import com.jorhen.service.CcpServiceI;
+import com.jorhen.util.ExcelUtil;
 
 @Controller
 @RequestMapping("/ccp")
@@ -112,6 +116,87 @@ public class CcpController extends BaseController {
 		lsts = ccpService.selectSHaByPname(pName ,user.getuName());
 		model.addAttribute("lsts", lsts);
 		return "ccp/query";
+	}
+	
+	
+	@RequestMapping("/report")
+	public String queryPro(HttpServletRequest request, ModelMap model) {
+       //產生目前自己有的專案
+		lsts = ccpService.getCcpByPlanIdDistinct(user.getuName());
+		model.addAttribute("lsts", lsts);		
+		return "ccp/report";
+
+	}
+
+	@RequestMapping("/exportExcel")
+	public void exportExcel(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap, Ccp ccp) {
+
+		log.info("==getPlanId==" + ccp.getPlanId());		 
+		
+		//获取数据		
+		lsts = ccpService.selectCcpByPlanId(ccp.getPlanId());		
+	      
+        
+        //excel标题
+        String[] title = {"加工步驟","危害","危害描述","Q1.對危害是否有防制措施？","Q2.此步驟可消除或降低危害至可接受水準？","Q3.污染能使危害達到或增至不可接受之水準？","Q4.接續步驟能使危害被消除或降低至可接受之水準？","CCP"};
+        //excel文件名
+        String fileName = "ccpTable"+System.currentTimeMillis()+".xls";
+        //sheet名
+        String sheetName = "重要管制點判定表";
+        String [][] content = new String[lsts.size()][];
+        for (int i = 0; i < lsts.size(); i++) {
+            content[i] = new String[title.length];
+            ccp = lsts.get(i);
+            content[i][0] = ccp.getHa().getProcStep();
+            
+            if(ccp.getHa().getpHa().equals("phy")) {
+            	content[i][1] = "物理性";
+            }else if(ccp.getHa().getpHa().equals("chem")) {
+            	content[i][1] = "化學性";
+            }else {
+            	content[i][1] = "生物性";
+            }
+            content[i][2] = ccp.getHa().getHaDesc();
+            content[i][3] = ccp.getQ1();
+            content[i][4] = ccp.getQ1();
+            content[i][5] = ccp.getQ1();
+            content[i][6] = ccp.getQ1();
+            content[i][7] = ccp.getQ1();       
+            
+        }
+        //创建HSSFWorkbook
+        HSSFWorkbook wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
+        //响应到客户端
+        try {
+            this.setResponseHeader(response, fileName);
+            OutputStream os = response.getOutputStream();
+            wb.write(os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+		
+
+	}
+
+	// 发送响应流方法
+	public void setResponseHeader(HttpServletResponse response, String fileName) {
+		try {
+			try {
+				fileName = new String(fileName.getBytes(), "ISO8859-1");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			response.setContentType("application/octet-stream;charset=ISO8859-1");
+			response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+			response.addHeader("Pargam", "no-cache");
+			response.addHeader("Cache-Control", "no-cache");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 	
 

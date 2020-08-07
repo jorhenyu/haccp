@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.jorhen.domain.Ccp;
+import com.jorhen.domain.Team;
 
 
 public interface CcpServiceI {
@@ -26,6 +27,10 @@ public interface CcpServiceI {
     Ccp selectCcpById(String ccpId);
     
     List<Ccp> selectSHaByPname(String pName, String rder);
+    
+    List<Ccp> selectCcpByPlanId(String planId);
+    
+    List<Ccp> getCcpByPlanIdDistinct(String rder);
 
 
 }

@@ -27,6 +27,22 @@
 			<result column="mder" jdbcType="VARCHAR" property="mder" />
 			<result column="m_date" jdbcType="VARCHAR" property="mDate" />
 		</association>
+		     <!-- 一对一关联映射：association -->
+	<association property="ccp" column="ha_id" javaType="com.jorhen.domain.Ccp">		
+	    <id column="ccp_id" jdbcType="CHAR" property="ccpId" />
+    <result column="ha_id" jdbcType="CHAR" property="haId" />
+    <result column="plan_id" jdbcType="CHAR" property="planId" />
+    <result column="q_tb" jdbcType="VARCHAR" property="qTb" />
+    <result column="q1" jdbcType="VARCHAR" property="q1" />
+    <result column="q2" jdbcType="VARCHAR" property="q2" />
+    <result column="q3" jdbcType="VARCHAR" property="q3" />
+    <result column="q4" jdbcType="VARCHAR" property="q4" />
+    <result column="ccp" jdbcType="VARCHAR" property="ccp" />
+    <result column="rder" jdbcType="VARCHAR" property="rder" />
+    <result column="r_date" jdbcType="VARCHAR" property="rDate" />
+    <result column="mder" jdbcType="VARCHAR" property="mder" />
+    <result column="m_date" jdbcType="VARCHAR" property="mDate" />
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
     ha_id, plan_id, proc_step, p_ha, ha_desc, issafe, reason, p_meas, rder, r_date, mder, m_date
@@ -189,9 +205,10 @@
 	<!-- select標籤的id屬性與PlanMapper介面中定義的getAllPlan方法要一模一樣 -->
 	<select id="getMyHa" parameterType="java.lang.String"  resultMap="BaseResultMap">
 		select
-		t.*, p.*
-		from t_ha t, t_plan p
-		where t.plan_id = p.p_id and t.rder = #{rder}
+		*
+		from t_ha h join t_plan p on h.plan_id = p.p_id 
+		join t_ccp c on h.ha_id = c.ha_id		
+		and h.rder = #{rder}
 	</select>
 	
 	<select id="selectHaById" parameterType="java.lang.String"
@@ -199,5 +216,21 @@
 		select t.*, p.*
 		from t_ha t, t_plan p 
 		where t.plan_id = p.p_id and t.ha_id=#{haId}
+	</select>
+	
+	<!-- 匯出專案相同 planid 多筆data的 report -->
+	<select id="selectHaByPlanId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		*
+		from t_ha h join t_plan p on h.plan_id = p.p_id  
+		and h.plan_Id = #{planId}
+	</select>
+	<!-- 列出各列單筆report要送出planid -->
+	<select id="getHaByPlanIdDistinct" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		distinct h.plan_Id, p.p_name
+		from t_ha h join t_plan p on h.plan_id = p.p_id 
+		join t_ccp c on h.ha_id = c.ha_id		
+		and h.rder = #{rder}
 	</select>
 </mapper>

@@ -32,6 +32,10 @@ public interface TeamMapper {
      * 
      */
     Team selectTeamById(String id);
+    
+    List<Team> selectTeamByPlanId(@Param("planId") String planId);
+    
+    List<Team> getTeamByPlanIdDistinct(@Param("rder") String rder);
 
     
 

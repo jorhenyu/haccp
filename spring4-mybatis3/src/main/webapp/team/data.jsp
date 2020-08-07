@@ -12,7 +12,9 @@
 			<tr>
 			<th colspan="9" scope="row"><input type="button"
 				onclick="javascript:location.href='${pageContext.request.contextPath}/team/add.do'"
-				value="新增"></input></th>
+				value="新增"></input>	<input type="button"
+				onclick="javascript:location.href='${pageContext.request.contextPath}/team/queryPro.do'"
+				value="匯出"></input></th>
 		</tr>
 		<tr>
 		    <th>專案名稱</th>

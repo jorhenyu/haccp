@@ -48,7 +48,7 @@ public class HaServiceImpl implements HaServiceI {
 	
 	public Ha selectByPrimaryKey(String haId) {
 		return haMapper.selectByPrimaryKey(haId);		
-	};
+	}
 	
 	// @Override
 	public List<Ha> getMyHa(String maker) {
@@ -57,6 +57,16 @@ public class HaServiceImpl implements HaServiceI {
 	
 	public Ha selectHaById(String haId) {
 		return haMapper.selectHaById(haId);
-	};
+	}
+	
+	// @Override
+	public List<Ha> selectHaByPlanId(String planId) {
+		return haMapper.selectHaByPlanId(planId);
+	}
+	
+	// @Override
+	public List<Ha> getHaByPlanIdDistinct(String rder) {
+		return haMapper.getHaByPlanIdDistinct(rder);
+	}
 
 }

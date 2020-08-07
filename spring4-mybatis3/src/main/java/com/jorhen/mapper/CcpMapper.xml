@@ -227,7 +227,7 @@
 		join t_plan p  on c.plan_id = p.p_id  
 		and c.ccp_id=#{ccpId}
 	</select>
-	
+	<!-- 查詢專案中自己危害CCP為顯著資料 -->
 	<select id="selectSHaByPname" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
 		select *
@@ -239,7 +239,23 @@
 		</if>
 		<if test="rder !=null and rder !='' ">
 			and c.rder = #{rder}
-		</if>
-		
+		</if>		
+	</select>
+	
+		<!-- 匯出專案相同 planid 多筆data的 report -->
+	<select id="selectCcpByPlanId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		*
+		from t_ccp c join t_ha h on c.ha_id = h.ha_id 
+		join t_plan p  on c.plan_id = p.p_id  
+		and c.ccp = 'Y' and c.plan_Id = #{planId}
+	</select>
+	<!-- 列出各列單筆report要送出planid -->
+	<select id="getCcpByPlanIdDistinct" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		distinct c.plan_Id, p.p_name
+		from t_ccp c join t_ha h on c.ha_id = h.ha_id 
+		join t_plan p  on c.plan_id = p.p_id  
+		and c.rder = #{rder}
 	</select>
 </mapper>

@@ -12,7 +12,9 @@
 		<tr>
 			<th colspan="16" scope="row"><input type="button"
 				onclick="javascript:location.href='${pageContext.request.contextPath}/ha/add.do'"
-				value="新增"></input></th>
+				value="新增"></input><input type="button"
+				onclick="javascript:location.href='${pageContext.request.contextPath}/ha/report.do'"
+				value="匯出"></input></th>
 		</tr>
 		<tr>
 			<th>修改</th>
@@ -54,9 +56,7 @@
 				<td><textarea name="issafe" readonly>${ha.issafe}</textarea></td>	
 				<td><textarea name="reason" readonly>${ha.reason}</textarea></td>
 				<td><textarea name="pMeas" readonly>${ha.pMeas}</textarea></td>	
-				<td><form action="${pageContext.request.contextPath }/ha/ccp.do"
-						method="post"><input type="hidden" name="haId" value="${ha.haId}"> <input
-							type="submit" value="${ha.plan.pName}">
+				<td><textarea name="ccp" readonly>${ha.ccp.ccp}</textarea>
 					</form></td>		
 			</tr>
 		</c:forEach>

@@ -2,6 +2,8 @@ package com.jorhen.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.jorhen.domain.Team;
 
 
@@ -29,6 +31,10 @@ public interface TeamServiceI {
     int updateByPrimaryKeySelective(Team team);
     
     Team selectTeamById(String id);
+    
+    List<Team> selectTeamByPlanId(String planId);
+    
+    List<Team> getTeamByPlanIdDistinct(String rder);
 
 
 }

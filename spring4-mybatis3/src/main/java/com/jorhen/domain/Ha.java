@@ -27,7 +27,17 @@ public class Ha {
     
     private Plan plan;
     
-    public String getHaDesc() {
+    private Ccp ccp;
+    
+    public Ccp getCcp() {
+		return ccp;
+	}
+
+	public void setCcp(Ccp ccp) {
+		this.ccp = ccp;
+	}
+
+	public String getHaDesc() {
 		return haDesc;
 	}
 

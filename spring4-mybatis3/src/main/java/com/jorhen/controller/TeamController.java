@@ -1,10 +1,19 @@
 package com.jorhen.controller;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.jorhen.domain.Team;
 import com.jorhen.domain.TeamForm;
 import com.jorhen.service.TeamServiceI;
+import com.jorhen.util.ExportWordHelper;
+import com.jorhen.util.XwpfTUtil;
 
 @Controller
 @RequestMapping("/team")
@@ -106,6 +117,92 @@ public class TeamController extends BaseController {
 		System.out.println("id=" + teamId);
 		teamService.deleteByPrimaryKey(teamId);
 		return "redirect:/team/index.do";
+	}
+	
+	@RequestMapping("/queryPro")
+	public String queryPro(HttpServletRequest request, ModelMap model) {
+
+		lstTeams = teamService.getTeamByPlanIdDistinct(user.getuName());
+		model.addAttribute("lsts", lstTeams);		
+		return "team/datapro";
+
+	}
+
+	@RequestMapping("/exportWord")
+	public void exportWord(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap, Team team) {
+
+		log.info("==getPlanId==" + team.getPlanId());	
+		List<Team> wgylist1 = new ArrayList<Team>();
+		
+		wgylist1 = teamService.selectTeamByPlanId(team.getPlanId());
+		// 上传路径
+		String path = request.getServletContext().getRealPath("/template/");
+		// 上传文件名
+		// String filename = file.getOriginalFilename();
+		//log.info("==team1.getrDate()==" + team1.getrDate());
+		
+		
+		List<Map<String,String>> lzlist1 = null;
+		String dateStr = null;
+
+		Map<String, Object> params = new HashMap<String, Object>();		
+		//params.put("${rDate}", team1.getrDate());
+		/*
+		params.put("${pUse}", pc1.getpUse());
+		params.put("${sSpot}", pc1.getsSpot());
+		params.put("${cObj}", pc1.getcObj());
+		params.put("${notes}", pc1.getNotes());
+		*/
+
+		XwpfTUtil xwpfTUtil = new XwpfTUtil();	
+
+		String fileName = "team.docx";
+
+		// 响应到客户端
+		try {
+
+			String filePath = path + "team.docx";
+
+			InputStream is = new FileInputStream(filePath);
+
+			XWPFDocument doc = new XWPFDocument(is);
+
+			xwpfTUtil.replaceInPara(doc, params);
+			// 替換表格裡面的變數
+			xwpfTUtil.replaceInTable(doc, params);
+			
+			ExportWordHelper ewp =new ExportWordHelper();
+            ewp.ExportWord(wgylist1, lzlist1,doc,dateStr); 
+
+			this.setResponseHeader(response, fileName);
+			OutputStream os = response.getOutputStream();
+
+			doc.write(os);
+			os.flush();
+			os.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	// 发送响应流方法
+	public void setResponseHeader(HttpServletResponse response, String fileName) {
+		try {
+			try {
+				fileName = new String(fileName.getBytes(), "ISO8859-1");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			response.setContentType("application/octet-stream;charset=ISO8859-1");
+			response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+			response.addHeader("Pargam", "no-cache");
+			response.addHeader("Cache-Control", "no-cache");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 }

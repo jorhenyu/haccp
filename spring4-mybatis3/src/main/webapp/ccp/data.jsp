@@ -12,10 +12,12 @@
 		<tr>
 			<th colspan="11" scope="row"><input type="button"
 				onclick="javascript:location.href='${pageContext.request.contextPath}/ccp/add.do?jt=3'"
-				value="新增3個問題判定表">
+				value="新增3個問題判定表"></input>
 				<input type="button"
 				onclick="javascript:location.href='${pageContext.request.contextPath}/ccp/add.do?jt=4'"
-				value="新增4個問題判定表"></input></th>
+				value="新增4個問題判定表"></input>	<input type="button"
+				onclick="javascript:location.href='${pageContext.request.contextPath}/ccp/report.do'"
+				value="匯出"></input></th>
 		</tr>
 		<tr>
 			<th>修改</th>
