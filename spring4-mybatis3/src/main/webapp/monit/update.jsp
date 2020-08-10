@@ -61,7 +61,12 @@ $(document).ready(function() {
 
 			<tr>
 				<th>管制類型</th>
-				<td><textarea name="typeReg">${monit.typeReg}</textarea></td>
+				<td>
+					<select id="typeReg" name="typeReg">
+						<option value="ul">上限</option>
+						<option value="ll">下限</option>
+						<option value="ulAndll">上限與下限</option>
+				</select></td>
 			</tr>
 			<tr>
 				<th>管制上限</th>
@@ -85,5 +90,10 @@ $(document).ready(function() {
 			</tr>
 		</table>
 	</form:form>
+	
+		<script>
+	var selValue = '${monit.typeReg}';
+	$('#typeReg option[value='+ selValue +']').attr('selected', true);
+</script>
 
 </body>

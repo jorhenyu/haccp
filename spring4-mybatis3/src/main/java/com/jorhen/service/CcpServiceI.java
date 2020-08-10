@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.jorhen.domain.Ccp;
+import com.jorhen.domain.Query;
 import com.jorhen.domain.Team;
 
 
@@ -31,6 +32,8 @@ public interface CcpServiceI {
     List<Ccp> selectCcpByPlanId(String planId);
     
     List<Ccp> getCcpByPlanIdDistinct(String rder);
+    
+    List<Ccp> getMyCcpByQuery(Query query); 
 
 
 }

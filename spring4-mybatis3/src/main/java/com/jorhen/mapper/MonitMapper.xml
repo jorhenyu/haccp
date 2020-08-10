@@ -240,4 +240,37 @@
 		join t_plan p  on m.plan_id = p.p_id  
 		and m.monit_id=#{monitId}
 	</select>
+	
+		<select id="getMyMonitByQuery" parameterType="com.jorhen.domain.Query"  resultMap="BaseResultMap">
+		select
+		 *
+		from t_monit m join t_ha h on m.ha_id = h.ha_id 
+		join t_plan p  on m.plan_id = p.p_id			
+
+		<if test="qRder !=null and qRder !='' ">
+			and m.rder = #{qRder}
+		</if>	
+		
+		<if test="qPname !=null and qPname !='' ">
+			and p.p_name=#{qPname}
+		</if>
+		
+		<if test="qCatId !=null and qCatId !='' ">
+			and p.c_id=#{qCatId}
+		</if>
+		
+		<if test="qtypeReg !=null and qtypeReg !='' ">
+			and m.Type_reg=#{qtypeReg}
+		</if>
+	
+	   <if test="rDateStart !=null and rDateStart !='' ">
+	     <if test="rDateEnd !=null and rDateEnd !='' ">	    
+	        and (m.r_date between #{rDateStart} and #{rDateEnd})			
+		</if>
+		</if>
+		
+		order by  m.r_date asc	
+		
+
+	</select>
 </mapper>

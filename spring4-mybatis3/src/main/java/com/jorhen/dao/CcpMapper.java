@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.jorhen.domain.Ccp;
+import com.jorhen.domain.Query;
 
 public interface CcpMapper {
     int deleteByPrimaryKey(String ccpId);
@@ -28,4 +29,6 @@ public interface CcpMapper {
     List<Ccp> selectCcpByPlanId(@Param("planId") String planId);
     
     List<Ccp> getCcpByPlanIdDistinct(@Param("rder") String rder);
+    
+    List<Ccp> getMyCcpByQuery(Query query);
 }

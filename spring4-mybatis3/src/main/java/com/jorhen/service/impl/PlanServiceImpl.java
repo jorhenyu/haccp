@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.jorhen.dao.PlanMapper;
 import com.jorhen.domain.Plan;
+import com.jorhen.domain.Query;
 import com.jorhen.service.PlanServiceI;
 import com.jorhen.util.DateUtils;
 import com.jorhen.util.WebUtils;
@@ -58,6 +59,11 @@ public class PlanServiceImpl implements PlanServiceI {
 	public boolean findById(String pId) {
 
 		return planMapper.findById(pId);
+	}
+	
+	// @Override
+	public List<Plan> getMyPlanByQuery(Query query) {
+		return planMapper.getMyPlanByQuery(query);
 	}
 
 }

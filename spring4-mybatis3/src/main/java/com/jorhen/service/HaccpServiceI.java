@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.jorhen.domain.Haccp;
+import com.jorhen.domain.Query;
 
 
 public interface HaccpServiceI {
@@ -29,6 +30,6 @@ public interface HaccpServiceI {
     
     List<Haccp> getHaccpByPlanIdDistinct(String rder);
     
-
+    List<Haccp> getMyHaccpByQuery(Query query);
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.jorhen.dao.CcpMapper;
 import com.jorhen.domain.Ccp;
+import com.jorhen.domain.Query;
 import com.jorhen.service.CcpServiceI;
 import com.jorhen.util.DateUtils;
 import com.jorhen.util.WebUtils;
@@ -72,6 +73,11 @@ public class CcpServiceImpl implements CcpServiceI {
 	// @Override
 	public List<Ccp> getCcpByPlanIdDistinct(String rder) {
 		return ccpMapper.getCcpByPlanIdDistinct(rder);
+	}
+	
+	// @Override
+	public List<Ccp> getMyCcpByQuery(Query query) {
+		return ccpMapper.getMyCcpByQuery(query);
 	}
 
 }

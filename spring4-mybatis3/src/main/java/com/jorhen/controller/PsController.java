@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jorhen.domain.Cat;
 import com.jorhen.domain.Ps;
+import com.jorhen.domain.Query;
+import com.jorhen.domain.Team;
 import com.jorhen.service.CatServiceI;
 import com.jorhen.service.OptionService;
 import com.jorhen.service.PsServiceI;
@@ -60,9 +62,10 @@ public class PsController extends BaseController {
 
 		lsts = psService.getMyPs(user.getuName());
 		model.addAttribute("lsts", lsts);
-		model.addAttribute("options",this.optionService.catsTypeOption(null));		
-		log.info("=plan=uName==" + user.getuName());
-		return "ps/data";
+		model.addAttribute("options",this.optionService.catsTypeOption(null));
+		model.addAttribute("planStatus", this.optionService.planStatusOption());
+		
+		return "ps/mydata";
 	}
 
 	// 更新介面
@@ -204,6 +207,39 @@ public class PsController extends BaseController {
 		}
 	}
 	
+	// 參數查詢
+	@RequestMapping(value = "/queryByparm")
+	public String queryByparm(ModelMap model, Query query) {
+
+		if (query.getqPstatus().equals("fprivate")) {
+			// 如果私人，就自己資料全撈
+			lsts = psService.getMyPs(user.getuName());
+		} else {
+			// 其他狀態就撈公開跟協作資料
+			lsts = psService.getMyPsByQuery(query);
+		}
+
+		model.addAttribute("lsts", lsts);
+		model.addAttribute("options", this.optionService.catsTypeOption(null));
+		model.addAttribute("planStatus", this.optionService.planStatusOption());
+
+		if (query.getqPstatus().equals("fprivate")) {
+			// 如果私人就進可以修刪功能頁面
+			return "ps/mydata";
+		} else {
+			// 其他狀態就根據狀態處理
+			return "ps/data";
+		}
+	}
+	
+	@RequestMapping(value = "/cowork")
+	public String cowork(ModelMap model, Ps ps) {
+
+		ps = psService.selectPsById(ps.getPsId());
+		model.addAttribute("ps", ps);
+		return "ps/coworkpw";
+	}
+
 
 
 }

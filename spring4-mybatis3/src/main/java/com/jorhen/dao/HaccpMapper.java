@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.jorhen.domain.Ccp;
 import com.jorhen.domain.Haccp;
+import com.jorhen.domain.Query;
 
 public interface HaccpMapper {
     int deleteByPrimaryKey(String haccpId);
@@ -27,4 +28,6 @@ public interface HaccpMapper {
     List<Haccp> selectHaccpByPlanId(@Param("planId") String planId);
     
     List<Haccp> getHaccpByPlanIdDistinct(@Param("rder") String rder);
+    
+    List<Haccp> getMyHaccpByQuery(Query query);
 }

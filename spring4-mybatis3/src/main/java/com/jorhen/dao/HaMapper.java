@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.jorhen.domain.Ha;
+import com.jorhen.domain.Query;
 
 public interface HaMapper {
     int deleteByPrimaryKey(String haId);
@@ -25,4 +26,6 @@ public interface HaMapper {
     List<Ha> selectHaByPlanId(@Param("planId") String planId);
     
     List<Ha> getHaByPlanIdDistinct(@Param("rder") String rder);
+    
+    List<Ha> getMyHaByQuery(Query query);
 }

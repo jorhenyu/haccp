@@ -150,7 +150,7 @@
   
        	<!-- ==============以下內容是根據自身業務擴展的內容======================= -->
 	<!-- select標籤的id屬性與PlanMapper介面中定義的getAllPlan方法要一模一樣 -->
-	<select id="getMyPlan" resultMap="BaseResultMap">
+	<select id="getMyPlan" parameterType="java.lang.String" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from t_plan
@@ -162,7 +162,7 @@
 	</select>
 	
 		<!-- 根據id查詢plan info -->
-	<select id="findPlanById" resultType="boolean">
+	<select id="findPlanById" parameterType="java.lang.String" resultType="boolean">
 		select count(p_id) from t_plan
 
 		<where>
@@ -170,5 +170,40 @@
 				p_id = #{pId}
 			</if>
 		</where>
+	</select>
+	
+	<select id="getMyPlanByQuery" parameterType="com.jorhen.domain.Query"  resultMap="BaseResultMap">
+		select
+		 *
+		from t_plan p 
+				
+     <where>
+     
+     	<if test="qPstatus !=null and qPstatus !='' ">
+			p.p_status=#{qPstatus}
+		</if>
+		
+		<if test="qRder !=null and qRder !='' ">
+			and p.rder = #{qRder}
+		</if>	
+		
+		<if test="qPname !=null and qPname !='' ">
+			and p.p_name=#{qPname}
+		</if>
+		
+		<if test="qCatId !=null and qCatId !='' ">
+			and p.c_id=#{qCatId}
+		</if>	
+		
+	
+	
+	   <if test="rDateStart !=null and rDateStart !='' ">
+	     <if test="rDateEnd !=null and rDateEnd !='' ">	    
+	        and (p.r_date between #{rDateStart} and #{rDateEnd})			
+		</if>
+		</if>		
+		</where>
+		order by  p.r_date desc	
+
 	</select>
 </mapper>

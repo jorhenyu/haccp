@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.jorhen.domain.Query;
 import com.jorhen.domain.Team;
 
 
@@ -36,5 +37,5 @@ public interface TeamServiceI {
     
     List<Team> getTeamByPlanIdDistinct(String rder);
 
-
+    List<Team> getMyTeamByQuery(Query query);
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.jorhen.domain.Plan;
+import com.jorhen.domain.Query;
 import com.jorhen.domain.Team;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -36,7 +38,8 @@ public interface TeamMapper {
     List<Team> selectTeamByPlanId(@Param("planId") String planId);
     
     List<Team> getTeamByPlanIdDistinct(@Param("rder") String rder);
-
+    
+    List<Team> getMyTeamByQuery(Query query);
     
 
 }

@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jorhen.domain.Pc;
+import com.jorhen.domain.Ps;
+import com.jorhen.domain.Query;
+import com.jorhen.service.OptionService;
 import com.jorhen.service.PcServiceI;
 import com.jorhen.util.XwpfTUtil;
 
@@ -34,6 +37,8 @@ public class PcController extends BaseController {
 	// 處理業務邏輯的pcService
 	@Autowired
 	private PcServiceI pcService;
+    @Autowired
+    OptionService optionService;
 
 	List<Pc> lsts = null;
 	String rder = null;
@@ -52,8 +57,10 @@ public class PcController extends BaseController {
 
 		lsts = pcService.getMyPc(user.getuName());
 		model.addAttribute("lsts", lsts);
+		model.addAttribute("options", this.optionService.catsTypeOption(null));
+		model.addAttribute("planStatus", this.optionService.planStatusOption());
 		log.info("=plan=uName==" + user.getuName());
-		return "pc/data";
+		return "pc/mydata";
 	}
 
 	// 更新介面
@@ -176,6 +183,39 @@ public class PcController extends BaseController {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+	
+	// 參數查詢
+	@RequestMapping(value = "/queryByparm")
+	public String queryByparm(ModelMap model, Query query) {
+
+		if (query.getqPstatus().equals("fprivate")) {
+			// 如果私人，就自己資料全撈
+			lsts = pcService.getMyPc(user.getuName());
+		} else {
+			// 其他狀態就撈公開跟協作資料
+			lsts = pcService.getMyPcByQuery(query);
+		}
+
+		model.addAttribute("lsts", lsts);
+		model.addAttribute("options", this.optionService.catsTypeOption(null));
+		model.addAttribute("planStatus", this.optionService.planStatusOption());
+
+		if (query.getqPstatus().equals("fprivate")) {
+			// 如果私人就進可以修刪功能頁面
+			return "pc/mydata";
+		} else {
+			// 其他狀態就根據狀態處理
+			return "pc/data";
+		}
+	}
+	
+	@RequestMapping(value = "/cowork")
+	public String cowork(ModelMap model, Pc pc) {
+
+		pc = pcService.selectPcById(pc.getPcId());
+		model.addAttribute("pc", pc);
+		return "pc/coworkpw";
 	}
 
 }

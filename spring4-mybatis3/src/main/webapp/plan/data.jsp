@@ -4,8 +4,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>顯示使用者資訊user</title>
+<title>data</title>
 <link rel="stylesheet" type="text/css" href="../css/css-table.css">
+<link rel="stylesheet" href="../css/jquery-ui.css">
+<script src="../js/jquery.js"></script>
+<script src="../js/jquery-ui.min.js"></script>
+<script>
+$(document).ready(function() {
+		$("#startdatepicker").datepicker({
+			dateFormat : 'yy-mm-dd'
+		});
+	
+		
+		$("#enddatepicker").datepicker({
+			dateFormat : 'yy-mm-dd'
+		});
+
+		
+		   $("#add").bind('click', function() {
+            	 
+	        	 $('#form1').submit();
+	      });  		   
+
+    });
+	
+
+</script>
 </head>
 <body>
 	<table>
@@ -13,21 +37,75 @@
 			<th colspan="9" scope="row"><input type="button"
 				onclick="javascript:location.href='${pageContext.request.contextPath}/plan/add.do'"
 				value="新增"></input></th>
+				</tr>
+				<tr>
+				<th colspan="9">
+				<form id="form1" name="form1" action="${pageContext.request.contextPath }/plan/queryByparm.do"
+				method="post">
+				業別:	<select name="qCatId">
+				<option value="">---請選擇-----</option>				
+						<c:forEach var="o" items="${options}">
+							<option value="${o.optionKey}">${o.optionValue}</option>
+						</c:forEach>
+				</select>
+			專案名稱:<input type="text" name="qPname" id="qPname" value=""	>
+			專案狀態:<select name="qPstatus">										
+						<c:forEach var="o" items="${planStatus}">
+							<option value="${o.optionKey}">${o.optionValue}</option>
+						</c:forEach>			
+				</select><br>
+			
+			開始日期:<input type="text" name="rDateStart" id="startdatepicker" value=""
+				readonly>
+			結束日期:<input type="text" name="rDateEnd" id="enddatepicker" value=""
+				readonly>
+			
+					<input id="add" name="add" type="button" value="查詢">
+			</form>
+		</th>
 		</tr>
 		<tr>
+			<th></th>
+			<th></th>
 			<th>計劃書名稱</th>
 			<th>業別</th>
 			<th>製作者</th>
 			<th>計劃書狀態</th>
-			<th>協同作業密碼</th>
-			<th>擁有者</th>
-			<th>紀錄日期</th>
-			<th>修改</th>
-			<th>刪除</th>
+
 		</tr>
 		<%--遍歷lstUsers集合中的User物件 --%>
 		<c:forEach var="plan" items="${lsts}">
 			<tr>
+			<c:choose><c:when test="${plan.pStatus == 'fprivate'}">
+			<td>
+					<form action="${pageContext.request.contextPath }/plan/update.do"
+						method="post">
+						<input type="hidden" name="pId" value="${plan.pId}"> <input
+							type="submit" value="修改">
+					</form>
+				</td>
+				<td>
+					<form action="${pageContext.request.contextPath }/plan/del.do"
+						method="post">
+						<input type="hidden" name="pId" value="${plan.pId}"> <input
+							type="submit" value="刪除">
+					</form>
+				</td>
+				
+				</c:when>
+				<c:when test="${plan.pStatus == 'fcowork'}">
+				<td>
+					<form action="${pageContext.request.contextPath }/plan/cowork.do"
+						method="post">
+						<input type="hidden" name="pId" value="${plan.pId}"> <input
+							type="submit" value="協作">
+					</form>
+				</td><td></td></c:when>
+				<c:otherwise><td><form action="${pageContext.request.contextPath }/plan/copyPlan.do"
+						method="post">
+						<input type="hidden" name="pId" value="${plan.pId}"> <input
+							type="submit" value="複製">
+					</form></td><td></td></c:otherwise></c:choose>
 				<td>${plan.pName}</td>
 				<td>
 						<c:forEach items="${options}" var="o">
@@ -52,27 +130,10 @@
 				
 				
 				</td>
-				<td>${plan.cwPw}</td>
-				<td>${plan.rder}</td>
-				<td>${plan.rDate}</td>
-				<td>
-					<form action="${pageContext.request.contextPath }/plan/update.do"
-						method="post">
-						<input type="hidden" name="pId" value="${plan.pId}"> <input
-							type="submit" value="修改">
-					</form>
-				</td>
-				<td>
-					<form action="${pageContext.request.contextPath }/plan/del.do"
-						method="post">
-						<input type="hidden" name="pId" value="${plan.pId}"> <input
-							type="submit" value="刪除">
-					</form>
-				</td>
-
 			</tr>
 		</c:forEach>
 	</table>
+	
 </body>
 </html>
 

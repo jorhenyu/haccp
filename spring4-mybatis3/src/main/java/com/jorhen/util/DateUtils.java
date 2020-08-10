@@ -29,5 +29,16 @@ public class DateUtils {
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		return sdf.format(time);
 	}
+	
+	public static String formatDateTommdd(String time) {
+		String[] tokens = time.split("-");
+		
+	    StringBuffer sb = new StringBuffer();
+	    sb.append(tokens[1].replaceFirst("^0*", ""));
+	    sb.append(".");
+	    sb.append(tokens[2].replaceFirst("^0*", ""));
+		
+		return sb.toString();
+	}
 
 }

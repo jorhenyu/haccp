@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.jorhen.dao.PsMapper;
 import com.jorhen.domain.Plan;
 import com.jorhen.domain.Ps;
+import com.jorhen.domain.Query;
 import com.jorhen.service.PsServiceI;
 import com.jorhen.util.DateUtils;
 import com.jorhen.util.WebUtils;
@@ -49,15 +50,24 @@ public class PsServiceImpl implements PsServiceI {
 	
 	public Ps selectByPrimaryKey(String psId) {
 		return psMapper.selectByPrimaryKey(psId);		
-	};
+	}
 	
 	// @Override
-	public List<Ps> getMyPs(String maker) {
-		return psMapper.getMyPs(maker);
+	public List<Ps> getMyPs(String rder) {
+		return psMapper.getMyPs(rder);
 	}
 	
 	public Ps selectPsById(String psId) {
 		return psMapper.selectPsById(psId);
-	};
+	}
+	
+	public Ps getMyPsBypLd(String planId) {
+		return psMapper.getMyPsBypLd(planId);
+	}
+	
+	// @Override
+	public List<Ps> getMyPsByQuery(Query query) {
+		return psMapper.getMyPsByQuery(query);
+	}
 
 }

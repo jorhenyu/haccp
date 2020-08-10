@@ -3,6 +3,7 @@ package com.jorhen.service;
 import java.util.List;
 
 import com.jorhen.domain.Plan;
+import com.jorhen.domain.Query;
 
 
 public interface PlanServiceI {
@@ -36,6 +37,8 @@ public interface PlanServiceI {
      * @return boolean
      */
     boolean findById(String pId);
+    
+    List<Plan> getMyPlanByQuery(Query query);
 
 
 }

@@ -233,4 +233,38 @@
 		join t_ccp c on h.ha_id = c.ha_id		
 		and h.rder = #{rder}
 	</select>
+	
+		<select id="getMyHaByQuery" parameterType="com.jorhen.domain.Query"  resultMap="BaseResultMap">
+		select
+		 *
+		from t_ha h join t_plan p on h.plan_id = p.p_id 
+		join t_ccp c on h.ha_id = c.ha_id			
+            
+        
+     	<if test="qPstatus !=null and qPstatus !='' ">
+			and p.p_status=#{qPstatus}
+		</if>
+		
+		<if test="qRder !=null and qRder !='' ">
+			and h.rder = #{qRder}
+		</if>	
+		
+		<if test="qPname !=null and qPname !='' ">
+			and p.p_name=#{qPname}
+		</if>
+		
+		<if test="qCatId !=null and qCatId !='' ">
+			and p.c_id=#{qCatId}
+		</if>			
+	
+	
+	   <if test="rDateStart !=null and rDateStart !='' ">
+	     <if test="rDateEnd !=null and rDateEnd !='' ">	    
+	        and (h.r_date between #{rDateStart} and #{rDateEnd})			
+		</if>
+		</if>		
+		
+		order by  h.r_date desc	
+
+	</select>
 </mapper>

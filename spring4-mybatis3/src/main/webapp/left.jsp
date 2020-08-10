@@ -65,7 +65,7 @@
 							<li><span class="file"><a href="<%=drawPath %>"
 							target="showframe">製作產品加工流程圖</a></span></li>
 							<li><span class="file"><a
-							href="${pageContext.request.contextPath}/proc/index.do"
+							href="${pageContext.request.contextPath}/fchart/upload.do"
 							target="showframe">檔案上傳</a></span></li>
 						</ul></li>	
 				
@@ -87,6 +87,9 @@
 					<li><span class="file"><a
 							href="${pageContext.request.contextPath}/monit/index.do"
 							target="showframe">管制監控紀錄</a></span></li>
+					<li><span class="file"><a
+							href="${pageContext.request.contextPath}/fchart/index.do"
+							target="showframe">fchart</a></span></li>
 				</ul></li>
 		</ul>
 

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.jorhen.domain.Monit;
+import com.jorhen.domain.Query;
 
 public interface MonitMapper {
     int deleteByPrimaryKey(String monitId);
@@ -22,4 +23,6 @@ public interface MonitMapper {
     List<Monit> getMyMonit(@Param("rder") String rder);
     
     Monit selectMonitById(@Param("monitId") String monitId);
+    
+    List<Monit> getMyMonitByQuery(Query query);
 }

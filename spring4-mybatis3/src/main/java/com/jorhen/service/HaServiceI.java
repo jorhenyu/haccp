@@ -3,6 +3,7 @@ package com.jorhen.service;
 import java.util.List;
 
 import com.jorhen.domain.Ha;
+import com.jorhen.domain.Query;
 
 
 public interface HaServiceI {
@@ -27,5 +28,5 @@ public interface HaServiceI {
     
     List<Ha> getHaByPlanIdDistinct(String rder);
 
-
+    List<Ha> getMyHaByQuery(Query query);
 }

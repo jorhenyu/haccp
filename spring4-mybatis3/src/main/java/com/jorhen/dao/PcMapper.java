@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.jorhen.domain.Pc;
+import com.jorhen.domain.Query;
 
 public interface PcMapper {
     int deleteByPrimaryKey(String pcId);
@@ -22,4 +23,8 @@ public interface PcMapper {
     List<Pc> getMyPc(@Param("rder") String rder);
     
     Pc selectPcById(@Param("pcId") String pcId);
+    
+    Pc getMyPcBypLd(@Param("planId") String planId);
+    
+    List<Pc> getMyPcByQuery(Query query);
 }

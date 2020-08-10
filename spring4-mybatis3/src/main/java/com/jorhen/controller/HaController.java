@@ -17,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jorhen.domain.Ha;
+import com.jorhen.domain.Pc;
+import com.jorhen.domain.Query;
 import com.jorhen.service.HaServiceI;
+import com.jorhen.service.OptionService;
 import com.jorhen.util.ExcelUtil;
 
 @Controller
@@ -30,6 +33,9 @@ public class HaController extends BaseController {
 	// 處理業務邏輯的pcService
 	@Autowired
 	private HaServiceI haService;
+	
+    @Autowired
+    OptionService optionService;
 	
 	List<Ha> lsts = null;
 	String rder = null;		
@@ -48,9 +54,11 @@ public class HaController extends BaseController {
 	public String index(ModelMap model) {
 
 		lsts = haService.getMyHa(user.getuName());
-		model.addAttribute("lsts", lsts);				
-		log.info("=plan=uName==" + user.getuName());
-		return "ha/data";
+		model.addAttribute("lsts", lsts);	
+		model.addAttribute("options", this.optionService.catsTypeOption(null));
+		model.addAttribute("planStatus", this.optionService.planStatusOption());
+		
+		return "ha/mydata";
 	}
 
 	// 更新介面
@@ -184,6 +192,40 @@ public class HaController extends BaseController {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+	
+	
+	// 參數查詢
+	@RequestMapping(value = "/queryByparm")
+	public String queryByparm(ModelMap model, Query query) {
+
+		if (query.getqPstatus().equals("fprivate")) {
+			// 如果私人，就自己資料全撈
+			lsts = haService.getMyHa(user.getuName());
+		} else {
+			// 其他狀態就撈公開跟協作資料
+			lsts = haService.getMyHaByQuery(query);
+		}
+
+		model.addAttribute("lsts", lsts);
+		model.addAttribute("options", this.optionService.catsTypeOption(null));
+		model.addAttribute("planStatus", this.optionService.planStatusOption());
+
+		if (query.getqPstatus().equals("fprivate")) {
+			// 如果私人就進可以修刪功能頁面
+			return "ha/mydata";
+		} else {
+			// 其他狀態就根據狀態處理
+			return "ha/data";
+		}
+	}
+	
+	@RequestMapping(value = "/cowork")
+	public String cowork(ModelMap model, Ha ha) {
+
+		ha = haService.selectHaById(ha.getHaId());
+		model.addAttribute("ha", ha);
+		return "ha/coworkpw";
 	}
 	
 

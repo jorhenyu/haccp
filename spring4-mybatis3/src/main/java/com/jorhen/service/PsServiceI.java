@@ -2,7 +2,10 @@ package com.jorhen.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.jorhen.domain.Ps;
+import com.jorhen.domain.Query;
 
 
 public interface PsServiceI {
@@ -19,9 +22,13 @@ public interface PsServiceI {
 
     //int updateByPrimaryKey(Ps record);
     
-    List<Ps> getMyPs(String maker); 
+    List<Ps> getMyPs(String rder); 
     
     Ps selectPsById(String psId);
+    
+    Ps getMyPsBypLd(String planId);
+    
+    List<Ps> getMyPsByQuery(Query query); 
 
 
 }

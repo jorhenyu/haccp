@@ -22,8 +22,19 @@ public class User {
 
     // 用戶職位
     private String uPosi;
+    
+    // 點數
+    private String rdPot;
 
-    public String getuId() {
+    public String getRdPot() {
+		return rdPot;
+	}
+
+	public void setRdPot(String rdPot) {
+		this.rdPot = rdPot;
+	}
+
+	public String getuId() {
         return uId;
     }
 

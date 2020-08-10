@@ -21,8 +21,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.jorhen.domain.Plan;
+import com.jorhen.domain.Query;
 import com.jorhen.domain.Team;
 import com.jorhen.domain.TeamForm;
+import com.jorhen.domain.User;
+import com.jorhen.service.OptionService;
 import com.jorhen.service.TeamServiceI;
 import com.jorhen.util.ExportWordHelper;
 import com.jorhen.util.XwpfTUtil;
@@ -38,6 +42,9 @@ public class TeamController extends BaseController {
 	// 處理業務邏輯的teamService
 	@Autowired
 	private TeamServiceI teamService;
+	@Autowired
+	OptionService optionService;
+	
 	List<Team> lstTeams = null;
 
 	public TeamServiceI getTeam() {
@@ -54,8 +61,10 @@ public class TeamController extends BaseController {
 
 		lstTeams = teamService.getAllTeam(user.getuName());
 		modelMap.addAttribute("lstTeams", lstTeams);
+		modelMap.addAttribute("options", this.optionService.catsTypeOption(null));
+		modelMap.addAttribute("planStatus", this.optionService.planStatusOption());
 
-		return "team/data";
+		return "team/mydata";
 	}
 
 	// 更新介面
@@ -204,5 +213,39 @@ public class TeamController extends BaseController {
 			ex.printStackTrace();
 		}
 	}
+	
+	// 參數查詢
+	@RequestMapping(value = "/queryByparm")
+	public String queryByparm(ModelMap model, Query query) {
+
+		if (query.getqPstatus().equals("fprivate")) {
+			// 如果私人，就自己資料全撈
+			lstTeams = teamService.getAllTeam(user.getuName());
+		} else {
+			// 其他狀態就撈公開跟協作資料
+			lstTeams = teamService.getMyTeamByQuery(query);
+		}
+
+		model.addAttribute("lstTeams", lstTeams);
+		model.addAttribute("options", this.optionService.catsTypeOption(null));
+		model.addAttribute("planStatus", this.optionService.planStatusOption());
+
+		if (query.getqPstatus().equals("fprivate")) {
+			// 如果私人就進可以修刪功能頁面
+			return "team/mydata";
+		} else {
+			// 其他狀態就根據狀態處理
+			return "team/data";
+		}
+	}
+	
+	@RequestMapping(value = "/cowork")
+	public String cowork(ModelMap model, Team team) {
+
+		team = teamService.getTeamById(team.getTeamId());
+		model.addAttribute("team", team);
+		return "team/coworkpw";
+	}
+
 
 }

@@ -6,6 +6,29 @@
 <head>
 <title>顯示使用者資訊user</title>
 <link rel="stylesheet" type="text/css" href="../css/css-table.css">
+<link rel="stylesheet" href="../css/jquery-ui.css">
+<script src="../js/jquery.js"></script>
+<script src="../js/jquery-ui.min.js"></script>
+<script>
+$(document).ready(function() {
+		$("#startdatepicker").datepicker({
+			dateFormat : 'yy-mm-dd'
+		});
+	
+		
+		$("#enddatepicker").datepicker({
+			dateFormat : 'yy-mm-dd'
+		});
+
+		
+		   $("#add").bind('click', function() {
+            	 
+	        	 $('#form1').submit();
+	      });  
+    });
+	
+
+</script>
 </head>
 <body>
 	<table>
@@ -16,9 +39,35 @@
 				onclick="javascript:location.href='${pageContext.request.contextPath}/ps/queryPro.do'"
 				value="匯出"></input></th>
 		</tr>
+				<tr>
+				<th colspan="9">
+				<form id="form1" name="form1" action="${pageContext.request.contextPath }/ps/queryByparm.do"
+				method="post">
+				業別:	<select name="qCatId">
+				<option value="">---請選擇-----</option>
+						<c:forEach var="o" items="${options}">
+							<option value="${o.optionKey}">${o.optionValue}</option>
+						</c:forEach>
+				</select>
+			專案名稱:<input type="text" name="qPname" id="qPname" value=""	>
+			專案狀態:<select name="qPstatus">									
+						<c:forEach var="o" items="${planStatus}">
+							<option value="${o.optionKey}">${o.optionValue}</option>
+						</c:forEach>			
+				</select><br>
+			
+			開始日期:<input type="text" name="rDateStart" id="startdatepicker" value=""
+				readonly>
+			結束日期:<input type="text" name="rDateEnd" id="enddatepicker" value=""
+				readonly>
+			
+					<input id="add" name="add" type="button" value="查詢">
+			</form>
+		</th>
+		</tr>
 		<tr>
-			<th>修改</th>
-			<th>刪除</th>
+			<th></th>
+			<th></th>
 			<th>專案名稱名稱</th>
 			<th>產品類別</th>			
 			<th>產品名稱</th>
@@ -38,6 +87,7 @@
 		<%--遍歷lstUsers集合中的User物件 --%>
 		<c:forEach var="ps" items="${lsts}">
 			<tr>
+				<c:choose><c:when test="${ps.plan.pStatus == 'fprivate'}">
 				<td>
 					<form
 						action="${pageContext.request.contextPath }/ps/update.do"
@@ -53,6 +103,17 @@
 							type="submit" value="刪除">
 					</form>
 				</td>
+				</c:when>
+				<c:when test="${ps.plan.pStatus == 'fcowork'}">
+								<td>
+					<form action="${pageContext.request.contextPath }/ps/cowork.do"
+						method="post">
+						<input type="hidden" name="psId" value="${ps.psId}"> <input
+							type="submit" value="協作">
+					</form>
+				</td><td></td></c:when>
+				<c:otherwise><td>
+					</td><td></td></c:otherwise></c:choose>
 			   <td>${ps.plan.pName}</td>
 				<td>
 						<c:forEach items="${options}" var="o">

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jorhen.dao.TeamMapper;
+import com.jorhen.domain.Query;
 import com.jorhen.domain.Team;
 import com.jorhen.service.TeamServiceI;
 import com.jorhen.util.DateUtils;
@@ -68,6 +69,12 @@ public class TeamServiceImpl implements TeamServiceI {
 	// @Override
 	public List<Team> getTeamByPlanIdDistinct(String rder) {
 		return teamMapper.getTeamByPlanIdDistinct(rder);
+	}
+
+	
+	// @Override
+	public List<Team> getMyTeamByQuery(Query query) {
+		return teamMapper.getMyTeamByQuery(query);
 	}
 
 

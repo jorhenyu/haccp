@@ -6,10 +6,11 @@
     <result column="u_name" jdbcType="VARCHAR" property="uName" />
     <result column="u_pw" jdbcType="VARCHAR" property="uPw" />
     <result column="u_email" jdbcType="VARCHAR" property="uEmail" />
-    <result column="u_posi" jdbcType="CHAR" property="uPosi" />
+    <result column="u_posi" jdbcType="VARCHAR" property="uPosi" />
+    <result column="rd_pot" jdbcType="VARCHAR" property="rdPot" />
   </resultMap>
   <sql id="Base_Column_List">
-    u_id, u_name, u_pw, u_email, u_posi
+    u_id, u_name, u_pw, u_email, u_posi, rd_pot
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -23,9 +24,9 @@
   </delete>
   <insert id="insert" parameterType="com.jorhen.domain.User">
     insert into t_user (u_id, u_name, u_pw, 
-      u_email, u_posi)
+      u_email, u_posi, rd_pot)
     values (#{uId,jdbcType=CHAR}, #{uName,jdbcType=VARCHAR}, #{uPw,jdbcType=VARCHAR}, 
-      #{uEmail,jdbcType=VARCHAR}, #{uPosi,jdbcType=CHAR})
+      #{uEmail,jdbcType=VARCHAR}, #{uPosi,jdbcType=VARCHAR}, #{rdPot,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.jorhen.domain.User">
     insert into t_user
@@ -45,6 +46,9 @@
       <if test="uPosi != null">
         u_posi,
       </if>
+      <if test="rdPot != null">
+        rd_pot,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="uId != null">
@@ -60,7 +64,10 @@
         #{uEmail,jdbcType=VARCHAR},
       </if>
       <if test="uPosi != null">
-        #{uPosi,jdbcType=CHAR},
+        #{uPosi,jdbcType=VARCHAR},
+      </if>
+      <if test="rdPot != null">
+        #{rdPot,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -77,7 +84,10 @@
         u_email = #{uEmail,jdbcType=VARCHAR},
       </if>
       <if test="uPosi != null">
-        u_posi = #{uPosi,jdbcType=CHAR},
+        u_posi = #{uPosi,jdbcType=VARCHAR},
+      </if>
+      <if test="rdPot != null">
+        rd_pot = #{rdPot,jdbcType=VARCHAR},
       </if>
     </set>
     where u_id = #{uId,jdbcType=CHAR}
@@ -87,7 +97,8 @@
     set u_name = #{uName,jdbcType=VARCHAR},
       u_pw = #{uPw,jdbcType=VARCHAR},
       u_email = #{uEmail,jdbcType=VARCHAR},
-      u_posi = #{uPosi,jdbcType=CHAR}
+      u_posi = #{uPosi,jdbcType=VARCHAR},
+      rd_pot = #{rdPot,jdbcType=VARCHAR}
     where u_id = #{uId,jdbcType=CHAR}
   </update>
   

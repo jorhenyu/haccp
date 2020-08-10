@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.jorhen.dao.MonitMapper;
 import com.jorhen.domain.Monit;
+import com.jorhen.domain.Query;
 import com.jorhen.service.MonitServiceI;
 import com.jorhen.util.DateUtils;
 import com.jorhen.util.WebUtils;
@@ -58,5 +59,10 @@ public class MonitServiceImpl implements MonitServiceI {
 	public Monit selectMonitById(String ccpId) {
 		return monitMapper.selectMonitById(ccpId);
 	};
+	
+	// @Override
+	public List<Monit> getMyMonitByQuery(Query query) {
+		return monitMapper.getMyMonitByQuery(query);
+	}
 
 }

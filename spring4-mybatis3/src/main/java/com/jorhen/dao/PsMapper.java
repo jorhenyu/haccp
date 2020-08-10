@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.jorhen.domain.Ps;
+import com.jorhen.domain.Query;
 import com.jorhen.domain.Team;
 
 public interface PsMapper {
@@ -23,4 +24,8 @@ public interface PsMapper {
     List<Ps> getMyPs(@Param("rder") String rder);
     
     Ps selectPsById(@Param("psId") String psId);
+    
+    Ps getMyPsBypLd(@Param("planId") String planId);
+    
+    List<Ps> getMyPsByQuery(Query query);
 }

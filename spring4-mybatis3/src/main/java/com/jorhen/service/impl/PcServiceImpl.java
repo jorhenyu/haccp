@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.jorhen.dao.PcMapper;
 import com.jorhen.domain.Pc;
+import com.jorhen.domain.Query;
 import com.jorhen.service.PcServiceI;
 import com.jorhen.util.DateUtils;
 import com.jorhen.util.WebUtils;
@@ -48,15 +49,24 @@ public class PcServiceImpl implements PcServiceI {
 	
 	public Pc selectByPrimaryKey(String pcId) {
 		return pcMapper.selectByPrimaryKey(pcId);		
-	};
+	}
 	
 	// @Override
-	public List<Pc> getMyPc(String maker) {
-		return pcMapper.getMyPc(maker);
+	public List<Pc> getMyPc(String rder) {
+		return pcMapper.getMyPc(rder);
 	}
 	
 	public Pc selectPcById(String pcId) {
 		return pcMapper.selectPcById(pcId);
-	};
+	}
+	
+	public Pc getMyPcBypLd(String planId) {
+		return pcMapper.getMyPcBypLd(planId);
+	}
+	
+	// @Override
+	public List<Pc> getMyPcByQuery(Query query) {
+		return pcMapper.getMyPcByQuery(query);
+	}
 
 }

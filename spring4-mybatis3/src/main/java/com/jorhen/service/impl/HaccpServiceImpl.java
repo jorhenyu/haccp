@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.jorhen.dao.HaccpMapper;
 import com.jorhen.domain.Haccp;
+import com.jorhen.domain.Query;
 import com.jorhen.service.HaccpServiceI;
 import com.jorhen.util.DateUtils;
 import com.jorhen.util.WebUtils;
@@ -67,6 +68,11 @@ public class HaccpServiceImpl implements HaccpServiceI {
 	// @Override
 	public List<Haccp> getHaccpByPlanIdDistinct(String rder) {
 		return haccpMapper.getHaccpByPlanIdDistinct(rder);
+	}
+	
+	// @Override
+	public List<Haccp> getMyHaccpByQuery(Query query) {
+		return haccpMapper.getMyHaccpByQuery(query);
 	}
 
 }

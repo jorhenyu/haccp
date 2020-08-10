@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.jorhen.domain.Plan;
+import com.jorhen.domain.Query;
 
 public interface PlanMapper {
     int deleteByPrimaryKey(String pId);
@@ -25,6 +26,8 @@ public interface PlanMapper {
     List<Plan> getMyPlan(@Param("rder") String rder);
     
     boolean findById(@Param("pId") String pId);
+    
+    List<Plan> getMyPlanByQuery(Query query);
     
 
 }

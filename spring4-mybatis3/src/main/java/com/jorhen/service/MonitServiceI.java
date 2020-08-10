@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.jorhen.domain.Monit;
+import com.jorhen.domain.Query;
 
 
 public interface MonitServiceI {
@@ -21,9 +22,11 @@ public interface MonitServiceI {
 
     //int updateByPrimaryKey(Pc record);
     
-    List<Monit> getMyMonit(@Param("rder") String rder);
+    List<Monit> getMyMonit(String rder);
     
-    Monit selectMonitById(@Param("monitId") String monitId);
+    Monit selectMonitById(String monitId);
+    
+    List<Monit> getMyMonitByQuery(Query query);
 
 
 }

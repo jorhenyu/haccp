@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.jorhen.dao.HaMapper;
 import com.jorhen.domain.Ha;
+import com.jorhen.domain.Query;
 import com.jorhen.service.HaServiceI;
 import com.jorhen.util.DateUtils;
 import com.jorhen.util.WebUtils;
@@ -67,6 +68,11 @@ public class HaServiceImpl implements HaServiceI {
 	// @Override
 	public List<Ha> getHaByPlanIdDistinct(String rder) {
 		return haMapper.getHaByPlanIdDistinct(rder);
+	}
+	
+	// @Override
+	public List<Ha> getMyHaByQuery(Query query) {
+		return haMapper.getMyHaByQuery(query);
 	}
 
 }

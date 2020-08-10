@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jorhen.domain.Ccp;
 import com.jorhen.domain.Haccp;
+import com.jorhen.domain.Query;
 import com.jorhen.service.HaccpServiceI;
+import com.jorhen.service.OptionService;
 import com.jorhen.util.ExcelUtil;
 
 @Controller
@@ -31,6 +33,9 @@ public class HaccpController extends BaseController {
 	// 處理業務邏輯的pcService
 	@Autowired
 	private HaccpServiceI haccpService;
+	
+	@Autowired
+	OptionService optionService;
 	
 	List<Haccp> lsts = null;
 	String rder = null;		
@@ -50,8 +55,9 @@ public class HaccpController extends BaseController {
 
 		lsts = haccpService.getMyHaccp(user.getuName());
 		model.addAttribute("lsts", lsts);				
-		log.info("=plan=uName==" + user.getuName());
-		return "haccp/data";
+		model.addAttribute("options", this.optionService.catsTypeOption(null));
+		model.addAttribute("planStatus", this.optionService.planStatusOption());
+		return "haccp/mydata";
 	}
 
 	// 更新介面
@@ -180,6 +186,39 @@ public class HaccpController extends BaseController {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+	
+	// 參數查詢
+	@RequestMapping(value = "/queryByparm")
+	public String queryByparm(ModelMap model, Query query) {
+
+		if (query.getqPstatus().equals("fprivate")) {
+			// 如果私人，就自己資料全撈
+			lsts = haccpService.getMyHaccp(user.getuName());
+		} else {
+			// 其他狀態就撈公開跟協作資料
+			lsts = haccpService.getMyHaccpByQuery(query);
+		}
+
+		model.addAttribute("lsts", lsts);
+		model.addAttribute("options", this.optionService.catsTypeOption(null));
+		model.addAttribute("planStatus", this.optionService.planStatusOption());
+
+		if (query.getqPstatus().equals("fprivate")) {
+			// 如果私人就進可以修刪功能頁面
+			return "haccp/mydata";
+		} else {
+			// 其他狀態就根據狀態處理
+			return "haccp/data";
+		}
+	}
+	
+	@RequestMapping(value = "/cowork")
+	public String cowork(ModelMap model, Haccp haccp) {
+
+		haccp = haccpService.selectHaccpById(haccp.getHaccpId());
+		model.addAttribute("haccp", haccp);
+		return "haccp/coworkpw";
 	}
 	
 

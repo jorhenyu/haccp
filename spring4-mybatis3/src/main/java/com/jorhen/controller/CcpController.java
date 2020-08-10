@@ -17,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jorhen.domain.Ccp;
+import com.jorhen.domain.Ha;
+import com.jorhen.domain.Query;
 import com.jorhen.service.CcpServiceI;
+import com.jorhen.service.OptionService;
 import com.jorhen.util.ExcelUtil;
 
 @Controller
@@ -30,6 +33,9 @@ public class CcpController extends BaseController {
 	// 處理業務邏輯的pcService
 	@Autowired
 	private CcpServiceI ccpService;
+	
+    @Autowired
+    OptionService optionService;
 	
 	List<Ccp> lsts = null;
 	String rder = null;		
@@ -49,8 +55,9 @@ public class CcpController extends BaseController {
 
 		lsts = ccpService.getMyCcp(user.getuName());
 		model.addAttribute("lsts", lsts);				
-		log.info("=plan=uName==" + user.getuName());
-		return "ccp/data";
+		model.addAttribute("options", this.optionService.catsTypeOption(null));
+		model.addAttribute("planStatus", this.optionService.planStatusOption());
+		return "ccp/mydata";
 	}
 
 	// 更新介面
@@ -199,6 +206,38 @@ public class CcpController extends BaseController {
 		}
 	}
 	
+	// 參數查詢
+	@RequestMapping(value = "/queryByparm")
+	public String queryByparm(ModelMap model, Query query) {
 
+		if (query.getqPstatus().equals("fprivate")) {
+			// 如果私人，就自己資料全撈
+			lsts = ccpService.getMyCcp(user.getuName());
+		} else {
+			// 其他狀態就撈公開跟協作資料
+			lsts = ccpService.getMyCcpByQuery(query);
+		}
+
+		model.addAttribute("lsts", lsts);
+		model.addAttribute("options", this.optionService.catsTypeOption(null));
+		model.addAttribute("planStatus", this.optionService.planStatusOption());
+
+		if (query.getqPstatus().equals("fprivate")) {
+			// 如果私人就進可以修刪功能頁面
+			return "ccp/mydata";
+		} else {
+			// 其他狀態就根據狀態處理
+			return "ccp/data";
+		}
+	}
+	
+	@RequestMapping(value = "/cowork")
+	public String cowork(ModelMap model, Ccp ccp) {
+
+		ccp = ccpService.selectCcpById(ccp.getCcpId());
+		model.addAttribute("ccp", ccp);
+		return "ccp/coworkpw";
+	}
+	
 
 }
