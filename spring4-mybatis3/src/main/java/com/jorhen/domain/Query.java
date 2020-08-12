@@ -19,6 +19,26 @@ public class Query {
     private String rDateEnd; //紀錄結束
     
     private String qtypeReg; //管制類型  
+    
+    int pageNum; //當前頁
+    
+    int pageSize; //頁面大小
+
+	public int getPageNum() {
+		return pageNum;
+	}
+
+	public void setPageNum(int pageNum) {
+		this.pageNum = pageNum;
+	}
+
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
 
 	public String getQtypeReg() {
 		return qtypeReg;

@@ -206,16 +206,16 @@
 	<select id="getMyHa" parameterType="java.lang.String"  resultMap="BaseResultMap">
 		select
 		*
-		from t_ha h join t_plan p on h.plan_id = p.p_id 
-		join t_ccp c on h.ha_id = c.ha_id		
-		and h.rder = #{rder}
+		from t_ha h join t_plan p on h.plan_id = p.p_id			
+		and h.rder = #{rder}		
+		order by h.r_date, h.plan_id, h.proc_step desc
 	</select>
 	
 	<select id="selectHaById" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
 		select t.*, p.*
-		from t_ha t, t_plan p 
-		where t.plan_id = p.p_id and t.ha_id=#{haId}
+		from t_ha t join t_plan p 
+		 on t.plan_id = p.p_id and t.ha_id=#{haId}
 	</select>
 	
 	<!-- 匯出專案相同 planid 多筆data的 report -->
@@ -229,16 +229,14 @@
 	<select id="getHaByPlanIdDistinct" parameterType="java.lang.String" resultMap="BaseResultMap">
 		select
 		distinct h.plan_Id, p.p_name
-		from t_ha h join t_plan p on h.plan_id = p.p_id 
-		join t_ccp c on h.ha_id = c.ha_id		
+		from t_ha h join t_plan p on h.plan_id = p.p_id 				
 		and h.rder = #{rder}
 	</select>
 	
 		<select id="getMyHaByQuery" parameterType="com.jorhen.domain.Query"  resultMap="BaseResultMap">
 		select
 		 *
-		from t_ha h join t_plan p on h.plan_id = p.p_id 
-		join t_ccp c on h.ha_id = c.ha_id			
+		from t_ha h join t_plan p on h.plan_id = p.p_id 					
             
         
      	<if test="qPstatus !=null and qPstatus !='' ">
@@ -264,7 +262,7 @@
 		</if>
 		</if>		
 		
-		order by  h.r_date desc	
+		order by  h.r_date, h.plan_id desc	
 
 	</select>
 </mapper>

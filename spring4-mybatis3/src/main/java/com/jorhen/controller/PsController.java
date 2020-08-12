@@ -20,7 +20,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jorhen.domain.Cat;
+import com.jorhen.domain.Plan;
 import com.jorhen.domain.Ps;
 import com.jorhen.domain.Query;
 import com.jorhen.domain.Team;
@@ -210,26 +213,32 @@ public class PsController extends BaseController {
 	// 參數查詢
 	@RequestMapping(value = "/queryByparm")
 	public String queryByparm(ModelMap model, Query query) {
-
+		PageHelper.startPage(query.getPageNum(), query.getPageSize());
 		if (query.getqPstatus().equals("fprivate")) {
 			// 如果私人，就自己資料全撈
-			lsts = psService.getMyPs(user.getuName());
-		} else {
-			// 其他狀態就撈公開跟協作資料
+			query.setqRder(user.getuName());
+			query.setqPstatus("");
+			// lsts = haService.getMyHa(user.getuName());
 			lsts = psService.getMyPsByQuery(query);
-		}
-
-		model.addAttribute("lsts", lsts);
-		model.addAttribute("options", this.optionService.catsTypeOption(null));
-		model.addAttribute("planStatus", this.optionService.planStatusOption());
-
-		if (query.getqPstatus().equals("fprivate")) {
-			// 如果私人就進可以修刪功能頁面
+			PageInfo<Ps> pageInfo = new PageInfo<Ps>(lsts);
+			// lsts = pageInfo.getList();
+			model.addAttribute("lsts", lsts);
+			model.addAttribute("pageInfo", pageInfo);
+			model.addAttribute("options", this.optionService.catsTypeOption(null));
+			model.addAttribute("planStatus", this.optionService.planStatusOption());
 			return "ps/mydata";
 		} else {
-			// 其他狀態就根據狀態處理
+			lsts = psService.getMyPsByQuery(query);
+			PageInfo<Ps> pageInfo = new PageInfo<Ps>(lsts);
+			// lsts = pageInfo.getList();
+			model.addAttribute("lsts", lsts);
+			model.addAttribute("pageInfo", pageInfo);
+			model.addAttribute("options", this.optionService.catsTypeOption(null));
+			model.addAttribute("planStatus", this.optionService.planStatusOption());
 			return "ps/data";
 		}
+
+	
 	}
 	
 	@RequestMapping(value = "/cowork")

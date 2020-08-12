@@ -2,6 +2,7 @@ package com.jorhen.controller;
 
 import java.util.List;
 
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -14,16 +15,20 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.jorhen.domain.Cat;
 import com.jorhen.domain.User;
 import com.jorhen.service.CatServiceI;
 import com.jorhen.service.UserServiceI;
 
+
+@SessionAttributes(value={"user"})
 @Controller
 @RequestMapping("/user")
 // @SessionAttributes(value={"lstUsers","urlName"},types={List.class,String.class})
-public class UserController {
+
+public class UserController extends BaseController{
 
 	// 設置log
 	private static Logger log = Logger.getLogger(UserController.class);
@@ -60,6 +65,14 @@ public class UserController {
 	public String mgtInfo() {
 		return "user/mgtInfo/data";
 	}
+	
+    //會員管理介面
+	@RequestMapping(value = "/myInfo/index")
+	public String myInfo(HttpServletRequest request, ModelMap modelMap) {		
+		 //User user1 = userService.findUserByNamePw(user.getuName(), null);
+		 //modelMap.addAttribute("user", user1);
+		return "user/myInfo/data";
+	}
 	//會員管理介面
 	@RequestMapping(value = "/mber/index")
 	public String mberIndex(HttpServletRequest request, ModelMap modelMap) {
@@ -92,10 +105,39 @@ public class UserController {
 		return "redirect:/user/mber/index.do";		
 
 	}
-	//會員新增導引
+	//管理員會員新增導引
 	@RequestMapping("/mber/add")
 	public String mberAdd() {
 		return "user/mgtInfo/mber/add";
+	}
+	
+	//自己會員新增導引
+	@RequestMapping("/mber/addnew")
+	public String addnew() {
+		return "user/mgtInfo/mber/addnew";
+	}
+	
+	//自己會員新增執行
+	@RequestMapping("/mber/doAddNew")
+	public String doUserAddnew(HttpServletRequest request, ModelMap modelMap,
+			@Validated @ModelAttribute("userDetail") User user, BindingResult bindingResult) {
+		
+		boolean isUserNameExist = userService.isUserExist(user.getuName(), null);
+		if (bindingResult.hasErrors()) {
+			List<ObjectError> errors = bindingResult.getAllErrors();
+		} else if (isUserNameExist) {
+			// 向BindingResult添加使用者已存在的校驗錯誤
+			bindingResult.rejectValue("uName", "該用戶名已存在", "該用戶名已存在");
+		} else {
+			user.setRdPot("30");
+			userService.addUser(user);
+			modelMap.addAttribute("user", user);			
+			return "redirect:/myIndex.do";			
+		}
+
+		modelMap.addAttribute("user", user);		
+		return "user/mgtInfo/mber/addnew";
+
 	}
 	//會員新增執行
 	@RequestMapping("/mber/doAdd")
@@ -109,6 +151,7 @@ public class UserController {
 			// 向BindingResult添加使用者已存在的校驗錯誤
 			bindingResult.rejectValue("uName", "該用戶名已存在", "該用戶名已存在");
 		} else {
+			user.setRdPot("30");
 			userService.addUser(user);
 			return "redirect:/user/mber/index.do";
 		}

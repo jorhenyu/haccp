@@ -14,7 +14,7 @@
 $(document).ready(function() {
 	
     $("#openWin").bind('click', function() {    	
-    	window.open("${pageContext.request.contextPath}/ccp/query.do", null, "width=600px,height=400px");
+    	window.open("${pageContext.request.contextPath}/ccp/query.do", null, "width=800px,height=400px");
     });    
 
     $("#add").bind('click', function() {
@@ -43,15 +43,15 @@ $(document).ready(function() {
 					<input type="hidden" id="haId"  name="haId" value="${haccp.haId}">
 					<input type="hidden" id="planId"  name="planId" value="${haccp.planId}"></td>
 			</tr>			
-			<tr>
+		<tr>
 				<th>顯著危害類別</th>
 				<td>
-                  <textarea id="pHa" name="pHa">${haccp.ha.pHa}</textarea>
+                  <textarea id="pHa" name="pHa" readonly>${haccp.ha.pHa}</textarea>
 				</td>
 			</tr>
 			<tr>
 				<th>顯著危害描述</th>
-				<td><textarea id="haDesc" name="haDesc">${haccp.ha.haDesc}</textarea></td>
+				<td><textarea id="haDesc" name="haDesc" readonly>${haccp.ha.haDesc}</textarea></td>
 			</tr>
 			<tr>
 				<th>管制界限</th>

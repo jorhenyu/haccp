@@ -248,7 +248,7 @@
 		*
 		from t_ccp c join t_ha h on c.ha_id = h.ha_id 
 		join t_plan p  on c.plan_id = p.p_id  
-		and c.ccp = 'Y' and c.plan_Id = #{planId}
+		 and c.plan_Id = #{planId}
 	</select>
 	<!-- 列出各列單筆report要送出planid -->
 	<select id="getCcpByPlanIdDistinct" parameterType="java.lang.String" resultMap="BaseResultMap">

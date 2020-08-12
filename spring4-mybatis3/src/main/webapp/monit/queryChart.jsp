@@ -23,9 +23,20 @@ $(document).ready(function() {
 
 		
 		   $("#add").bind('click', function() {
+			   
+			   if($("#startdatepicker").val()==""){
+		            alert("開始日期不得為空"); 
+		            //eval("document.form1['rDateStart'].focus()");
+		        }else if($("#enddatepicker").val()==""){ 
+		            alert("結束日期不得為空"); 
+		            //eval("document.form1['rDateEnd'].focus()");		        	         	  
+		        }else{
+		        	 
+		        	$('#form1').submit();
+		        } 
             	 
-	        	 $('#form1').submit();
-	      });  
+	        	
+	      });    
     });
 	
 

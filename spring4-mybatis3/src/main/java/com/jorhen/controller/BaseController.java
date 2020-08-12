@@ -15,8 +15,7 @@ public class BaseController {
 
 	@ModelAttribute // 進入控制器方法之前執行方法
 	public void common(HttpSession session) {
-		this.user = (User) session.getAttribute("user"); // 取得session
-		log.info("=base=uName==" + user.getuName());
+		this.user = (User) session.getAttribute("user"); // 取得session		
 
 	}
 

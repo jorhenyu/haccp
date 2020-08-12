@@ -14,8 +14,8 @@
 			
 			 var cwPwd = $(`#cwPwd`).val();
 			 var myCwPw = $(`#myCwPw`).val();
-			 alert("==cwPwd==="+cwPwd);
-			 alert("==myCwPw==="+myCwPw);
+			// alert("==cwPwd==="+cwPwd);
+			 //alert("==myCwPw==="+myCwPw);
 		        if (cwPwd == "") {		        	
 		        	$(".tip").html("密碼不得為空！");
 		        	$(".tip").show();

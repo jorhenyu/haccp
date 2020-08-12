@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jorhen.dao.FileMapper">
+  <resultMap id="BaseResultMap" type="com.jorhen.domain.File">
+    <id column="file_id" jdbcType="CHAR" property="fileId" />
+    <result column="plan_id" jdbcType="CHAR" property="planId" />
+    <result column="file_nm" jdbcType="VARCHAR" property="fileNm" />
+    <result column="notes" jdbcType="VARCHAR" property="notes" />
+    <result column="download" jdbcType="VARCHAR" property="download" />
+    <result column="rder" jdbcType="VARCHAR" property="rder" />
+    <result column="r_date" jdbcType="VARCHAR" property="rDate" />
+    <result column="mder" jdbcType="VARCHAR" property="mder" />
+    <result column="m_date" jdbcType="VARCHAR" property="mDate" />
+    	<!-- 一对一关联映射：association -->
+		<association property="plan" column="p_id" javaType="com.jorhen.domain.Plan">
+			<id column="p_id" jdbcType="CHAR" property="pId" />
+			<result column="p_name" jdbcType="VARCHAR" property="pName" />
+			<result column="c_id" jdbcType="VARCHAR" property="cId" />
+			<result column="maker" jdbcType="VARCHAR" property="maker" />
+			<result column="p_status" jdbcType="VARCHAR" property="pStatus" />
+			<result column="cw_pw" jdbcType="VARCHAR" property="cwPw" />
+			<result column="rder" jdbcType="VARCHAR" property="rder" />
+			<result column="r_date" jdbcType="VARCHAR" property="rDate" />
+			<result column="mder" jdbcType="VARCHAR" property="mder" />
+			<result column="m_date" jdbcType="VARCHAR" property="mDate" />
+		</association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    file_id, plan_id,file_nm, notes, download, rder, r_date, mder, m_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_file
+    where file_id = #{fileId,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_file
+    where file_id = #{fileId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.jorhen.domain.File">
+    insert into t_file (file_id, plan_id,file_nm, notes, 
+      download, rder, r_date, 
+      mder, m_date)
+    values (#{fileId,jdbcType=CHAR}, #{planId,jdbcType=CHAR}, #{fileNm,jdbcType=VARCHAR}, #{notes,jdbcType=VARCHAR}, 
+      #{download,jdbcType=VARCHAR}, #{rder,jdbcType=VARCHAR}, #{rDate,jdbcType=VARCHAR}, 
+      #{mder,jdbcType=VARCHAR}, #{mDate,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jorhen.domain.File">
+    insert into t_file
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fileId != null">
+        file_id,
+      </if>
+      <if test="planId != null">
+        plan_id,
+      </if>
+       <if test="fileNm != null">
+        file_nm,
+      </if>
+      <if test="notes != null">
+        notes,
+      </if>
+      <if test="download != null">
+        download,
+      </if>
+      <if test="rder != null">
+        rder,
+      </if>
+      <if test="rDate != null">
+        r_date,
+      </if>
+      <if test="mder != null">
+        mder,
+      </if>
+      <if test="mDate != null">
+        m_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fileId != null">
+        #{fileId,jdbcType=CHAR},
+      </if>
+      <if test="planId != null">
+        #{planId,jdbcType=CHAR},
+      </if>
+       <if test="fileNm != null">
+        #{fileNm,jdbcType=VARCHAR},
+      </if>
+      <if test="notes != null">
+        #{notes,jdbcType=VARCHAR},
+      </if>
+      <if test="download != null">
+        #{download,jdbcType=VARCHAR},
+      </if>
+      <if test="rder != null">
+        #{rder,jdbcType=VARCHAR},
+      </if>
+      <if test="rDate != null">
+        #{rDate,jdbcType=VARCHAR},
+      </if>
+      <if test="mder != null">
+        #{mder,jdbcType=VARCHAR},
+      </if>
+      <if test="mDate != null">
+        #{mDate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jorhen.domain.File">
+    update t_file
+    <set>
+      <if test="planId != null">
+        plan_id = #{planId,jdbcType=CHAR},
+      </if>
+      <if test="fileNm != null">
+        file_nm = #{fileNm,jdbcType=VARCHAR},
+      </if>
+      <if test="notes != null">
+        notes = #{notes,jdbcType=VARCHAR},
+      </if>
+      <if test="download != null">
+        download = #{download,jdbcType=VARCHAR},
+      </if>
+      <if test="rder != null">
+        rder = #{rder,jdbcType=VARCHAR},
+      </if>
+      <if test="rDate != null">
+        r_date = #{rDate,jdbcType=VARCHAR},
+      </if>
+      <if test="mder != null">
+        mder = #{mder,jdbcType=VARCHAR},
+      </if>
+      <if test="mDate != null">
+        m_date = #{mDate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where file_id = #{fileId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jorhen.domain.File">
+    update t_file
+    set plan_id = #{planId,jdbcType=CHAR},
+      file_nm = #{fileNm,jdbcType=VARCHAR},
+      notes = #{notes,jdbcType=VARCHAR},
+      download = #{download,jdbcType=VARCHAR},
+      rder = #{rder,jdbcType=VARCHAR},
+      r_date = #{rDate,jdbcType=VARCHAR},
+      mder = #{mder,jdbcType=VARCHAR},
+      m_date = #{mDate,jdbcType=VARCHAR}
+    where file_id = #{fileId,jdbcType=CHAR}
+  </update>
+  
+             	<!-- ==============以下內容是根據自身業務擴展的內容======================= -->
+	<!-- select標籤的id屬性與PlanMapper介面中定義的getAllPlan方法要一模一樣 -->
+	<select id="getMyFile" parameterType="java.lang.String"  resultMap="BaseResultMap">
+		select
+		*
+		from t_file t join t_plan p
+		on t.plan_id = p.p_id and t.rder = #{rder}
+	</select>
+	
+	<select id="selectFileById" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select *
+		from t_file t join t_plan p
+		on t.plan_id = p.p_id and t.file_id=#{fileId}
+	</select>
+	
+	 <select id="getMyFileBypLd" parameterType="java.lang.String"  resultMap="BaseResultMap">
+		select
+		*
+		from t_file t join t_plan p
+		on t.plan_id = p.p_id and t.plan_id = #{planId}
+	</select>
+	
+	<select id="getMyFileByQuery" parameterType="com.jorhen.domain.Query"  resultMap="BaseResultMap">
+		select
+		 *
+		from t_file t join t_plan p
+		on t.plan_id = p.p_id			
+            
+        
+     	<if test="qPstatus !=null and qPstatus !='' ">
+			and p.p_status=#{qPstatus}
+		</if>
+		
+		<if test="qRder !=null and qRder !='' ">
+			and t.rder = #{qRder}
+		</if>	
+		
+		<if test="qPname !=null and qPname !='' ">
+			and p.p_name=#{qPname}
+		</if>
+		
+		<if test="qCatId !=null and qCatId !='' ">
+			and p.c_id=#{qCatId}
+		</if>			
+	
+	
+	   <if test="rDateStart !=null and rDateStart !='' ">
+	     <if test="rDateEnd !=null and rDateEnd !='' ">	    
+	        and (t.r_date between #{rDateStart} and #{rDateEnd})			
+		</if>
+		</if>		
+		
+		order by  t.r_date desc	
+
+	</select>
+</mapper>

@@ -16,6 +16,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jorhen.domain.Ccp;
 import com.jorhen.domain.Haccp;
 import com.jorhen.domain.Query;
@@ -191,26 +193,33 @@ public class HaccpController extends BaseController {
 	// 參數查詢
 	@RequestMapping(value = "/queryByparm")
 	public String queryByparm(ModelMap model, Query query) {
-
+		
+		PageHelper.startPage(query.getPageNum(), query.getPageSize());
 		if (query.getqPstatus().equals("fprivate")) {
 			// 如果私人，就自己資料全撈
-			lsts = haccpService.getMyHaccp(user.getuName());
-		} else {
-			// 其他狀態就撈公開跟協作資料
+			query.setqRder(user.getuName());
+			query.setqPstatus("");
+			// lsts = haService.getMyHa(user.getuName());
 			lsts = haccpService.getMyHaccpByQuery(query);
-		}
-
-		model.addAttribute("lsts", lsts);
-		model.addAttribute("options", this.optionService.catsTypeOption(null));
-		model.addAttribute("planStatus", this.optionService.planStatusOption());
-
-		if (query.getqPstatus().equals("fprivate")) {
-			// 如果私人就進可以修刪功能頁面
+			PageInfo<Haccp> pageInfo = new PageInfo<Haccp>(lsts);
+			// lsts = pageInfo.getList();
+			model.addAttribute("lsts", lsts);
+			model.addAttribute("pageInfo", pageInfo);
+			model.addAttribute("options", this.optionService.catsTypeOption(null));
+			model.addAttribute("planStatus", this.optionService.planStatusOption());
 			return "haccp/mydata";
 		} else {
-			// 其他狀態就根據狀態處理
+			lsts = haccpService.getMyHaccpByQuery(query);
+			PageInfo<Haccp> pageInfo = new PageInfo<Haccp>(lsts);
+			// lsts = pageInfo.getList();
+			model.addAttribute("lsts", lsts);
+			model.addAttribute("pageInfo", pageInfo);
+			model.addAttribute("options", this.optionService.catsTypeOption(null));
+			model.addAttribute("planStatus", this.optionService.planStatusOption());
 			return "haccp/data";
 		}
+
+
 	}
 	
 	@RequestMapping(value = "/cowork")

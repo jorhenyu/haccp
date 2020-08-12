@@ -24,10 +24,6 @@
 		$("#browser").treeview();
 	});
 
-	function doLogout() {
-		//訪問LogoutServlet註銷當前登錄的用戶
-		window.location.href = "${pageContext.request.contextPath}/servlet/LogoutServlet";
-	}
 </script>
 </head>
 <body>
@@ -36,9 +32,11 @@
 		<ul id="browser" class="filetree">
 			<li><span class="folder">會員管理區</span>
 				<ul>
+				<c:choose><c:when test="${user.uPosi == 'mg'}">
 					<li><span class="file"><a
 							href="${pageContext.request.contextPath}/user/mgtInfo/index.do"
 							target="showframe">會員管理</a></span></li>
+							</c:when></c:choose>
 					<li><span class="file"><a
 							href="${pageContext.request.contextPath}/user/myInfo/index.do"
 							target="showframe">個人中心</a></span></li>
@@ -65,7 +63,7 @@
 							<li><span class="file"><a href="<%=drawPath %>"
 							target="showframe">製作產品加工流程圖</a></span></li>
 							<li><span class="file"><a
-							href="${pageContext.request.contextPath}/fchart/upload.do"
+							href="${pageContext.request.contextPath}/fchart/index.do"
 							target="showframe">檔案上傳</a></span></li>
 						</ul></li>	
 				
@@ -86,10 +84,7 @@
 				<ul>
 					<li><span class="file"><a
 							href="${pageContext.request.contextPath}/monit/index.do"
-							target="showframe">管制監控紀錄</a></span></li>
-					<li><span class="file"><a
-							href="${pageContext.request.contextPath}/fchart/index.do"
-							target="showframe">fchart</a></span></li>
+							target="showframe">管制監控紀錄</a></span></li>					
 				</ul></li>
 		</ul>
 
@@ -97,7 +92,8 @@
 
 	<c:if test="${user!=null}">
             歡迎您：${user.uName}
-            <input type="button" value="退出登入" onclick="doLogout()">
+        <br>          
+          <a onclick="if (confirm('確定要退出嗎？')) return true; else return false;" target=_top href="${pageContext.request.contextPath}/toLogout.do" >登出</a>
 	</c:if>
 
 </body>

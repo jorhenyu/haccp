@@ -6,8 +6,27 @@
 <head>
 <title>顯示使用者資訊user</title>
 <link rel="stylesheet" type="text/css" href="../css/css-table.css">
-<script src="../js/jquery.min.js"></script>
+<link rel="stylesheet" href="../css/jquery-ui.css">
+<script src="../js/jquery.js"></script>
+<script src="../js/jquery-ui.min.js"></script>
 <script>
+
+$(document).ready(function() {
+	$("#startdatepicker").datepicker({
+		dateFormat : 'yy-mm-dd'
+	});
+
+	
+	$("#enddatepicker").datepicker({
+		dateFormat : 'yy-mm-dd'
+	});
+
+	
+	   $("#add").bind('click', function() {
+        	 
+        	 $('#form1').submit();
+      });  
+});
 	//將radio選取選項，帶回母視窗頁面
 	function sendData() {
 		var checkedText = document.querySelector('input[type="radio"]:checked').value;
@@ -29,14 +48,29 @@
 </head>
 <body>
 	<table>
-	<tr><th>專案名稱</th>
-		<th colspan="16" scope="row">					
-		          <form
-						action="${pageContext.request.contextPath }/ccp/query.do"
-						method="post">
-						<input type="text" name="pName" value=""> <input
-							type="submit" value="查詢">
-					</form></th>
+<tr>
+				<th colspan="10">
+				<form id="form1" name="form1" action="${pageContext.request.contextPath }/ccp/query.do"
+				method="post">
+				業別:	<select name="qCatId">
+				<option value="">---請選擇-----</option>
+						<c:forEach var="o" items="${options}">
+							<option value="${o.optionKey}">${o.optionValue}</option>
+						</c:forEach>
+				</select>
+			專案名稱:<input type="text" name="qPname" id="qPname" value=""	>
+			<br>
+			
+			開始日期:<input type="text" name="rDateStart" id="startdatepicker" value=""
+				readonly>
+			結束日期:<input type="text" name="rDateEnd" id="enddatepicker" value=""
+				readonly>
+			<br>第<input type="text" name="pageNum" id="pageNum" value="${pageInfo.pageNum == null?1:pageInfo.pageNum}">頁
+				一頁<input type="text" name="pageSize" id="pageSize" value="${pageInfo.pageSize == null?5:pageInfo.pageSize}">筆
+			
+					<input id="add" name="add" type="button" value="查詢">
+			</form>
+		</th>
 		</tr>
 		<tr>
 			<th>選取</th>

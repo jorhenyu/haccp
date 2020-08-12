@@ -66,6 +66,7 @@ $(document).ready(function() {
 				<th>影響產品安全嗎</th>
 				<td>
 					<select id="issafe" name="issafe">
+					<option value="">--請選擇----</option>
 						<option value="Y">Y</option>
 						<option value="N">N</option>						
 				    </select>					

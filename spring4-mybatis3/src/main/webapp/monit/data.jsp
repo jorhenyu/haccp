@@ -21,9 +21,9 @@ $(document).ready(function() {
 		});
 
 		
-		   $("#add").bind('click', function() {
-            	 
-	        	 $('#form1').submit();
+		   $("#add").bind('click', function() {			   
+		        	$('#form1').submit();	       
+	        	
 	      });  
     });
 	
@@ -80,6 +80,7 @@ $(document).ready(function() {
 			<th>監測值</th>
 			<th>單位</th>
 			<th>監控狀況</th>
+			<th>日期</th>
 		</tr>
 		<%--遍歷lstUsers集合中的User物件 --%>
 		<c:forEach var="monit" items="${lsts}">
@@ -101,21 +102,48 @@ $(document).ready(function() {
 				</td>
 			   <td>${monit.plan.pName}</td>	
 			   		
-				<td><textarea name="procStep" readonly>${monit.ha.procStep}</textarea></td>
+				<td>${monit.ha.procStep}</td>
 				
 				<td><c:choose><c:when test="${monit.ha.pHa == 'phy'}">物理性</c:when>
 				<c:when test="${monit.ha.pHa == 'chem'}">化學性</c:when>
 				<c:otherwise>生物性</c:otherwise></c:choose>
 				</td>
-				<td><textarea name="haDesc" readonly>${monit.ha.haDesc}</textarea></td>
+				<td>${monit.ha.haDesc}</td>
 				
-				<td><textarea name="bNum" readonly>${monit.bNum}</textarea></td>	
-				<td><textarea name="typeReg" readonly>${monit.typeReg}</textarea></td>
-				<td><textarea name="ucl" readonly>${monit.ucl}</textarea></td>	
-				<td><textarea name="lcl" readonly>${monit.lcl}</textarea></td>	
-				<td><textarea name="mVal" readonly>${monit.mVal}</textarea></td>
-				<td><textarea name="unit" readonly>${monit.unit}</textarea></td>
-				<td><textarea name="mStat" readonly>${monit.mStat}</textarea></td>
+				<td>${monit.bNum}</td>
+				<td>
+				<c:choose><c:when test="${monit.typeReg == 'ul'}">	
+                                            上限				
+				</c:when>
+				<c:when test="${monit.typeReg == 'll'}">
+				下限
+				</c:when>
+				<c:otherwise>
+				上限與下限
+				</c:otherwise>
+				</c:choose>	
+				</td>				
+				<td>${monit.ucl}</td>	
+				<td>${monit.lcl}</td>	
+				<td>${monit.mVal}</td>
+				<td>${monit.unit}</td>
+				<td>
+				<c:choose><c:when test="${monit.typeReg == 'ul'}">					
+                    <c:if test="${monit.ucl*1 < monit.mVal}">異常 </c:if>
+                    <c:if test="${monit.ucl*1 > monit.mVal}">正常 </c:if>                                                  
+				</c:when>
+				<c:when test="${monit.typeReg == 'll'}">
+				     <c:if test="${monit.lcl*1 < monit.mVal}">正常 </c:if>
+                    <c:if test="${monit.lcl*1 > monit.mVal}">異常 </c:if> 
+				</c:when>
+				<c:otherwise>
+					<c:if test="${monit.lcl*1 < monit.mVal && monit.ucl*1 > monit.mVal}">正常 </c:if>
+					<c:if test="${monit.lcl*1 > monit.mVal || monit.ucl*1 < monit.mVal}">異常 </c:if>                
+				</c:otherwise>
+				</c:choose>
+					
+				</td>
+				<td>${monit.rDate}</td>
 						
 			</tr>
 		</c:forEach>

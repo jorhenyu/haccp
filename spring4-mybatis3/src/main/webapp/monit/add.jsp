@@ -14,7 +14,7 @@
 $(document).ready(function() {
 	
     $("#openWin").bind('click', function() {    	
-    	window.open("${pageContext.request.contextPath}/ccp/query.do", null, "width=600px,height=400px");
+    	window.open("${pageContext.request.contextPath}/ccp/query.do", null, "width=800px,height=400px");
     });    
 
     $("#add").bind('click', function() {

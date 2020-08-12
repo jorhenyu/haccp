@@ -40,5 +40,16 @@ public class DateUtils {
 		
 		return sb.toString();
 	}
+	
+	public static String formatDateToyyyymmdd(String time) {
+		String[] tokens = time.split("-");
+		
+	    StringBuffer sb = new StringBuffer();
+	    sb.append(tokens[0]);
+	    sb.append(tokens[1]);	    
+	    sb.append(tokens[2]);
+		
+		return sb.toString();
+	}
 
 }

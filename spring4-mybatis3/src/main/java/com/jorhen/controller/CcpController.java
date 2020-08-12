@@ -16,6 +16,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jorhen.domain.Ccp;
 import com.jorhen.domain.Ha;
 import com.jorhen.domain.Query;
@@ -33,12 +35,12 @@ public class CcpController extends BaseController {
 	// 處理業務邏輯的pcService
 	@Autowired
 	private CcpServiceI ccpService;
-	
-    @Autowired
-    OptionService optionService;
-	
+
+	@Autowired
+	OptionService optionService;
+
 	List<Ccp> lsts = null;
-	String rder = null;		
+	String rder = null;
 
 	public CcpServiceI getCcp() {
 		return ccpService;
@@ -48,13 +50,12 @@ public class CcpController extends BaseController {
 		ccpService = ccp;
 	}
 
-
 	// 管理介面
 	@RequestMapping(value = "/index")
 	public String index(ModelMap model) {
 
 		lsts = ccpService.getMyCcp(user.getuName());
-		model.addAttribute("lsts", lsts);				
+		model.addAttribute("lsts", lsts);
 		model.addAttribute("options", this.optionService.catsTypeOption(null));
 		model.addAttribute("planStatus", this.optionService.planStatusOption());
 		return "ccp/mydata";
@@ -66,18 +67,18 @@ public class CcpController extends BaseController {
 			@RequestParam(value = "ccpId", required = false) String ccpId) {
 		Ccp ccp = ccpService.selectCcpById(ccpId);
 		model.addAttribute("ccp", ccp);
-		
-		if(ccp.getqTb().equals("3")) {
+
+		if (ccp.getqTb().equals("3")) {
 			return "ccp/update3t";
-		}else {
+		} else {
 			return "ccp/update4t";
-		}	
+		}
 	}
 
 	// 更新執行
 	@RequestMapping("/doUpdate")
 	public String doUpdate(HttpServletRequest request, ModelMap modelMap, Ccp ccp) {
-		
+
 		ccp.setMder(user.getuName());
 		int aa = ccpService.updateByPrimaryKeySelective(ccp);
 		log.info("==aa==" + aa);
@@ -87,15 +88,15 @@ public class CcpController extends BaseController {
 
 	// 新增導引
 	@RequestMapping("/add")
-	public String add(HttpServletRequest request,Model model) {	
+	public String add(HttpServletRequest request, Model model) {
 		String jt = request.getParameter("jt");
-		System.out.println("=jt=="+jt);
-		if(jt.equals("3")) {
+		System.out.println("=jt==" + jt);
+		if (jt.equals("3")) {
 			return "ccp/add3t";
-		}else {
+		} else {
 			return "ccp/add4t";
 		}
-		
+
 	}
 
 	// 新增執行，可以無限新增
@@ -115,22 +116,34 @@ public class CcpController extends BaseController {
 		ccpService.deleteByPrimaryKey(ccpId);
 		return "redirect:/ccp/index.do";
 	}
-	
+
 	// 管理介面
 	@RequestMapping(value = "/query")
-	public String query(HttpServletRequest request, ModelMap model, Ccp ccp) {
-		String pName = request.getParameter("pName");		
-		lsts = ccpService.selectSHaByPname(pName ,user.getuName());
+	public String query(HttpServletRequest request, ModelMap model, Query query) {
+		//String pName = request.getParameter("pName");
+		//lsts = ccpService.selectSHaByPname(pName, user.getuName());
+		//model.addAttribute("lsts", lsts);
+
+		// lsts = haService.getMyHa(user.getuName());
+		PageHelper.startPage(query.getPageNum(), query.getPageSize());
+		query.setqRder(user.getuName());
+		query.setqPstatus("");
+		// lsts = haService.getMyHa(user.getuName());
+		lsts = ccpService.getMyCcpByQuery(query);
+		PageInfo<Ccp> pageInfo = new PageInfo<Ccp>(lsts);
+		// lsts = pageInfo.getList();
 		model.addAttribute("lsts", lsts);
+		model.addAttribute("pageInfo", pageInfo);
+		model.addAttribute("options", this.optionService.catsTypeOption(null));
+		model.addAttribute("planStatus", this.optionService.planStatusOption());
 		return "ccp/query";
 	}
-	
-	
+
 	@RequestMapping("/report")
 	public String queryPro(HttpServletRequest request, ModelMap model) {
-       //產生目前自己有的專案
+		// 產生目前自己有的專案
 		lsts = ccpService.getCcpByPlanIdDistinct(user.getuName());
-		model.addAttribute("lsts", lsts);		
+		model.addAttribute("lsts", lsts);
 		return "ccp/report";
 
 	}
@@ -138,53 +151,51 @@ public class CcpController extends BaseController {
 	@RequestMapping("/exportExcel")
 	public void exportExcel(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap, Ccp ccp) {
 
-		log.info("==getPlanId==" + ccp.getPlanId());		 
-		
-		//获取数据		
-		lsts = ccpService.selectCcpByPlanId(ccp.getPlanId());		
-	      
-        
-        //excel标题
-        String[] title = {"加工步驟","危害","危害描述","Q1.對危害是否有防制措施？","Q2.此步驟可消除或降低危害至可接受水準？","Q3.污染能使危害達到或增至不可接受之水準？","Q4.接續步驟能使危害被消除或降低至可接受之水準？","CCP"};
-        //excel文件名
-        String fileName = "ccpTable"+System.currentTimeMillis()+".xls";
-        //sheet名
-        String sheetName = "重要管制點判定表";
-        String [][] content = new String[lsts.size()][];
-        for (int i = 0; i < lsts.size(); i++) {
-            content[i] = new String[title.length];
-            ccp = lsts.get(i);
-            content[i][0] = ccp.getHa().getProcStep();
-            
-            if(ccp.getHa().getpHa().equals("phy")) {
-            	content[i][1] = "物理性";
-            }else if(ccp.getHa().getpHa().equals("chem")) {
-            	content[i][1] = "化學性";
-            }else {
-            	content[i][1] = "生物性";
-            }
-            content[i][2] = ccp.getHa().getHaDesc();
-            content[i][3] = ccp.getQ1();
-            content[i][4] = ccp.getQ1();
-            content[i][5] = ccp.getQ1();
-            content[i][6] = ccp.getQ1();
-            content[i][7] = ccp.getQ1();       
-            
-        }
-        //创建HSSFWorkbook
-        HSSFWorkbook wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
-        //响应到客户端
-        try {
-            this.setResponseHeader(response, fileName);
-            OutputStream os = response.getOutputStream();
-            wb.write(os);
-            os.flush();
-            os.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		log.info("==getPlanId==" + ccp.getPlanId());
 
-		
+		// 获取数据
+		lsts = ccpService.selectCcpByPlanId(ccp.getPlanId());
+
+		// excel标题
+		String[] title = { "加工步驟", "危害", "危害描述", "Q1.對危害是否有防制措施？", "Q2.此步驟可消除或降低危害至可接受水準？", "Q3.污染能使危害達到或增至不可接受之水準？",
+				"Q4.接續步驟能使危害被消除或降低至可接受之水準？", "CCP" };
+		// excel文件名
+		String fileName = "ccpTable" + System.currentTimeMillis() + ".xls";
+		// sheet名
+		String sheetName = "重要管制點判定表";
+		String[][] content = new String[lsts.size()][];
+		for (int i = 0; i < lsts.size(); i++) {
+			content[i] = new String[title.length];
+			ccp = lsts.get(i);
+			content[i][0] = ccp.getHa().getProcStep();
+
+			if (ccp.getHa().getpHa().equals("phy")) {
+				content[i][1] = "物理性";
+			} else if (ccp.getHa().getpHa().equals("chem")) {
+				content[i][1] = "化學性";
+			} else {
+				content[i][1] = "生物性";
+			}
+			content[i][2] = ccp.getHa().getHaDesc();
+			content[i][3] = ccp.getQ1();
+			content[i][4] = ccp.getQ2();
+			content[i][5] = ccp.getQ3();
+			content[i][6] = ccp.getQ4();
+			content[i][7] = ccp.getCcp();
+
+		}
+		// 创建HSSFWorkbook
+		HSSFWorkbook wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
+		// 响应到客户端
+		try {
+			this.setResponseHeader(response, fileName);
+			OutputStream os = response.getOutputStream();
+			wb.write(os);
+			os.flush();
+			os.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -205,32 +216,39 @@ public class CcpController extends BaseController {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	// 參數查詢
 	@RequestMapping(value = "/queryByparm")
 	public String queryByparm(ModelMap model, Query query) {
-
+		
+		PageHelper.startPage(query.getPageNum(), query.getPageSize());
 		if (query.getqPstatus().equals("fprivate")) {
 			// 如果私人，就自己資料全撈
-			lsts = ccpService.getMyCcp(user.getuName());
-		} else {
-			// 其他狀態就撈公開跟協作資料
+			query.setqRder(user.getuName());
+			query.setqPstatus("");
+			// lsts = haService.getMyHa(user.getuName());
 			lsts = ccpService.getMyCcpByQuery(query);
-		}
-
-		model.addAttribute("lsts", lsts);
-		model.addAttribute("options", this.optionService.catsTypeOption(null));
-		model.addAttribute("planStatus", this.optionService.planStatusOption());
-
-		if (query.getqPstatus().equals("fprivate")) {
-			// 如果私人就進可以修刪功能頁面
+			PageInfo<Ccp> pageInfo = new PageInfo<Ccp>(lsts);
+			// lsts = pageInfo.getList();
+			model.addAttribute("lsts", lsts);
+			model.addAttribute("pageInfo", pageInfo);
+			model.addAttribute("options", this.optionService.catsTypeOption(null));
+			model.addAttribute("planStatus", this.optionService.planStatusOption());
 			return "ccp/mydata";
 		} else {
-			// 其他狀態就根據狀態處理
+			lsts = ccpService.getMyCcpByQuery(query);
+			PageInfo<Ccp> pageInfo = new PageInfo<Ccp>(lsts);
+			// lsts = pageInfo.getList();
+			model.addAttribute("lsts", lsts);
+			model.addAttribute("pageInfo", pageInfo);
+			model.addAttribute("options", this.optionService.catsTypeOption(null));
+			model.addAttribute("planStatus", this.optionService.planStatusOption());
 			return "ccp/data";
 		}
+
+		
 	}
-	
+
 	@RequestMapping(value = "/cowork")
 	public String cowork(ModelMap model, Ccp ccp) {
 
@@ -238,6 +256,5 @@ public class CcpController extends BaseController {
 		model.addAttribute("ccp", ccp);
 		return "ccp/coworkpw";
 	}
-	
 
 }

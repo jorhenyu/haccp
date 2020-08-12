@@ -60,6 +60,8 @@ $(document).ready(function() {
 				readonly>
 			結束日期:<input type="text" name="rDateEnd" id="enddatepicker" value=""
 				readonly>
+			<br>第<input type="text" name="pageNum" id="pageNum" value="${pageInfo.pageNum == null?1:pageInfo.pageNum}">頁
+				一頁<input type="text" name="pageSize" id="pageSize" value="${pageInfo.pageSize == null?5:pageInfo.pageSize}">筆
 			
 					<input id="add" name="add" type="button" value="查詢">
 			</form>
@@ -68,14 +70,15 @@ $(document).ready(function() {
 		<tr>
 			<th>修改</th>
 			<th>刪除</th>
-			<th>專案名稱名稱</th>
-			<th>加工步驟名稱</th>			
-			<th>潛在危害</th>
-			<th>潛在危害描述</th>
-			<th>影響產品安全嗎</th>
-			<th>判定左欄之理由</th>
-			<th>預防措施</th>
-			<th>本步驟是否為重要管制點</th>
+			<th width="107" valign="top">專案名稱</th>
+			<th width="107" valign="top"><p align="center">加工步驟名稱 </p></th>
+    <th><p align="center">潛在危害</p></th>
+      <th width="161" valign="top"><p align="center">潛在危害描述</p></th>
+    <th width="156" valign="top"><p>影響產品安全嗎</p></th>
+    <th width="213" valign="top"><p align="center">判定左欄之理由</p></th>
+    <th width="226" valign="top"><p align="center">預防措施 </p></th>
+    <th width="127" valign="top"><p align="center">本步驟是 <br>
+      重要管制點(CCP#)</p></th>
 		</tr>
 		<%--遍歷lstUsers集合中的User物件 --%>
 		<c:forEach var="ha" items="${lsts}">
@@ -109,21 +112,19 @@ $(document).ready(function() {
 				<c:otherwise><td>
 					</td><td></td></c:otherwise></c:choose>
 			   <td>${ha.plan.pName}</td>			
-				<td><textarea name="procStep" readonly>${ha.procStep}</textarea></td>
+				<td>${ha.procStep}</td>
 				<td><c:choose><c:when test="${ha.pHa == 'phy'}">物理性</c:when>
 				<c:when test="${ha.pHa == 'chem'}">化學性</c:when>
 				<c:otherwise>生物性</c:otherwise></c:choose>
 				</td>
-				<td><textarea name="haDesc" readonly>${ha.haDesc}</textarea></td>
-				<td><textarea name="issafe" readonly>${ha.issafe}</textarea></td>	
-				<td><textarea name="reason" readonly>${ha.reason}</textarea></td>
-				<td><textarea name="pMeas" readonly>${ha.pMeas}</textarea></td>	
-				<td><textarea name="ccp" readonly>${ha.ccp.ccp}</textarea>
-					</form></td>		
+				<td>${ha.haDesc}</td>
+				<td>${ha.issafe}</td>	
+				<td>${ha.reason}</td>
+				<td>${ha.pMeas}</td>	
+				<td>${ha.ccp.ccp}</td>		
 			</tr>
 		</c:forEach>
 	</table>
-
 </body>
 </html>
 

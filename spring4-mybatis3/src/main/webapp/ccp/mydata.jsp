@@ -63,7 +63,8 @@ $(document).ready(function() {
 				readonly>
 			結束日期:<input type="text" name="rDateEnd" id="enddatepicker" value=""
 				readonly>
-			
+			<br>第<input type="text" name="pageNum" id="pageNum" value="${pageInfo.pageNum == null?1:pageInfo.pageNum}">頁
+				一頁<input type="text" name="pageSize" id="pageSize" value="${pageInfo.pageSize == null?5:pageInfo.pageSize}">筆
 					<input id="add" name="add" type="button" value="查詢">
 			</form>
 		</th>
@@ -100,12 +101,12 @@ $(document).ready(function() {
 					</form>
 				</td>
 			   <td>${ccp.plan.pName}</td>			
-				<td><textarea name="procStep" readonly>${ccp.ha.procStep}</textarea></td>
+				<td>${ccp.ha.procStep}</td>
 				<td><c:choose><c:when test="${ccp.ha.pHa == 'phy'}">物理性</c:when>
 				<c:when test="${ccp.ha.pHa == 'chem'}">化學性</c:when>
 				<c:otherwise>生物性</c:otherwise></c:choose>
 				</td>
-				<td><textarea name="haDesc" readonly>${ccp.ha.haDesc}</textarea></td>
+				<td>${ccp.ha.haDesc}</td>
 				<td>${ccp.q1}</td>	
 				<td>${ccp.q2}</td>
 				<td>${ccp.q3}</td>	

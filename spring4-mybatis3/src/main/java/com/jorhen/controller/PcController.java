@@ -20,7 +20,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jorhen.domain.Pc;
+import com.jorhen.domain.Plan;
 import com.jorhen.domain.Ps;
 import com.jorhen.domain.Query;
 import com.jorhen.service.OptionService;
@@ -188,26 +191,33 @@ public class PcController extends BaseController {
 	// 參數查詢
 	@RequestMapping(value = "/queryByparm")
 	public String queryByparm(ModelMap model, Query query) {
-
+		
+		PageHelper.startPage(query.getPageNum(), query.getPageSize());
 		if (query.getqPstatus().equals("fprivate")) {
 			// 如果私人，就自己資料全撈
-			lsts = pcService.getMyPc(user.getuName());
-		} else {
-			// 其他狀態就撈公開跟協作資料
+			query.setqRder(user.getuName());
+			query.setqPstatus("");
+			// lsts = haService.getMyHa(user.getuName());
 			lsts = pcService.getMyPcByQuery(query);
-		}
-
-		model.addAttribute("lsts", lsts);
-		model.addAttribute("options", this.optionService.catsTypeOption(null));
-		model.addAttribute("planStatus", this.optionService.planStatusOption());
-
-		if (query.getqPstatus().equals("fprivate")) {
-			// 如果私人就進可以修刪功能頁面
+			PageInfo<Pc> pageInfo = new PageInfo<Pc>(lsts);
+			// lsts = pageInfo.getList();
+			model.addAttribute("lsts", lsts);
+			model.addAttribute("pageInfo", pageInfo);
+			model.addAttribute("options", this.optionService.catsTypeOption(null));
+			model.addAttribute("planStatus", this.optionService.planStatusOption());
 			return "pc/mydata";
 		} else {
-			// 其他狀態就根據狀態處理
+			lsts = pcService.getMyPcByQuery(query);
+			PageInfo<Pc> pageInfo = new PageInfo<Pc>(lsts);
+			// lsts = pageInfo.getList();
+			model.addAttribute("lsts", lsts);
+			model.addAttribute("pageInfo", pageInfo);
+			model.addAttribute("options", this.optionService.catsTypeOption(null));
+			model.addAttribute("planStatus", this.optionService.planStatusOption());
 			return "pc/data";
 		}
+
+	
 	}
 	
 	@RequestMapping(value = "/cowork")

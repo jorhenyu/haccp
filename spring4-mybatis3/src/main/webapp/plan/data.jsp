@@ -59,6 +59,8 @@ $(document).ready(function() {
 				readonly>
 			結束日期:<input type="text" name="rDateEnd" id="enddatepicker" value=""
 				readonly>
+				<br>第<input type="text" name="pageNum" id="pageNum" value="${pageInfo.pageNum == null?1:pageInfo.pageNum}">頁
+				一頁<input type="text" name="pageSize" id="pageSize" value="${pageInfo.pageSize == null?5:pageInfo.pageSize}">筆
 			
 					<input id="add" name="add" type="button" value="查詢">
 			</form>
@@ -101,11 +103,15 @@ $(document).ready(function() {
 							type="submit" value="協作">
 					</form>
 				</td><td></td></c:when>
-				<c:otherwise><td><form action="${pageContext.request.contextPath }/plan/copyPlan.do"
+				<c:otherwise><td>
+				<c:if test="${user.uName != 'guest'}">
+				<form action="${pageContext.request.contextPath }/plan/copyPlan.do"
 						method="post">
 						<input type="hidden" name="pId" value="${plan.pId}"> <input
 							type="submit" value="複製">
-					</form></td><td></td></c:otherwise></c:choose>
+					</form>
+					</c:if>
+					</td><td></td></c:otherwise></c:choose>
 				<td>${plan.pName}</td>
 				<td>
 						<c:forEach items="${options}" var="o">

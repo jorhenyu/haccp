@@ -12,8 +12,12 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jorhen.domain.Ccp;
+import com.jorhen.domain.File;
 import com.jorhen.domain.Ha;
+import com.jorhen.domain.Haccp;
 import com.jorhen.domain.Pc;
 import com.jorhen.domain.Plan;
 import com.jorhen.domain.Ps;
@@ -21,7 +25,9 @@ import com.jorhen.domain.Query;
 import com.jorhen.domain.Team;
 import com.jorhen.domain.User;
 import com.jorhen.service.CcpServiceI;
+import com.jorhen.service.FileServiceI;
 import com.jorhen.service.HaServiceI;
+import com.jorhen.service.HaccpServiceI;
 import com.jorhen.service.OptionService;
 import com.jorhen.service.PcServiceI;
 import com.jorhen.service.PlanServiceI;
@@ -59,6 +65,13 @@ public class PlanController extends BaseController {
 
 	@Autowired
 	private CcpServiceI ccpService;
+	
+	@Autowired
+	private FileServiceI fileService;
+
+	
+	@Autowired
+	private HaccpServiceI haccpService;
 
 	List<Plan> lsts = null;
 	String rder = null;
@@ -133,36 +146,54 @@ public class PlanController extends BaseController {
 
 	// 查planid
 	@RequestMapping(value = "/query")
-	public String query(ModelMap model) {
+	public String query(ModelMap model, Query query) {
 
-		lsts = planService.getMyPlan(user.getuName());
+		PageHelper.startPage(query.getPageNum(), query.getPageSize());
+		query.setqRder(user.getuName());
+		query.setqPstatus("");
+		// lsts = haService.getMyHa(user.getuName());
+		lsts = planService.getMyPlanByQuery(query);
+		PageInfo<Plan> pageInfo = new PageInfo<Plan>(lsts);
+		// lsts = pageInfo.getList();
 		model.addAttribute("lsts", lsts);
+		model.addAttribute("pageInfo", pageInfo);
+		model.addAttribute("options", this.optionService.catsTypeOption(null));
+		model.addAttribute("planStatus", this.optionService.planStatusOption());
+		//lsts = planService.getMyPlan(user.getuName());
+		//model.addAttribute("lsts", lsts);
 		return "plan/query";
 	}
 
 	// 參數查詢
 	@RequestMapping(value = "/queryByparm")
 	public String queryByparm(ModelMap model, Query query) {
-
+		
+		PageHelper.startPage(query.getPageNum(), query.getPageSize());
 		if (query.getqPstatus().equals("fprivate")) {
 			// 如果私人，就自己資料全撈
-			lsts = planService.getMyPlan(user.getuName());
-		} else {
-			// 其他狀態就撈公開跟協作資料
+			query.setqRder(user.getuName());
+			query.setqPstatus("");
+			// lsts = haService.getMyHa(user.getuName());
 			lsts = planService.getMyPlanByQuery(query);
-		}
-
-		model.addAttribute("lsts", lsts);
-		model.addAttribute("options", this.optionService.catsTypeOption(null));
-		model.addAttribute("planStatus", this.optionService.planStatusOption());
-
-		if (query.getqPstatus().equals("fprivate")) {
-			// 如果私人就進可以修刪功能頁面
+			PageInfo<Plan> pageInfo = new PageInfo<Plan>(lsts);
+			// lsts = pageInfo.getList();
+			model.addAttribute("lsts", lsts);
+			model.addAttribute("pageInfo", pageInfo);
+			model.addAttribute("options", this.optionService.catsTypeOption(null));
+			model.addAttribute("planStatus", this.optionService.planStatusOption());
 			return "plan/mydata";
 		} else {
-			// 其他狀態就根據狀態處理
+			lsts = planService.getMyPlanByQuery(query);
+			PageInfo<Plan> pageInfo = new PageInfo<Plan>(lsts);
+			// lsts = pageInfo.getList();
+			model.addAttribute("lsts", lsts);
+			model.addAttribute("pageInfo", pageInfo);
+			model.addAttribute("options", this.optionService.catsTypeOption(null));
+			model.addAttribute("planStatus", this.optionService.planStatusOption());
 			return "plan/data";
 		}
+
+
 	}
 
 	@RequestMapping(value = "/cowork")
@@ -183,16 +214,43 @@ public class PlanController extends BaseController {
 	}
 
 	@RequestMapping(value = "/doCopy")
-	public String doCopy(ModelMap model, Plan plan) {
-
-		String planId = plan.getpId();
+	public String doCopy(ModelMap model, @RequestParam(value = "pId", required = false) String pId,
+			@RequestParam(value = "rdPot", required = false) String rdPot) {
+		
+		String planId = pId;
 		log.info("==planId==" + planId);
+		log.info("==rdPot==" + rdPot);
+		Plan plan = new Plan();
+		//String planId = plan.getpId();
+		//String planId = "550c523c91614eeeacdc7937cccf6e2a";//old
+		log.info("1==planId==" + planId);
 
 		// 1.取得要複製plan專案表單
-		plan = planService.getById(plan.getpId());
+		plan = planService.getById(planId);
+		log.info("=2=getpName==" + plan.getpName());
+		
+		log.info("=2=getRder==" + plan.getRder());
+		//公開表單的會員
+		User myUser = userService.findUserByNamePw(plan.getRder(), null);
+		
+		//String newPlanId = "66908277ad404b2a8a4e37c287b72f91";
+		//如果分享專案會員不是管理者，就加5分
+		if(myUser.getuPosi().equals("mber")) {			
+			int myRdPot = Integer.parseInt(myUser.getRdPot())+5;
+			myUser.setRdPot(String.valueOf(myRdPot));
+			userService.updateByPrimaryKeySelective(myUser);			
+		}
+		//如果複製專案會員，就減5分
+		myUser = userService.findUserByNamePw(user.getuName(), null);
+		myUser.setRdPot(rdPot);
+		userService.updateByPrimaryKeySelective(myUser);
+		
+		String pNameOld = null;
+		
 		plan.setRder(user.getuName());
 		// plan.setpName("複製_"+plan.getpName());
 		// 將舊planid放到專案名稱中
+		pNameOld = plan.getpName();
 		plan.setpName(planId);
 		// 2.產生新專案
 		planService.add(plan);
@@ -204,9 +262,15 @@ public class PlanController extends BaseController {
 		lsts = planService.getMyPlanByQuery(query);
 		// 應該只有一筆
 		for (Plan p : lsts) {
-			newPlanId = p.getpId();
+			newPlanId = p.getpId();  //new
 			log.info("==newPlanId==" + newPlanId);
 		}
+		
+		//再把新plan的planName改回來
+		plan = planService.getById(newPlanId);
+		plan.setpName(pNameOld);
+		planService.updateByPrimaryKeySelective(plan);
+		
 
 		// 先copy team表單
 		List<Team> lstTeam = teamService.selectTeamByPlanId(planId);
@@ -226,7 +290,13 @@ public class PlanController extends BaseController {
 		Pc pc = pcService.getMyPcBypLd(planId);
 		pc.setPlanId(newPlanId);
 		pcService.insert(pc);
-		/*
+		
+		// copy file表單
+		File file = fileService.getMyFileBypLd(planId);
+        file.setPlanId(newPlanId);
+        fileService.insert(file);
+	
+		
 		// copy ha表單 多筆
 		List<Ha> lstHa = haService.selectHaByPlanId(planId);
 
@@ -235,15 +305,25 @@ public class PlanController extends BaseController {
 			h.setPlanId(newPlanId); // 只換planId,其他都一樣，會產生新haId
 			haService.insert(h);
 		}
-
+		
+	
+		
+	
+		
+		
+		
 		// copy ccp表單 多筆，取舊的CCP資料
 		List<Ccp> lstCcp = ccpService.selectCcpByPlanId(planId);
-
+		
 		// 先插入新的CCP,更換planId
 		for (Ccp c : lstCcp) {
 			c.setPlanId(newPlanId); // 只換planId,其他都一樣
+			log.info("=s=HaId==" +c.getHaId());
 			ccpService.insert(c);
 		}
+		
+		
+		
 
 		// 新的 Ha，取其 haId
 		List<Ha> lstHaNew = haService.selectHaByPlanId(newPlanId);
@@ -261,13 +341,37 @@ public class PlanController extends BaseController {
 
 			}
 		}
-
+		
+		
+		// copy haccp表單 多筆，取舊的haccp資料
+		List<Haccp> lstHaccp = haccpService.selectHaccpByPlanId(planId);
+		
+		// 先插入新的haccp,更換planId
+		for (Haccp h : lstHaccp) {
+			h.setPlanId(newPlanId); // 只換planId,其他都一樣
+			log.info("=s=HaccpId==" +h.getHaccpId());
+			haccpService.insert(h);
+		}
+		
 		// copy haccp表單 多筆
 
-		// User user1 = userService.findUserByNamePw(user.getuName(),null);
-		// model.addAttribute("user", user1);
-		 * */
-		 
+		// 新的 Ha，取其 hacId
+		//List<Ha> lstHaNew = haService.selectHaByPlanId(newPlanId);
+		// 新的 haccp，置換 新haId
+		List<Haccp> lstHaccpNew = haccpService.selectHaccpByPlanId(newPlanId);
+
+		for (int i = 0; i < lstHaNew.size(); i++) {
+			Ha newHa = lstHaNew.get(i);
+			for (int j = 0; j < lstHaccpNew.size(); j++) {
+				if (lstHaNew.get(i).getProcStep().equals(lstHaccpNew.get(j).getHa().getProcStep())) {
+					Haccp newHaccp = lstHaccpNew.get(j);
+					newHaccp.setHaId(newHa.getHaId());
+					haccpService.updateByPrimaryKeySelective(newHaccp);
+				}
+
+			}
+		}
+		
 		return "plan/index";
 	}
 

@@ -1,16 +1,17 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!doctype html>
+<!DOCTYPE HTML>
 <html>
 <head>
 <meta charset="utf-8">
-<title>無標題文件</title>
+<title>用戶註冊</title>
 <link rel="stylesheet" type="text/css" href="../../css/css-table.css">
 <script src="../../js/jquery.min.js"></script>
 </head>
 
-<body>
+<body style="text-align: center;">
+	<form action="${pageContext.request.contextPath}/user/mber/doAddNew.do"
+		method="post">
 		<table>
 			<tr>
 				<th>用戶名</th>
@@ -21,7 +22,7 @@
 			<tr>
 				<th>密碼</th>
 				<td><input type="password" name="uPw" value="${user.uPw}">
-					</td>
+					<form:errors path="userDetail.uPw" cssStyle="color:red"></form:errors></td>
 			</tr>
 			<tr>
 				<th>郵箱</th>
@@ -35,14 +36,9 @@
 						<option value="mber" selected>會員</option>
 				</select></td>
 			<tr>
-				<th>積分</th>
-				<td>${user.rdPot}</td>
+				<th></th>
+				<th><input type="submit" value="註冊"></th>
 			</tr>
 		</table>
-			<script>
-		var selValue = '${user.uPosi}';
-		$('#uPosi option[value=' + selValue + ']')
-				.attr('selected', true);
-	</script>
+	</form>
 </body>
-</html>

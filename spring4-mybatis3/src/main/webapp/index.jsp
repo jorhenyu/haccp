@@ -28,7 +28,7 @@
 
 		<div class="container" style="background-color: #f1f1f1">
 			<button type="button" class="otherbtn"
-				onclick="javascript:location.href='${pageContext.request.contextPath}/user/mber/add.do'">註冊</button>
+				onclick="javascript:location.href='${pageContext.request.contextPath}/user/mber/addnew.do'">註冊</button>
 			<button type="button" class="otherbtn"
 				onclick="javascript:location.href='${pageContext.request.contextPath}/index.do?uName=guest'">訪客</button>
 

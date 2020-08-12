@@ -16,6 +16,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jorhen.domain.Ha;
 import com.jorhen.domain.Pc;
 import com.jorhen.domain.Query;
@@ -33,12 +35,12 @@ public class HaController extends BaseController {
 	// 處理業務邏輯的pcService
 	@Autowired
 	private HaServiceI haService;
-	
-    @Autowired
-    OptionService optionService;
-	
+
+	@Autowired
+	OptionService optionService;
+
 	List<Ha> lsts = null;
-	String rder = null;		
+	String rder = null;
 
 	public HaServiceI getHa() {
 		return haService;
@@ -48,16 +50,15 @@ public class HaController extends BaseController {
 		haService = ha;
 	}
 
-
 	// 管理介面
 	@RequestMapping(value = "/index")
 	public String index(ModelMap model) {
 
 		lsts = haService.getMyHa(user.getuName());
-		model.addAttribute("lsts", lsts);	
+		model.addAttribute("lsts", lsts);
 		model.addAttribute("options", this.optionService.catsTypeOption(null));
 		model.addAttribute("planStatus", this.optionService.planStatusOption());
-		
+
 		return "ha/mydata";
 	}
 
@@ -66,14 +67,14 @@ public class HaController extends BaseController {
 	public String update(HttpServletRequest request, ModelMap model,
 			@RequestParam(value = "haId", required = false) String haId) {
 		Ha ha = haService.selectHaById(haId);
-		model.addAttribute("ha", ha);				
+		model.addAttribute("ha", ha);
 		return "ha/update";
 	}
 
 	// 更新執行
 	@RequestMapping("/doUpdate")
 	public String doUpdate(HttpServletRequest request, ModelMap modelMap, Ha ha) {
-		
+
 		ha.setMder(user.getuName());
 		int aa = haService.updateByPrimaryKeySelective(ha);
 		log.info("==aa==" + aa);
@@ -83,7 +84,7 @@ public class HaController extends BaseController {
 
 	// 新增導引
 	@RequestMapping("/add")
-	public String add(Model model) {				
+	public String add(Model model) {
 		return "ha/add";
 	}
 
@@ -104,21 +105,32 @@ public class HaController extends BaseController {
 		haService.deleteByPrimaryKey(haId);
 		return "redirect:/ha/index.do";
 	}
-	
+
 	// 管理介面
 	@RequestMapping(value = "/query")
-	public String query(ModelMap model) {
+	public String query(ModelMap model, Query query) {
 
-		lsts = haService.getMyHa(user.getuName());
+		// lsts = haService.getMyHa(user.getuName());
+		PageHelper.startPage(query.getPageNum(), query.getPageSize());
+		query.setqRder(user.getuName());
+		query.setqPstatus("");
+		// lsts = haService.getMyHa(user.getuName());
+		lsts = haService.getMyHaByQuery(query);
+		PageInfo<Ha> pageInfo = new PageInfo<Ha>(lsts);
+		// lsts = pageInfo.getList();
 		model.addAttribute("lsts", lsts);
+		model.addAttribute("pageInfo", pageInfo);
+		model.addAttribute("options", this.optionService.catsTypeOption(null));
+		model.addAttribute("planStatus", this.optionService.planStatusOption());
+		
 		return "ha/query";
 	}
-	
+
 	@RequestMapping("/report")
 	public String queryPro(HttpServletRequest request, ModelMap model) {
-       //產生目前自己有的專案
+		// 產生目前自己有的專案
 		lsts = haService.getHaByPlanIdDistinct(user.getuName());
-		model.addAttribute("lsts", lsts);		
+		model.addAttribute("lsts", lsts);
 		return "ha/report";
 
 	}
@@ -126,53 +138,49 @@ public class HaController extends BaseController {
 	@RequestMapping("/exportExcel")
 	public void exportExcel(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap, Ha ha) {
 
-		log.info("==getPlanId==" + ha.getPlanId());		 
-		
-		//获取数据		
-		lsts = haService.selectHaByPlanId(ha.getPlanId());		
-	      
-        
-        //excel标题
-        String[] title = {"加工步驟","危害","危害描述","影響產品安全","判定左欄之理由","預防措施","本步驟是否為重要管制點"};
-        //excel文件名
-        String fileName = "hazardAnalysisTable"+System.currentTimeMillis()+".xls";
-        //sheet名
-        String sheetName = "危害分析工作表";
-        String [][] content = new String[lsts.size()][];
-        for (int i = 0; i < lsts.size(); i++) {
-            content[i] = new String[title.length];
-            ha = lsts.get(i);
-            content[i][0] = ha.getProcStep();
-            
-            if(ha.getpHa().equals("phy")) {
-            	content[i][1] = "物理性";
-            }else if(ha.getpHa().equals("chem")) {
-            	content[i][1] = "化學性";
-            }else {
-            	content[i][1] = "生物性";
-            }
-            content[i][2] = ha.getHaDesc();
-            content[i][3] = ha.getIssafe();
-            content[i][4] = ha.getReason();
-            content[i][5] = ha.getpMeas();
-            content[i][6] = ha.getCcp().getCcp();
-                  
-            
-        }
-        //创建HSSFWorkbook
-        HSSFWorkbook wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
-        //响应到客户端
-        try {
-            this.setResponseHeader(response, fileName);
-            OutputStream os = response.getOutputStream();
-            wb.write(os);
-            os.flush();
-            os.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		log.info("==getPlanId==" + ha.getPlanId());
 
-		
+		// 获取数据
+		lsts = haService.selectHaByPlanId(ha.getPlanId());
+
+		// excel标题
+		String[] title = { "加工步驟", "危害", "危害描述", "影響產品安全", "判定左欄之理由", "預防措施", "本步驟是否為重要管制點" };
+		// excel文件名
+		String fileName = "hazardAnalysisTable" + System.currentTimeMillis() + ".xls";
+		// sheet名
+		String sheetName = "危害分析工作表";
+		String[][] content = new String[lsts.size()][];
+		for (int i = 0; i < lsts.size(); i++) {
+			content[i] = new String[title.length];
+			ha = lsts.get(i);
+			content[i][0] = ha.getProcStep();
+
+			if (ha.getpHa().equals("phy")) {
+				content[i][1] = "物理性";
+			} else if (ha.getpHa().equals("chem")) {
+				content[i][1] = "化學性";
+			} else {
+				content[i][1] = "生物性";
+			}
+			content[i][2] = ha.getHaDesc();
+			content[i][3] = ha.getIssafe();
+			content[i][4] = ha.getReason();
+			content[i][5] = ha.getpMeas();
+			content[i][6] = ha.getCcp().getCcp();
+
+		}
+		// 创建HSSFWorkbook
+		HSSFWorkbook wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
+		// 响应到客户端
+		try {
+			this.setResponseHeader(response, fileName);
+			OutputStream os = response.getOutputStream();
+			wb.write(os);
+			os.flush();
+			os.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -193,33 +201,42 @@ public class HaController extends BaseController {
 			ex.printStackTrace();
 		}
 	}
-	
-	
+
 	// 參數查詢
 	@RequestMapping(value = "/queryByparm")
 	public String queryByparm(ModelMap model, Query query) {
 
+		PageHelper.startPage(query.getPageNum(), query.getPageSize());
 		if (query.getqPstatus().equals("fprivate")) {
 			// 如果私人，就自己資料全撈
-			lsts = haService.getMyHa(user.getuName());
-		} else {
-			// 其他狀態就撈公開跟協作資料
+			query.setqRder(user.getuName());
+			query.setqPstatus("");
+			// lsts = haService.getMyHa(user.getuName());
 			lsts = haService.getMyHaByQuery(query);
-		}
-
-		model.addAttribute("lsts", lsts);
-		model.addAttribute("options", this.optionService.catsTypeOption(null));
-		model.addAttribute("planStatus", this.optionService.planStatusOption());
-
-		if (query.getqPstatus().equals("fprivate")) {
-			// 如果私人就進可以修刪功能頁面
+			PageInfo<Ha> pageInfo = new PageInfo<Ha>(lsts);
+			// lsts = pageInfo.getList();
+			model.addAttribute("lsts", lsts);
+			model.addAttribute("pageInfo", pageInfo);
+			model.addAttribute("options", this.optionService.catsTypeOption(null));
+			model.addAttribute("planStatus", this.optionService.planStatusOption());
 			return "ha/mydata";
 		} else {
-			// 其他狀態就根據狀態處理
+			lsts = haService.getMyHaByQuery(query);
+			PageInfo<Ha> pageInfo = new PageInfo<Ha>(lsts);
+			// lsts = pageInfo.getList();
+			model.addAttribute("lsts", lsts);
+			model.addAttribute("pageInfo", pageInfo);
+			model.addAttribute("options", this.optionService.catsTypeOption(null));
+			model.addAttribute("planStatus", this.optionService.planStatusOption());
 			return "ha/data";
 		}
+
+		/*
+		 * if (query.getqPstatus().equals("fprivate")) { // 如果私人就進可以修刪功能頁面 return
+		 * "ha/mydata"; } else { // 其他狀態就根據狀態處理 return "ha/data"; }
+		 */
 	}
-	
+
 	@RequestMapping(value = "/cowork")
 	public String cowork(ModelMap model, Ha ha) {
 
@@ -227,7 +244,5 @@ public class HaController extends BaseController {
 		model.addAttribute("ha", ha);
 		return "ha/coworkpw";
 	}
-	
-
 
 }

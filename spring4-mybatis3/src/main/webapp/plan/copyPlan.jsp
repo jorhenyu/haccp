@@ -11,7 +11,17 @@
 	$(document).ready(function() {
 		$(".tip").hide();
 		$("#add").bind('click', function() {			
-	        $('#form1').submit();			
+		     var  rdPot = $('#rdPot').val();
+		     var  pId = $('#pId').val();
+		     if(rdPot > 5){		    	 
+		    	 rdPot = rdPot -5 ;		    	 
+		    	 $('#rdPot').val(rdPot);
+		    	 $('#form1').submit();
+		    	 
+		     }else{		    	 
+		    	 alert("您的點數不足");
+		     }		   
+	       		
 		});
 	});
 
@@ -32,7 +42,8 @@
                                                        產品用途及消費對象、產品加工流程圖、危害分析工作表、重要管制點判定表、重要管制點計畫表)，
                                                        並將扣點數五點，您的點數目前為${user.rdPot}</label><br>
 					<input id="add" name="add" type="button" value="複製">					
-					<input type="hidden" id="pId" name="pId" value="${plan.pId}">									 
+					<input type="hidden" id="pId" name="pId" value="${plan.pId}">
+					<input type="hidden" id="rdPot" name="rdPot" value="${user.rdPot}">										 
 				</form></td>
 		</tr>
 	</table>

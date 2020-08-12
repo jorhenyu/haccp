@@ -47,12 +47,12 @@ $(document).ready(function() {
 			<tr>
 				<th>顯著危害類別</th>
 				<td>
-                  <textarea id="pHa" name="pHa">${haccp.ha.pHa}</textarea>
+                  <textarea id="pHa" name="pHa" readonly>${haccp.ha.pHa}</textarea>
 				</td>
 			</tr>
 			<tr>
 				<th>顯著危害描述</th>
-				<td><textarea id="haDesc" name="haDesc">${haccp.ha.haDesc}</textarea></td>
+				<td><textarea id="haDesc" name="haDesc" readonly>${haccp.ha.haDesc}</textarea></td>
 			</tr>
 			<tr>
 				<th>管制界限</th>

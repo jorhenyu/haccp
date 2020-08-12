@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>顯示team info</title>
+<title>顯示使用者資訊user</title>
 <link rel="stylesheet" type="text/css" href="../css/css-table.css">
 <link rel="stylesheet" href="../css/jquery-ui.css">
 <script src="../js/jquery.js"></script>
@@ -32,16 +32,15 @@ $(document).ready(function() {
 </head>
 <body>
 	<table>
-			<tr>
-			<th colspan="9" scope="row"><input type="button"
-				onclick="javascript:location.href='${pageContext.request.contextPath}/team/add.do'"
-				value="新增"></input>	<input type="button"
-				onclick="javascript:location.href='${pageContext.request.contextPath}/team/queryPro.do'"
-				value="匯出"></input></th>
+		<tr>
+			<th scope="row" colspan="16" ><input type="button"
+				onclick="javascript:location.href='${pageContext.request.contextPath}/fchart/add.do'"
+				value="新增"></input><br></th>
+			
 		</tr>
 		<tr>
 				<th colspan="9">
-				<form id="form1" name="form1" action="${pageContext.request.contextPath }/team/queryByparm.do"
+				<form id="form1" name="form1" action="${pageContext.request.contextPath }/fchart/queryByparm.do"
 				method="post">
 				業別:	<select name="qCatId">
 				<option value="">---請選擇-----</option>
@@ -60,48 +59,55 @@ $(document).ready(function() {
 				readonly>
 			結束日期:<input type="text" name="rDateEnd" id="enddatepicker" value=""
 				readonly>
-			<br>第<input type="text" name="pageNum" id="pageNum" value="${pageInfo.pageNum == null?1:pageInfo.pageNum}">頁
-				一頁<input type="text" name="pageSize" id="pageSize" value="${pageInfo.pageSize == null?5:pageInfo.pageSize}">筆
+			
 					<input id="add" name="add" type="button" value="查詢">
 			</form>
 		</th>
 		</tr>
 		<tr>
-			<th></th>
-			<th></th>
-		    <th>專案名稱</th>
-			<th>成員</th>
-			<th>職稱</th>
-			<th>職責</th>	
-			<th>學歷</th>	
-			<th>HACCP專業訓練及經驗</th>			
-
+			<th>修改</th>
+			<th>刪除</th>
+			<th>專案名稱名稱</th>
+			<th>檔案名稱</th>			
+			<th>下載</th>
+			<th>注意事項</th>
 		</tr>
-		<%--遍歷lstTeams集合中的Team物件 --%>
-		<c:forEach var="team" items="${lstTeams}">
+		<%--遍歷lstUsers集合中的User物件 --%>
+		<c:forEach var="file" items="${lsts}">
 			<tr>
+			<c:choose><c:when test="${file.plan.pStatus == 'fprivate'}">
 				<td>
-					<form action="${pageContext.request.contextPath }/team/update.do"
+					<form
+						action="${pageContext.request.contextPath }/fchart/update.do"
 						method="post">
-						<input type="hidden" name="teamId" value="${team.teamId}">
-						<input type="submit" value="修改">
+						<input type="hidden" name="fileId" value="${file.fileId}"> <input
+							type="submit" value="修改">
 					</form>
 				</td>
 				<td>
-					<form action="${pageContext.request.contextPath }/team/del.do"
+					<form action="${pageContext.request.contextPath }/fchart/del.do"
 						method="post">
-						<input type="hidden" name="teamId" value="${team.teamId}">
-						<input type="submit" value="刪除">
+						<input type="hidden" name="fileId" value="${file.fileId}"> <input
+							type="submit" value="刪除">
 					</form>
 				</td>
-			    <td><textarea readonly>${team.plan.pName}</textarea></td>
-				<td><textarea readonly>${team.mber}</textarea></td>
-				<td><textarea readonly>${team.pos}</textarea></td>
-				<td><textarea readonly>${team.duty}</textarea></td>
-				<td><textarea readonly>${team.bg}</textarea></td>
-				<td><textarea readonly>${team.skill}</textarea></td>
-
-
+				<td>
+                <form method="post" action="${pageContext.request.contextPath}/fchart/doUpload.do"
+			enctype="multipart/form-data">
+			<input type="file" name="file" />
+			<input type="hidden" name="fileId" value="${file.fileId}">
+			<button type="submit">上傳</button>
+		</form>
+				</td>
+								</c:when>
+				<c:when test="${file.plan.pStatus == 'fcowork'}">
+								<td></td><td></td></c:when>
+				<c:otherwise><td>
+					</td><td></td></c:otherwise></c:choose>
+			   <td>${file.plan.pName}</td>			
+				<td>${file.fileNm}</td>
+				<td><a href="${pageContext.request.contextPath }/fchart/download.do?filename=${file.download}">${file.fileNm}</a></td>
+				<td>${file.notes}</td>						
 			</tr>
 		</c:forEach>
 	</table>

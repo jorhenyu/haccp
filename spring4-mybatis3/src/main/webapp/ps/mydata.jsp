@@ -40,7 +40,7 @@ $(document).ready(function() {
 				value="匯出"></input></th>
 		</tr>
 				<tr>
-				<th colspan="9">
+				<th colspan="16">
 				<form id="form1" name="form1" action="${pageContext.request.contextPath }/ps/queryByparm.do"
 				method="post">
 				業別:	<select name="qCatId">
@@ -60,7 +60,8 @@ $(document).ready(function() {
 				readonly>
 			結束日期:<input type="text" name="rDateEnd" id="enddatepicker" value=""
 				readonly>
-			
+			<br>第<input type="text" name="pageNum" id="pageNum" value="${pageInfo.pageNum == null?1:pageInfo.pageNum}">頁
+				一頁<input type="text" name="pageSize" id="pageSize" value="${pageInfo.pageSize == null?5:pageInfo.pageSize}">筆
 					<input id="add" name="add" type="button" value="查詢">
 			</form>
 		</th>
@@ -113,18 +114,18 @@ $(document).ready(function() {
 						</c:forEach>
 				</td>
 				
-				<td><textarea name="pName" readonly>${ps.pName}</textarea></td>
-				<td><textarea name="matrlM" readonly>${ps.matrlM}</textarea></td>
-				<td><textarea name="matrlO" readonly>${ps.matrlO}</textarea></td>
-				<td><textarea name="fdAdd" readonly>${ps.fdAdd}</textarea></td>
-				<td><textarea name="prcsAids" readonly>${ps.prcsAids}</textarea></td>
-				<td><textarea name="matrl" readonly>${ps.matrl}</textarea></td>
-				<td><textarea name="pdtFt" readonly>${ps.pdtFt}</textarea></td>
-				<td><textarea name="pdtMd" readonly>${ps.pdtMd}</textarea></td>
-				<td><textarea name="pmDesc" readonly>${ps.pmDesc}</textarea></td>
-				<td><textarea name="stMd" readonly>${ps.stMd}</textarea></td>
-				<td><textarea name="sLife" readonly>${ps.sLife}</textarea></td>
-				<td><textarea name="notes" readonly>${ps.notes}</textarea></td>
+				<td>${ps.pName}</td>
+				<td>${ps.matrlM}</td>
+				<td>${ps.matrlO}</td>
+				<td>${ps.fdAdd}</td>
+				<td>${ps.prcsAids}</td>
+				<td>${ps.matrl}</td>
+				<td>${ps.pdtFt}</td>
+				<td>${ps.pdtMd}</td>
+				<td>${ps.pmDesc}</td>
+				<td>${ps.stMd}</td>
+				<td>${ps.sLife}</td>
+				<td>${ps.notes}</td>
 				
 
 

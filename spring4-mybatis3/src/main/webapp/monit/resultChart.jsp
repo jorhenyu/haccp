@@ -10,8 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  </head>
   <body>
 	  <div  style="text-align:center">
-		   jfreechart _折線图 <br><br>
-		  点击显示柱状图<a href="${pageContext.request.contextPath}/monit/getColumnLine.do">getMajorChart</a>
+		  折線圖 <br><br>		  
 		 <br><br>
 		 <img src="${chartURL}"  width=600 height=400  border=0  color=gray>
 	  </div>
