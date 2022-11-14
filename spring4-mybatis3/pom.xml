@@ -46,7 +46,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>4.1.4.RELEASE</version>
+			<version>4.2.7.RELEASE</version>
 		</dependency>
 		<!--添加spring-webmvc包 -->
 		<dependency>
